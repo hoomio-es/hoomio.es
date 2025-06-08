@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoomio - Smart rentals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles/hoomio.css">
+</head>
+<body>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const toggleButton = document.querySelector(".menu-toggle");
+    const nav = document.querySelector("nav");
+    const navList = document.querySelector("nav ul");
+
+    toggleButton.addEventListener("click", function() {
+        this.classList.toggle("active");
+        nav.classList.toggle("nav-bg-active");
+        navList.classList.toggle("nav-active");
+
+        // Opcional: actualizar el estado ARIA
+        const expanded = this.getAttribute("aria-expanded") === "true";
+        this.setAttribute("aria-expanded", !expanded);
+    });
+});
+</script>
+
+
+    <div class="landing-container">
+        <header class="hero">
+            <nav>
+                <div class="logo">
+            <img src="static/images/hoomio.png" alt="Hoomio Logo" onerror="this.style.display='none'">
+            </div>
+                <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul>
+                    <li><a href="#">Hoomio</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#automation">Automatismos</a></li>
+                    <li><a href="#about">Quiénes somos</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+</nav>
+
+            <div class="hero-bottom-elements">
+                <div class="hero-bottom-left-column">
+                    <div class="hero-main-text">
+                        <h1>Alquiler inteligente!</h1>
+                        <p>Hoomio se simplifica todas las gestiones: entradas, salidas, limpezas, mantenimiento, incidencias y mucho más.</p>
+                    </div>
+                    <a href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" class="pricing-card-button">Reunámonos</a>
+                </div>
+                
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <span class="number">5+</span>
+                        <span class="text">Años de experiéncia</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="number">50+</span>
+                        <span class="text">Propiedades en gestión</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="number">1000+</span>
+                        <span class="text">Usuarios felices</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <section id="services" class="content-section">
+        <h2>Nuestros Servicios</h2>
+        <p>Simplificamos la gestión de tu propiedad con soluciones integrales, liberándote de las preocupaciones diarias y maximizando tu rentabilidad.</p>
+        <div class="pricing-cards-container">
+            <div class="pricing-card has-ribbon">
+                <div class="pricing-card-header basic">
+                    <div class="pricing-card-title">Check-in</br>Check-out</div>
+                </div>
+                <div class="pricing-card-content">
+                    <ul class="pricing-card-features">
+                        <li>Gestión automatizada de entradas</li>
+                        <li>Acceso seguro y remoto</li>
+                        <li>Comunicación fluida con huéspedes</li>
+                    </ul>
+                </div>
+                <div class="ribbon"><span class="ribbon-text">POPULAR</span></div>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-card-header pro">
+                    <div class="pricing-card-title">Gestión de Calendarios</div>
+                </div>
+                <div class="pricing-card-content">
+                    <ul class="pricing-card-features">
+                        <li>Coordinación de limpiezas</li>
+                        <li>Programación de mantenimientos</li>
+                        <li>Recordatorios y alertas automáticas</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <div class="pricing-card-header premium">
+                    <div class="pricing-card-title">Optimización de Propiedades</div>
+                </div>
+                <div class="pricing-card-content">
+                    <ul class="pricing-card-features">
+                        <li>Optimización de anuncios en plataformas</li>
+                        <li>Estrategias de precios dinámicos</li>
+                        <li>Maximiza la visibilidad y rentabilidad</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="automation" class="content-section">
+        <h2>Automatismos para tu Alquiler</h2>
+        <p>Integramos tecnología inteligente para una gestión de propiedad más eficiente, segura y rentable, adaptándonos a tus necesidades.</p>
+        <div class="automation-cards-container">
+            <div class="automation-card">
+                <img src="static/images/keypad.png" alt="[Imagen de Cerraduras Inteligentes]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
+                <div class="automation-card-content">
+                    <h3>Cerraduras y Porteros Electrónicos</h3>
+                    <p>Instalamos cerraduras y porteros electrónicos de gestión remota, permitiendo un control total del acceso sin necesidad de llaves físicas.</p>
+                </div>
+            </div>
+            <div class="automation-card">
+                <img src="static/images/presence.png" alt="[Imagen de Control de Presencia y Ruido]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
+                <div class="automation-card-content">
+                    <h3>Control de Presencia y Acceso</h3>
+                    <p>Controla el número de personas en el piso, detecta humos y gestiona de forma automatizada quién puede entrar en fechas y franjas horarias específicas, con total respeto a la privacidad.</p>
+                </div>
+            </div>
+            <div class="automation-card">
+                <img src="static/images/domotica.png" alt="[Imagen de Videoporteros Inteligentes]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
+                <div class="automation-card-content">
+                    <h3>Integración Domótica</h3>
+                    <p>Asesoramos e integramos herramientas de domótica para programar calefacción, luces y otros dispositivos, optimizando el consumo y generando ahorros significativos.</p>
+                </div>
+            </div>
+        </div>
+        <p class="automation-disclaimer"><em>* Estos puntos están sujetos a disponibilidad y podrían incurrir en gastos adicionales de instalación y mantenimiento.</em></p>
+    </section>
+
+    <section id="about" class="content-section">
+        <h2>Quiénes Somos</h2>
+        <div class="about-container">
+            <div class="about-image">
+                <img src="static/images/domotica.png" alt="Equipo de Hoomio trabajando">
+            </div>
+            <div class="about-content">
+                <p>En Hoomio, somos un equipo apasionado por la innovación en la gestión de alquileres. Nuestra misión es ofrecer soluciones tecnológicas que faciliten la vida tanto a propietarios como a inquilinos, optimizando procesos y mejorando la experiencia de alquiler. Creemos en la transparencia, la eficiencia y la tranquilidad que la tecnología puede aportar al sector inmobiliario.</p>
+                <p>Con años de experiencia en el sector y un profundo conocimiento de las necesidades del mercado, desarrollamos herramientas intuitivas y potentes para que puedas dedicar tu tiempo a lo que realmente importa.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="content-section">
+        <h2>Contacto</h2>
+        <p>Ponte en contacto con nosotros para cualquier consulta o para solicitar un presupuesto detallado.</p>
+                       
+<a href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" class="pricing-card-button">Reunámonos</a>
+    
+    </section>
+
+</body>
+</html>
