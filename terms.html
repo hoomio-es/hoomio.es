@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Políticas de Uso - Hoomio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles/hoomio.css">
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleButton = document.querySelector(".menu-toggle");
+            const nav = document.querySelector("nav");
+            const navList = document.querySelector("nav ul");
+
+            toggleButton.addEventListener("click", function() {
+                this.classList.toggle("active");
+                nav.classList.toggle("nav-bg-active");
+                navList.classList.toggle("nav-active");
+            });
+        });
+    </script>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html"><img src="static/images/hoomio.png" alt="Hoomio Logo"></a>
+        </div>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul>
+            <li><a href="index.html#">Hoomio</a></li>
+            <li><a href="index.html#services">Servicios</a></li>
+            <li><a href="index.html#automation">Automatismos</a></li>
+            <li><a href="index.html#about">Quiénes somos</a></li>
+            <li><a href="index.html#contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <main class="legal-content-section">
+        <h1>Políticas de Uso</h1>
+        <p class="update-date">Última actualización: 23 de junio de 2025</p>
+
+        <p>Bienvenido a Hoomio. Estos términos y condiciones describen las reglas y regulaciones para el uso del sitio web y los servicios de Hoomio.</p>
+        
+        <h2>1. Aceptación de los términos</h2>
+        <p>Al acceder a este sitio web, asumimos que aceptas estos términos y condiciones en su totalidad. No continúes usando el sitio web de Hoomio si no aceptas todos los términos y condiciones establecidos en esta página.</p>
+
+        <h2>2. Descripción del Servicio</h2>
+        <p>Hoomio proporciona servicios de gestión de propiedades de alquiler, incluyendo la automatización de check-in/check-out, gestión de calendarios, optimización de propiedades y la instalación de dispositivos domóticos. Estos servicios están diseñados para simplificar las operaciones y maximizar la rentabilidad de los propietarios.</p>
+
+        <h2>3. Propiedad Intelectual</h2>
+        <p>El sitio web y su contenido original, características y funcionalidad son y seguirán siendo propiedad exclusiva de Hoomio. El logotipo, los textos y las imágenes están protegidos por derechos de autor.</p>
+
+        <h2>4. Conducta del Usuario</h2>
+        <p>Se te prohíbe utilizar el sitio para:</p>
+        <ul>
+            <li>Cualquier propósito ilegal.</li>
+            <li>Solicitar a otros que realicen o participen en actos ilícitos.</li>
+            <li>Vulnerar nuestros derechos de propiedad intelectual o los derechos de propiedad intelectual de otros.</li>
+            <li>Acosar, abusar, insultar, dañar, difamar, calumniar, intimidar o discriminar por motivos de género, orientación sexual, religión, etnia, raza, edad, origen nacional o discapacidad.</li>
+        </ul>
+
+        <h2>5. Limitación de Responsabilidad</h2>
+        <p>En ningún caso Hoomio, ni sus directores, empleados o socios, serán responsables de ningún daño indirecto, incidental, especial, consecuente o punitivo, incluyendo, sin limitación, la pérdida de beneficios, datos, uso, buena voluntad u otras pérdidas intangibles, como resultado del uso de nuestro servicio.</p>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>Hoomio</h4>
+                <p>Simplificando la gestión de alquileres con tecnología inteligente para maximizar tu rentabilidad y tranquilidad.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html">Hoomio</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#automation">Automatismos</a></li>
+                    <li><a href="#about">Quiénes somos</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <p>
+                    Email: <a href="mailto:info@hoomio.es">info@hoomio.es</a><br>
+                    Teléfono: +34 623 940 910
+                </p>
+                <h4>Síguenos</h4>
+                <div class="footer-socials">
+                    <a href="#" class="social-icon" aria-label="Facebook">F</a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-icon" aria-label="Instagram">I</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+    <p>&copy; 2024 Hoomio. Todos los derechos reservados. | <a href="privacy.html">Política de Privacidad</a> | <a href="terms.html">Políticas de Uso</a></p>
+</div>
+    </footer>
+    
+</body>
+</html>

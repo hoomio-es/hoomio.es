@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad - Hoomio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/styles/hoomio.css">
+</head>
+<body>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const toggleButton = document.querySelector(".menu-toggle");
+            const nav = document.querySelector("nav");
+            const navList = document.querySelector("nav ul");
+
+            toggleButton.addEventListener("click", function() {
+                this.classList.toggle("active");
+                nav.classList.toggle("nav-bg-active");
+                navList.classList.toggle("nav-active");
+            });
+        });
+    </script>
+
+    <nav>
+        <div class="logo">
+            <a href="index.html"><img src="static/images/hoomio.png" alt="Hoomio Logo"></a>
+        </div>
+        <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <ul>
+            <li><a href="index.html#">Hoomio</a></li>
+            <li><a href="index.html#services">Servicios</a></li>
+            <li><a href="index.html#automation">Automatismos</a></li>
+            <li><a href="index.html#about">Quiénes somos</a></li>
+            <li><a href="index.html#contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <main class="legal-content-section">
+        <h1>Política de Privacidad</h1>
+        <p class="update-date">Última actualización: 23 de junio de 2025</p>
+
+        <p>En Hoomio ("nosotros", "nuestro"), respetamos su privacidad y nos comprometemos a proteger sus datos personales. Esta política de privacidad le informará sobre cómo cuidamos sus datos personales cuando visita nuestro sitio web y le informará sobre sus derechos de privacidad y cómo la ley lo protege.</p>
+        
+        <h2>1. Información que recopilamos</h2>
+        <p>Podemos recopilar, usar, almacenar y transferir diferentes tipos de datos personales sobre usted, que hemos agrupado de la siguiente manera:</p>
+        <ul>
+            <li><strong>Datos de Identidad:</strong> Incluyen nombre, apellidos, nombre de usuario o identificador similar.</li>
+            <li><strong>Datos de Contacto:</strong> Incluyen dirección de correo electrónico y números de teléfono.</li>
+            <li><strong>Datos Técnicos:</strong> Incluyen la dirección del protocolo de Internet (IP), sus datos de inicio de sesión, tipo y versión del navegador, y otra tecnología en los dispositivos que utiliza para acceder a este sitio web.</li>
+            <li><strong>Datos de Uso:</strong> Incluyen información sobre cómo utiliza nuestro sitio web, productos y servicios.</li>
+        </ul>
+
+        <h2>2. Cómo utilizamos sus datos personales</h2>
+        <p>Utilizamos sus datos personales para los siguientes propósitos:</p>
+        <ul>
+            <li>Para proporcionarle y mantener nuestro servicio, incluida la gestión de su propiedad o su estancia.</li>
+            <li>Para gestionar su cuenta y proporcionarle soporte al cliente.</li>
+            <li>Para contactarlo con boletines informativos, materiales de marketing o promocionales y otra información que pueda ser de su interés.</li>
+            <li>Para mejorar nuestro sitio web, servicios, marketing y experiencias de cliente.</li>
+        </ul>
+
+        <h2>3. Divulgación de sus datos personales</h2>
+        <p>No compartiremos sus datos personales con terceros, excepto cuando sea necesario para proporcionar nuestros servicios (por ejemplo, con personal de limpieza o mantenimiento) o si la ley nos obliga a hacerlo.</p>
+
+        <h2>4. Seguridad de los datos</h2>
+        <p>Hemos implementado medidas de seguridad apropiadas para evitar que sus datos personales se pierdan accidentalmente, se usen o se acceda a ellos de forma no autorizada. </p>
+
+        <h2>5. Sus derechos legales</h2>
+        <p>Usted tiene derecho a acceder, corregir, eliminar o restringir el procesamiento de sus datos personales. Si desea ejercer alguno de estos derechos, por favor, contáctenos.</p>
+        
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-column">
+                <h4>Hoomio</h4>
+                <p>Simplificando la gestión de alquileres con tecnología inteligente para maximizar tu rentabilidad y tranquilidad.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Navegación</h4>
+                <ul>
+                    <li><a href="index.html">Hoomio</a></li>
+                    <li><a href="#services">Servicios</a></li>
+                    <li><a href="#automation">Automatismos</a></li>
+                    <li><a href="#about">Quiénes somos</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Contacto</h4>
+                <p>
+                    Email: <a href="mailto:info@hoomio.es">info@hoomio.es</a><br>
+                    Teléfono: +34 623 940 910
+                </p>
+                <h4>Síguenos</h4>
+                <div class="footer-socials">
+                    <a href="#" class="social-icon" aria-label="Facebook">F</a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
+                    <a href="#" class="social-icon" aria-label="Instagram">I</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+    <p>&copy; 2024 Hoomio. Todos los derechos reservados. | <a href="privacy.html">Política de Privacidad</a> | <a href="terms.html">Políticas de Uso</a></p>
+</div>
+    </footer>
+
+</body>
+</html>
