@@ -193,7 +193,8 @@ nav.nav-bg-active .menu-toggle .bar {
 .hero {
     height: calc(100vh - 70px);
     min-height: 500px;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)), url('https://a0.muscache.com/im/pictures/miso/Hosting-48225671/original/5c557a2b-a236-4daf-8b17-6b4003c9b8d8.jpeg?im_w=1200');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)), url('../images/fondo.jpg');
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)), url('https://a0.muscache.com/im/pictures/miso/Hosting-48225671/original/5c557a2b-a236-4daf-8b17-6b4003c9b8d8.jpeg?im_w=1200'); */
     /* background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)), url('https://static.tripzilla.com/thumb/7/5/170357_800x.jpg'); */
     /* background-image: linear-gradient(rg⁄ba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.25)), url('https://images.unsplash.com/photo-1599777560450-e462cffc5368'); */
     background-size: cover;
