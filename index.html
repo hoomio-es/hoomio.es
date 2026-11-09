@@ -1,201 +1,425 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hoomio - Smart rentals</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="static/styles/hoomio.css">
-    <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hoomio · Gestión de alquiler turístico</title>
+<meta name="description" content="Gestionamos tu piso turístico de principio a fin con tecnología propia: accesos sin llaves, comunicación 24/7 y precios dinámicos.">
+<link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #F4F5F3;
+    --surface: #FFFFFF;
+    --ink: #1D2B2A;
+    --muted: #5E6B69;
+    --line: #D9DDDA;
+    --accent: #2F5D50;
+    --accent-ink: #FFFFFF;
+    --brass: #A88553;
+    --soft: #E8ECE9;
+    --font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
+      --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
+    --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 80px); }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-weight: 400; font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  img { max-width: 100%; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
 
+  /* Navegación */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+  header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .2s; }
+  header.top.scrolled { border-bottom-color: var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
+  .brand { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
+  .brand span { color: var(--brass); }
+  .nav ul { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; font-size: .9rem; }
+  .nav ul a { text-decoration: none; color: var(--muted); }
+  .nav ul a:hover { color: var(--ink); }
+  .btn { display: inline-block; padding: .8rem 1.5rem; border-radius: 999px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 500; font-size: .95rem; border: 1px solid var(--accent); transition: opacity .2s; }
+  .btn:hover { opacity: .88; }
+  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn.ghost:hover { border-color: var(--ink); opacity: 1; }
+  @media (max-width: 860px) { .nav ul { display: none; } }
+
+  /* Hero */
+  :root {
+    --hero-img: url("static/images/hero.jpg"); /* cambia aquí el nombre de tu foto del piso */
+    --hero-flip: -1; /* -1 voltea la foto en horizontal para que el espejo quede a la izquierda; 1 la deja como está */
+  }
+  .hero-photo { position: relative; overflow: visible; isolation: isolate; min-height: min(84vh, 760px); display: flex; align-items: flex-end; background: #34433F; }
+  .hero-photo::after { content: ""; position: absolute; inset: 0; background: var(--hero-img) center / cover no-repeat; transform: scaleX(var(--hero-flip)); }
+  .hero-photo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(12, 20, 19, .35), rgba(12, 20, 19, 0) 45%); }
+  .hero-photo .wrap { position: relative; z-index: 2; width: 100%; display: flex; justify-content: flex-end; padding-top: 10rem; padding-bottom: 0; }
+  .hero-box { background: var(--surface); color: var(--ink); border-radius: 20px; padding: 2.5rem 2.5rem 2.25rem; max-width: 580px; margin-bottom: -5rem; box-shadow: 0 30px 70px rgba(12, 20, 19, .22); }
+  .hero-photo + section { border-top: 0; padding-top: 10rem; }
+  .hero-box h1 { font-weight: 300; font-size: clamp(2rem, 3.6vw, 2.9rem); line-height: 1.1; letter-spacing: -0.035em; margin: 0 0 1rem; max-width: 15ch; }
+  .hero-box p.lead { font-size: 1.05rem; color: var(--muted); max-width: 44ch; margin: 0 0 1.75rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .btn-lg { padding: .95rem 1.5rem; font-size: .98rem; }
+  .reassure { margin: 1.1rem 0 0; font-size: .85rem; color: var(--muted); }
+
+  .day { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.75rem 1.75rem 1.25rem; }
+  .day-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem; }
+  .day-head strong { font-weight: 600; font-size: .95rem; }
+  .day-head span { font-size: .8rem; color: var(--muted); }
+  .day ol { list-style: none; margin: 0; padding: 0; position: relative; }
+  .day ol::before { content: ""; position: absolute; left: 3.6rem; top: .6rem; bottom: .6rem; width: 1px; background: var(--line); }
+  .day li { display: grid; grid-template-columns: 3rem 1fr; gap: 1.4rem; padding: .55rem 0; font-size: .92rem; }
+  .day li time { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; font-size: .85rem; padding-top: .05rem; }
+  .day li div { position: relative; }
+  .day li div::before { content: ""; position: absolute; left: -1.05rem; top: .55rem; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+  .day li small { display: block; color: var(--muted); font-size: .8rem; }
+  .day li:nth-child(1) { animation-delay: .2s } .day li:nth-child(2) { animation-delay: .55s } .day li:nth-child(3) { animation-delay: .9s }
+  .day li:nth-child(4) { animation-delay: 1.25s } .day li:nth-child(5) { animation-delay: 1.6s }
+  .day-foot { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+  @keyframes show { to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .day li { animation: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
+  @media (max-width: 860px) { .hero-photo { min-height: 0; } .hero-photo .wrap { padding-top: 16rem; } .hero-box { padding: 1.75rem; margin-bottom: -3rem; } .hero-photo + section { padding-top: 7rem; } }
+  .flow { margin-top: 4.5rem; display: grid; grid-template-columns: .9fr 1.1fr; gap: 4rem; align-items: center; }
+  .flow h3 { font-weight: 600; font-size: 1.2rem; margin: 0 0 .6rem; }
+  .flow p { color: var(--muted); margin: 0; max-width: 40ch; }
+  @media (max-width: 860px) { .flow { grid-template-columns: 1fr; gap: 2rem; } }
+
+  /* Secciones */
+  section { padding: 5.5rem 0; border-top: 1px solid var(--line); }
+  h2 { font-weight: 300; font-size: clamp(1.9rem, 3.4vw, 2.6rem); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 1rem; max-width: 22ch; }
+  .intro { color: var(--muted); max-width: 58ch; margin: 0 0 3.5rem; font-size: 1.05rem; }
+
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
+  .pillars h3 { font-weight: 600; font-size: 1.05rem; margin: 0 0 .6rem; }
+  .pillars p { color: var(--muted); margin: 0; font-size: .95rem; }
+  .pillars > div { border-top: 2px solid var(--ink); padding-top: 1.25rem; }
+  @media (max-width: 860px) { .pillars { grid-template-columns: 1fr; gap: 2rem; } }
+
+  /* Planes */
+  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
+  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 2rem 1.75rem; display: flex; flex-direction: column; }
+  .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .plan .tag { align-self: flex-start; font-size: .75rem; font-weight: 500; color: var(--accent); background: var(--soft); padding: .25rem .7rem; border-radius: 999px; margin-bottom: 1rem; }
+  .plan h3 { font-weight: 600; font-size: 1.15rem; margin: 0; }
+  .plan .for { color: var(--muted); font-size: .88rem; margin: .35rem 0 1.5rem; min-height: 2.8em; }
+  .price { font-weight: 300; font-size: 3.2rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: .3rem; }
+  .price small { font-size: 1rem; letter-spacing: 0; color: var(--muted); font-weight: 400; }
+  .plan ul { list-style: none; padding: 0; margin: 1.5rem 0 2rem; font-size: .9rem; flex: 1; }
+  .plan li { padding: .5rem 0 .5rem 1.5rem; border-top: 1px solid var(--line); position: relative; }
+  .plan li::before { content: ""; position: absolute; left: .15rem; top: 1.05rem; width: .55rem; height: .3rem; border-left: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent); transform: rotate(-45deg); }
+  .plan li.inherit { color: var(--muted); }
+  .plan li.gift { font-weight: 600; }
+  .plan li.gift small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
+  .plan li.inherit::before { border-color: var(--muted); }
+  .plan .btn { text-align: center; }
+  .note { margin-top: 2rem; display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start; padding: 1.5rem 1.75rem; border: 1px dashed var(--line); border-radius: 16px; font-size: .92rem; color: var(--muted); }
+  .note strong { color: var(--ink); font-weight: 600; font-size: 1.6rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
+  .note p { margin: 0; }
+  .note .payback { margin-top: .75rem; color: var(--ink); }
+  .note b { font-weight: 600; }
+  @media (max-width: 960px) { .plans { grid-template-columns: 1fr; max-width: 520px; } .plan .for { min-height: 0; } }
+
+  /* Calculadora */
+  .calc { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 2.5rem; display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; }
+  .calc label { display: block; font-weight: 500; margin-bottom: .5rem; }
+  .calc .amount { font-weight: 300; font-size: clamp(2.6rem, 6vw, 3.8rem); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; font-variant-numeric: tabular-nums; }
+  .calc input[type=range] { width: 100%; accent-color: var(--accent); }
+  .calc .hint { font-size: .82rem; color: var(--muted); margin-top: .75rem; }
+  .ref { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--soft); border-radius: 12px; font-size: .9rem; }
+  .ref b { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .results { display: grid; gap: 1rem; }
+  .res { border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem 1.4rem; }
+  .res.featured { border-color: var(--accent); }
+  .res-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .9rem; }
+  .res-head h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+  .res-head span { color: var(--muted); font-size: .85rem; }
+  .figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; font-variant-numeric: tabular-nums; }
+  .figs div { font-size: .78rem; color: var(--muted); line-height: 1.35; }
+  .figs strong { display: block; font-size: 1.35rem; font-weight: 400; letter-spacing: -0.02em; color: var(--ink); margin-bottom: .2rem; }
+  .figs div:first-child strong { font-weight: 600; }
+  .worries { margin: .9rem 0 0; padding-top: .8rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+  .worries b { color: var(--ink); font-weight: 500; }
+  @media (max-width: 480px) { .figs { grid-template-columns: 1fr 1fr; } .figs div:first-child { grid-column: 1 / -1; } }
+  @media (max-width: 860px) { .calc { grid-template-columns: 1fr; padding: 1.75rem; gap: 2rem; } }
+
+  /* Kit */
+  .kit { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 4rem; }
+  .kit > div { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
+  .kit h3 { font-weight: 600; font-size: 1rem; margin: 0 0 .35rem; }
+  .kit p { margin: 0; color: var(--muted); font-size: .93rem; }
+  .fine { font-size: .82rem; color: var(--muted); margin-top: 2rem; }
+  @media (max-width: 760px) { .kit { grid-template-columns: 1fr; } }
+
+  /* Contacto */
+  .cta { text-align: left; display: flex; justify-content: space-between; align-items: end; gap: 2rem; flex-wrap: wrap; }
+  .cta h2 { margin: 0; max-width: 18ch; }
+  .cta p { color: var(--muted); margin: .75rem 0 0; }
+
+  footer { border-top: 1px solid var(--line); padding: 3rem 0 2.5rem; font-size: .88rem; color: var(--muted); }
+  .foot { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  .foot a { text-decoration: none; }
+  .foot a:hover { color: var(--ink); }
+</style>
 </head>
 <body>
-    <script>
-document.addEventListener("DOMContentLoaded", function() {
-    const toggleButton = document.querySelector(".menu-toggle");
-    const nav = document.querySelector("nav");
-    const navList = document.querySelector("nav ul");
 
-    toggleButton.addEventListener("click", function() {
-        this.classList.toggle("active");
-        nav.classList.toggle("nav-bg-active");
-        navList.classList.toggle("nav-active");
+<header class="top" id="top">
+  <div class="wrap nav">
+    <a href="#" class="brand">hoomio<span>.</span></a>
+    <nav aria-label="Principal">
+      <ul>
+        <li><a href="#servicio">Servicio</a></li>
+        <li><a href="#planes">Planes</a></li>
+        <li><a href="#calculadora">Calculadora</a></li>
+        <li><a href="#tecnologia">Tecnología</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+      </ul>
+    </nav>
+    <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Reunámonos</a>
+  </div>
+</header>
 
-        // Opcional: actualizar el estado ARIA
-        const expanded = this.getAttribute("aria-expanded") === "true";
-        this.setAttribute("aria-expanded", !expanded);
-    });
-});
-</script>
-
-
-    <div class="landing-container">
-        <header class="hero">
-            <nav>
-                <div class="logo">
-            <img src="static/images/hoomio.png" alt="Hoomio Logo" onerror="this.style.display='none'">
-            </div>
-                <button class="menu-toggle" aria-label="Toggle menu" aria-expanded="false">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul>
-                    <li><a href="#">Hoomio</a></li>
-                    <li><a href="#services">Servicios</a></li>
-                    <li><a href="#automation">Automatismos</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="#about">Quiénes somos</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                </ul>
-</nav>
-
-            <div class="hero-bottom-elements">
-                <div class="hero-bottom-left-column">
-                    <div class="hero-main-text">
-                        <h1>Alquiler inteligente!</h1>
-                        <p>Hoomio se simplifica todas las gestiones: entradas, salidas, limpezas, mantenimiento, incidencias y mucho más.</p>
-                    </div>
-                    <a href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" class="pricing-card-button">Reunámonos</a>
-                </div>
-                
-                <div class="stats-section">
-                    <div class="stat-item">
-                        <span class="number">5+</span>
-                        <span class="text">Años de experiéncia</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="number">50+</span>
-                        <span class="text">Propiedades en gestión</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="number">1000+</span>
-                        <span class="text">Usuarios felices</span>
-                    </div>
-                </div>
-            </div>
-        </header>
+<main>
+  <div class="hero-photo">
+    <div class="wrap">
+      <div class="hero-box">
+        <h1>Deja de gestionar tu piso. Empieza a disfrutarlo.</h1>
+        <p class="lead">Reservas, huéspedes, limpiezas e incidencias: nos encargamos de todo. Gracias a la automatización, pagas menos comisión que con una gestora tradicional y sabes en qué se va cada euro.</p>
+        <div class="actions">
+          <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Quiero que gestionéis mi piso</a>
+          <a class="btn ghost btn-lg" href="#calculadora">Calcula tu ahorro</a>
+        </div>
+        <p class="reassure">Primera llamada de 30 minutos, gratuita y sin compromiso.</p>
+      </div>
     </div>
+  </div>
 
-<section id="services" class="content-section">
-        <h2>Nuestros Servicios</h2>
-        <p>Simplificamos la gestión de tu propiedad con soluciones integrales, liberándote de las preocupaciones diarias y maximizando tu rentabilidad.</p>
-        
-        <div class="automation-cards-container">
-            
-            <div class="automation-card">
-                <img src="static/images/automation.jpg" alt="Automatización de servicios del hogar">
-                <div class="automation-card-content">
-                    <h3>Automatización de Servicios</h3>
-                    <p>Gestionamos entradas y salidas de forma remota y segura, integramos la domótica de tu propiedad y usamos IA para una comunicación fluida con los clientes.</p>
-                </div>
-            </div>
-            
-            <div class="automation-card">
-                <img src="static/images/management.jpg" alt="Gestión y coordinación de propiedades">
-                <div class="automation-card-content">
-                    <h3>Gestión de Propiedades</h3>
-                    <p>Coordinamos un calendario de limpiezas eficiente, programamos mantenimientos preventivos y te mantenemos informado con recordatorios y alertas automáticas.</p>
-                </div>
-            </div>
-
-            <div class="automation-card">
-                <img src="static/images/optimization.jpeg" alt="Gráfico de optimización de rentabilidad">
-                <div class="automation-card-content">
-                    <h3>Optimización de la Rentabilidad</h3>
-                    <p>Mejoramos tus anuncios en plataformas, aplicamos estrategias de precios dinámicos y controlamos costes de suministros para maximizar tus beneficios.</p>
-                </div>
-            </div>
-
+  <section id="servicio">
+    <div class="wrap">
+      <h2>Tecnología para lo repetitivo, personas para lo importante.</h2>
+      <p class="intro">Automatizamos todo lo que se repite en cada reserva. Así podemos dedicar el tiempo a cuidar tu piso y a que rinda más, y trasladarte el ahorro en la comisión.</p>
+      <div class="pillars">
+        <div>
+          <h3>Tu piso, sin llaves</h3>
+          <p>Cerraduras electrónicas en piso y portal, control de ruido y ocupación respetuoso con la privacidad, y wifi propio para cada alojamiento.</p>
         </div>
-    </section>
-
-    <section id="automation" class="content-section">
-        <h2>Automatismos para tu Alquiler</h2>
-        <p>Integramos tecnología inteligente para una gestión de propiedad más eficiente, segura y rentable, adaptándonos a tus necesidades.</p>
-        <div class="automation-cards-container">
-            <div class="automation-card">
-                <img src="static/images/keypad.png" alt="[Imagen de Cerraduras Inteligentes]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
-                <div class="automation-card-content">
-                    <h3>Cerraduras y Porteros Electrónicos</h3>
-                    <p>Instalamos cerraduras y porteros electrónicos de gestión remota, permitiendo un control total del acceso sin necesidad de llaves físicas.</p>
-                </div>
-            </div>
-            <div class="automation-card">
-                <img src="static/images/presence.png" alt="[Imagen de Control de Presencia y Ruido]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
-                <div class="automation-card-content">
-                    <h3>Control de Presencia y Acceso</h3>
-                    <p>Controla el número de personas en el piso, detecta humos y gestiona de forma automatizada quién puede entrar en fechas y franjas horarias específicas, con total respeto a la privacidad.</p>
-                </div>
-            </div>
-            <div class="automation-card">
-                <img src="static/images/domotica.png" alt="[Imagen de Videoporteros Inteligentes]" onerror="this.onerror=null;this.src='https://placehold.co/600x400/e0e0e0/757575?text=Imagen+no+disponible';">
-                <div class="automation-card-content">
-                    <h3>Integración Domótica</h3>
-                    <p>Asesoramos e integramos herramientas de domótica para programar calefacción, luces y otros dispositivos, optimizando el consumo y generando ahorros significativos.</p>
-                </div>
-            </div>
+        <div>
+          <h3>El día a día, resuelto</h3>
+          <p>Anuncios en Airbnb, Booking y VRBO, atención a huéspedes 24/7, registro de viajeros, limpiezas e incidencias coordinadas.</p>
         </div>
-        <p class="automation-disclaimer"><em>* Estos puntos están sujetos a disponibilidad y podrían incurrir en gastos adicionales de instalación y mantenimiento.</em></p>
-    </section>
-
-    <section id="about" class="content-section">
-        <h2>Quiénes Somos</h2>
-        <div class="about-container">
-            <div class="about-image">
-                <img src="static/images/domotica.png" alt="Equipo de Hoomio trabajando">
-            </div>
-            <div class="about-content">
-                <p>En Hoomio, somos un equipo apasionado por la innovación en la gestión de alquileres. Nuestra misión es ofrecer soluciones tecnológicas que faciliten la vida tanto a propietarios como a inquilinos, optimizando procesos y mejorando la experiencia de alquiler. Creemos en la transparencia, la eficiencia y la tranquilidad que la tecnología puede aportar al sector inmobiliario.</p>
-                <p>Con años de experiencia en el sector y un profundo conocimiento de las necesidades del mercado, desarrollamos herramientas intuitivas y potentes para que puedas dedicar tu tiempo a lo que realmente importa.</p>
-            </div>
+        <div>
+          <h3>Rentabilidad que puedes ver</h3>
+          <p>Precios dinámicos según la demanda y liquidaciones claras cada mes. En el plan Premium, además, revisamos tus costes fijos.</p>
         </div>
-    </section>
+      </div>
 
-    <section id="contact" class="content-section">
-        <h2>Contacto</h2>
-        <p>Ponte en contacto con nosotros para cualquier consulta o para solicitar un presupuesto detallado.</p>
-                       
-<a href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" class="pricing-card-button">Reunámonos</a>
-    
-    </section>
-    <footer class="site-footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h4>Hoomio</h4>
-                <p>Simplificando la gestión de alquileres con tecnología inteligente para maximizar tu rentabilidad y tranquilidad.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Navegación</h4>
-                <ul>
-                    <li><a href="index.html">Hoomio</a></li>
-                    <li><a href="#services">Servicios</a></li>
-                    <li><a href="#automation">Automatismos</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="#about">Quiénes somos</a></li>
-                    <li><a href="#contact">Contacto</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Contacto</h4>
-                <p>
-                    Email: <a href="mailto:info@hoomio.es">info@hoomio.es</a><br>
-                    Teléfono: +34 623 940 910
-                </p>
-                <h4>Síguenos</h4>
-                <div class="footer-socials">
-                    <a href="#" class="social-icon" aria-label="Facebook">F</a>
-                    <a href="#" class="social-icon" aria-label="LinkedIn">in</a>
-                    <a href="#" class="social-icon" aria-label="Instagram">I</a>
-                </div>
-            </div>
+      <div class="flow">
+        <div>
+          <h3>Así es una llegada con Hoomio</h3>
+          <p>Cada paso ocurre solo y queda registrado. Nosotros solo intervenimos cuando hace falta una persona, y tú no tienes que coger el teléfono.</p>
         </div>
-        <div class="footer-bottom">
-    <p>&copy; 2024 Hoomio. Todos los derechos reservados. | <a href="privacy.html">Política de Privacidad</a> | <a href="terms.html">Políticas de Uso</a></p>
-</div>
-    </footer>
+        <aside class="day" aria-label="Ejemplo de una llegada gestionada por Hoomio">
+          <div class="day-head"><strong>Una llegada cualquiera</strong><span>Sin nadie en la puerta</span></div>
+          <ol>
+            <li><time>10:02</time><div>Huésped registrado<small>Datos enviados a la policía automáticamente</small></div></li>
+            <li><time>12:30</time><div>Limpieza terminada<small>Revisada con checklist y fotos</small></div></li>
+            <li><time>14:00</time><div>Código de acceso enviado<small>Válido solo durante su estancia</small></div></li>
+            <li><time>16:47</time><div>Check-in completado<small>Portal y piso abiertos sin llaves</small></div></li>
+            <li><time>16:52</time><div>Bienvenida y wifi<small>Respondemos dudas a cualquier hora</small></div></li>
+          </ol>
+          <div class="day-foot">Y si a las 3:00 hay ruido, nos avisan los sensores antes que los vecinos.</div>
+        </aside>
+      </div>
+    </div>
+  </section>
 
+  <section id="planes">
+    <div class="wrap">
+      <h2>Tres planes para pisos automatizados.</h2>
+      <p class="intro">Elige cuánto quieres delegar. Todos incluyen la tecnología Hoomio y puedes cambiar de plan cuando lo necesites.</p>
+
+      <div class="plans">
+        <article class="plan">
+          <h3>Básico</h3>
+          <p class="for">Para quien vive cerca y prefiere encargarse de la limpieza.</p>
+          <div class="price">12,5%<small> de la facturación</small></div>
+          <ul>
+            <li>Publicación en Airbnb, Booking y VRBO</li>
+            <li>Precios dinámicos</li>
+            <li>Atención a huéspedes 24/7</li>
+            <li>Check-in autónomo y registro de viajeros</li>
+            <li>Control de ruido y ocupación</li>
+            <li>Liquidación mensual</li>
+          </ul>
+          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Básico</a>
+        </article>
+
+        <article class="plan featured">
+          <span class="tag">El más elegido</span>
+          <h3>Estándar</h3>
+          <p class="for">Gestión integral: tú solo recibes la liquidación.</p>
+          <div class="price">15%<small> de la facturación</small></div>
+          <ul>
+            <li class="inherit">Todo lo del plan Básico</li>
+            <li>Coordinación de limpieza y lavandería</li>
+            <li>Gestión de incidencias y reparaciones</li>
+            <li>Revisiones periódicas del piso</li>
+            <li>Reposición de consumibles</li>
+            <li>Gestión de reseñas</li>
+            <li>Informe mensual</li>
+          </ul>
+          <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Estándar</a>
+        </article>
+
+        <article class="plan">
+          <h3>Premium</h3>
+          <p class="for">Para sacar el máximo rendimiento a tu inversión.</p>
+          <div class="price">18,5%<small> de la facturación</small></div>
+          <ul>
+            <li class="inherit">Todo lo del plan Estándar</li>
+            <li class="gift">Kit Hoomio incluido, sin coste de instalación<small>Con contrato mínimo de 2 años</small></li>
+            <li>Estrategia de precios revisada personalmente</li>
+            <li>Informe de rentabilidad neta y comparativa de mercado</li>
+            <li>Mantenimiento preventivo planificado</li>
+            <li>Fotos profesionales y mejora del anuncio cada año</li>
+            <li>Atención prioritaria</li>
+            <li>Revisión anual de seguros, suministros e internet</li>
+          </ul>
+          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Premium</a>
+        </article>
+      </div>
+
+      <div class="note">
+        <strong>20%</strong>
+        <div>
+          <p>¿Tu piso aún no está automatizado? Lo gestionamos con el servicio Estándar al 20%, la comisión habitual del mercado, hasta que instalemos el kit Hoomio. Desde ese momento pasas al plan que elijas.</p>
+          <p class="payback">El kit se presupuesta para cada piso tras una visita técnica, según el material y la obra necesarios. En el plan Premium <b>el kit está incluido</b> con un contrato mínimo de 2 años.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="calculadora">
+    <div class="wrap">
+      <h2>Lo que ganas con Hoomio: dinero, tiempo y tranquilidad.</h2>
+      <p class="intro">Indica cuánto factura tu piso al mes. Verás cuánto te queda después de nuestra comisión, cuánto ahorras frente a una gestora al 20% y cuántas horas dejas de dedicarle.</p>
+      <div class="calc">
+        <div>
+          <label for="income">Facturación mensual de tu piso</label>
+          <div class="amount" id="amount" aria-live="polite">4.250 €</div>
+          <input type="range" id="income" min="1000" max="9000" step="50" value="4250">
+          <p class="hint">Lo que pagan los huéspedes por las reservas de un mes.</p>
+          <div class="ref" id="ref"></div>
+          <p class="hint">Cálculo orientativo. Las cantidades son antes de gastos de limpieza, suministros e impuestos. Las horas son una estimación para un piso con unas 8 reservas al mes gestionado por su propietario.</p>
+        </div>
+        <div class="results" id="rows" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tecnologia">
+    <div class="wrap">
+      <h2>El kit Hoomio.</h2>
+      <p class="intro">Lo instalamos una vez y es lo que nos permite gestionar mejor por menos. Sin cuotas por dispositivo y con control local: si falla internet, la puerta sigue abriendo.</p>
+      <div class="kit">
+        <div><h3>Cerradura del piso</h3><p>Códigos únicos por reserva que caducan solos. Se acabaron las copias de llaves y las esperas.</p></div>
+        <div><h3>Apertura del portal</h3><p>El huésped entra al edificio con el mismo código, sin cajetines de llaves en la calle.</p></div>
+        <div><h3>Sensor de ruido y ocupación</h3><p>Detecta fiestas y exceso de personas sin cámaras ni micrófonos que graben.</p></div>
+        <div><h3>Wifi profesional</h3><p>Red propia para huéspedes, estable y separada de los dispositivos del piso.</p></div>
+        <div><h3>Climatización y consumo</h3><p>La calefacción y el aire se apagan cuando no hay nadie. Lo notarás en las facturas.</p></div>
+        <div><h3>Instalación y puesta en marcha</h3><p>Lo instalamos, lo conectamos con nuestro sistema y lo probamos antes de la primera reserva.</p></div>
+      </div>
+      <p class="fine">Cada piso es distinto, así que el kit se presupuesta de forma individual tras una visita técnica, según el material y la obra necesarios. En el plan Premium está incluido con un contrato mínimo de 2 años.</p>
+    </div>
+  </section>
+
+  <section id="contacto">
+    <div class="wrap cta">
+      <div>
+        <h2>Hablemos de tu piso.</h2>
+        <p>Una llamada de 30 minutos para ver cuánto puede rendir y qué plan te encaja.</p>
+      </div>
+      <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Reserva una llamada</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <a href="#" class="brand" style="color:var(--ink)">hoomio<span>.</span></a>
+      <p style="margin:.5rem 0 0"><a href="mailto:info@hoomio.es">info@hoomio.es</a> · <a href="tel:+34623940910">+34 623 940 910</a></p>
+    </div>
+    <ul>
+      <li><a href="faq.html">Preguntas frecuentes</a></li>
+      <li><a href="privacy.html">Privacidad</a></li>
+      <li><a href="terms.html">Condiciones de uso</a></li>
+    </ul>
+  </div>
+  <div class="wrap" style="margin-top:2rem">© <span id="year">2026</span> Hoomio</div>
+</footer>
+
+<script>
+  (function () {
+    var plans = [
+      { name: "Básico", rate: 0.125, hours: 12,
+        worries: "mensajes a deshoras, entrega de llaves, registro de viajeros y quejas por ruido." },
+      { name: "Estándar", rate: 0.15, hours: 25, featured: true,
+        worries: "todo lo anterior, más limpiezas que fallan, averías y reseñas negativas." },
+      { name: "Premium", rate: 0.185, hours: 28, kitIncluded: true,
+        worries: "todo lo anterior, más precios mal ajustados y seguros o suministros más caros de lo necesario." }
+    ];
+    var eur = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+    var input = document.getElementById("income");
+    var amount = document.getElementById("amount");
+    var rows = document.getElementById("rows");
+    var ref = document.getElementById("ref");
+
+    function render() {
+      var v = Number(input.value);
+      amount.textContent = eur.format(v);
+      ref.innerHTML = "Con una gestora al 20% te quedarían <b>" + eur.format(v * 0.8) + "</b> al mes.";
+      rows.innerHTML = plans.map(function (p) {
+        var fee = v * p.rate;
+        var save = (v * 0.20 - fee) * 12;
+        return '<article class="res' + (p.featured ? ' featured' : '') + '">' +
+          '<div class="res-head"><h3>' + p.name + '</h3><span>Comisión del ' + (p.rate * 100).toLocaleString("es-ES") +
+          '%: ' + eur.format(fee) + ' al mes</span></div>' +
+          '<div class="figs">' +
+            '<div><strong>' + eur.format(v - fee) + '</strong>te quedan cada mes</div>' +
+            '<div><strong>' + eur.format(save) + '</strong>ahorras al año frente al 20%</div>' +
+            '<div><strong>~' + p.hours + ' h</strong>de tu tiempo libres cada mes</div>' +
+          '</div>' +
+          '<p class="worries"><b>Te olvidas de:</b> ' + p.worries + '</p>' +
+          (p.kitIncluded ? '<p class="worries"><b>Kit Hoomio incluido</b> con contrato mínimo de 2 años.</p>' : '') +
+        '</article>';
+      }).join("");
+    }
+    input.addEventListener("input", render);
+    render();
+
+    var header = document.getElementById("top");
+    window.addEventListener("scroll", function () { header.classList.toggle("scrolled", window.scrollY > 8); }, { passive: true });
+    document.getElementById("year").textContent = new Date().getFullYear();
+  })();
+</script>
 </body>
 </html>

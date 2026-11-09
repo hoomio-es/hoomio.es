@@ -1,9 +1,29 @@
-name: Deploy to S3 and Invalidate CloudFront
+name: Deploy to S3 and invalidate CloudFront
 
 on:
   push:
     branches:
-      - main  # or your deploy branch
+      - main
+  workflow_dispatch:
+
+# Never run two deploys at the same time; a newer push cancels the older one.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  # Files in the repo that must never be published.
+  SYNC_EXCLUDES: >-
+    --exclude ".git/*"
+    --exclude ".github/*"
+    --exclude ".claude/*"
+    --exclude ".gitignore"
+    --exclude "*.md"
+    --exclude ".DS_Store"
+    --exclude "*_old.html"
 
 jobs:
   deploy:
@@ -11,19 +31,41 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v3
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Sync files to S3
+      - name: Sync static assets (cached 1 day)
         run: |
-          aws s3 sync . s3://${{ secrets.S3_BUCKET }} --delete --exclude ".git/*" --exclude ".github/*"
+          aws s3 sync . "s3://${{ secrets.S3_BUCKET }}" \
+            --delete \
+            $SYNC_EXCLUDES \
+            --exclude "*.html" \
+            --cache-control "public, max-age=86400"
 
-      - name: Invalidate CloudFront Cache
+      - name: Sync HTML pages (always revalidated)
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.DISTRIBUTION_ID }} --paths "/*"
+          aws s3 sync . "s3://${{ secrets.S3_BUCKET }}" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" \
+            --exclude "*_old.html" \
+            --content-type "text/html; charset=utf-8" \
+            --cache-control "no-cache"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          id=$(aws cloudfront create-invalidation \
+            --distribution-id "${{ secrets.DISTRIBUTION_ID }}" \
+            --paths "/*" \
+            --query 'Invalidation.Id' --output text)
+          echo "Invalidation $id created, waiting for it to finish..."
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${{ secrets.DISTRIBUTION_ID }}" \
+            --id "$id"
+          echo "Invalidation $id completed."
