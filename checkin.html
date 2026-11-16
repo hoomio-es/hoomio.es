@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Check-in · Hoomio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1C2A4A;
+    --ink-soft: #5B6B85;
+    --paper: #EDF1F6;
+    --card: #FFFFFF;
+    --line: #C9D3E0;
+    --sun: #E9A23B;
+    --ok: #2E7A57;
+    --err: #B42318;
+    --radius-l: 18px;
+    --radius-s: 8px;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 1rem/1.5 var(--body);
+  }
+  .page { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+
+  /* ---------- Cabecera */
+  .intro h1 {
+    font: 700 clamp(2rem, 6vw, 2.75rem)/1.05 var(--display);
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+  }
+  .intro p { margin: 0 0 28px; color: var(--ink-soft); max-width: 56ch; }
+
+  /* ---------- Franja de la estancia (elemento protagonista) */
+  .stay {
+    background: var(--ink);
+    color: #fff;
+    border-radius: var(--radius-l);
+    padding: 22px 24px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stay::before, .stay::after {           /* muescas de tarjeta de embarque */
+    content: ""; position: absolute; top: 50%; width: 22px; height: 22px;
+    background: var(--paper); border-radius: 50%; transform: translateY(-50%);
+  }
+  .stay::before { left: -11px; }
+  .stay::after { right: -11px; }
+  .stay-place { font: 500 1rem/1.3 var(--display); opacity: .8; margin: 0 0 14px; }
+  .stay-route { display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 16px; }
+  .stay-date small { display: block; font-size: .8rem; opacity: .7; margin-bottom: 2px; }
+  .stay-date strong { font: 700 clamp(1.5rem, 5.5vw, 2.1rem)/1 var(--display); letter-spacing: -0.01em; }
+  .stay-date span { display: block; font-size: .85rem; opacity: .75; margin-top: 4px; }
+  .stay-date.out { text-align: right; }
+  .stay-nights { position: relative; text-align: center; padding-bottom: 10px; }
+  .stay-nights::before {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 18px;
+    border-top: 2px dashed rgba(255,255,255,.35);
+  }
+  .stay-nights b {
+    position: relative; display: inline-block; background: var(--sun); color: var(--ink);
+    font: 700 .9rem/1 var(--body); padding: 6px 10px; border-radius: 999px; white-space: nowrap;
+  }
+  .stay-ref { margin: 16px 0 0; font-size: .85rem; opacity: .75; }
+  .stay-edit {
+    position: absolute; top: 18px; right: 20px; background: none; border: 0; color: #fff;
+    font: 700 .85rem var(--body); text-decoration: underline; cursor: pointer; opacity: .85;
+  }
+
+  /* ---------- Secciones */
+  section { margin-top: 40px; }
+  h2 { font: 700 1.5rem/1.2 var(--display); margin: 0 0 6px; letter-spacing: -0.01em; }
+  .hint { color: var(--ink-soft); margin: 0 0 18px; font-size: .95rem; max-width: 60ch; }
+  .panel { background: var(--card); border-radius: var(--radius-l); padding: 22px; border: 1px solid var(--line); }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
+  .full { grid-column: 1 / -1; }
+  [hidden] { display: none !important; }
+
+  /* ---------- Campos */
+  .f label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
+  .f label .opt { font-weight: 400; color: var(--ink-soft); }
+  .f input, .f select {
+    width: 100%; font: inherit; color: var(--ink); background: #fff;
+    border: 1.5px solid var(--line); border-radius: var(--radius-s);
+    padding: 11px 12px; min-height: 46px; appearance: none;
+  }
+  .f select {
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 50%, calc(100% - 13px) 50%;
+    background-size: 5px 5px; background-repeat: no-repeat; padding-right: 34px;
+  }
+  .f input:focus, .f select:focus, button:focus-visible, .check input:focus-visible {
+    outline: 3px solid var(--sun); outline-offset: 1px; border-color: var(--ink);
+  }
+  .f small { display: block; color: var(--ink-soft); font-size: .82rem; margin-top: 5px; }
+  .f .msg { display: none; color: var(--err); font-size: .85rem; font-weight: 700; margin-top: 5px; }
+  .f.bad input, .f.bad select { border-color: var(--err); }
+  .f.bad .msg { display: block; }
+
+  /* ---------- Viajeros */
+  .traveler {
+    background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-l);
+    margin-bottom: 18px; display: grid; grid-template-columns: 56px 1fr; overflow: hidden;
+  }
+  .traveler-tab {
+    background: var(--paper); border-right: 1px dashed var(--line);
+    display: flex; justify-content: center; padding-top: 20px;
+    font: 700 1.6rem/1 var(--display); color: var(--ink-soft);
+  }
+  .traveler-body { padding: 20px 22px 22px; min-width: 0; }
+  .traveler-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .traveler-head h3 { font: 700 1.15rem/1.2 var(--display); margin: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .badge { font-size: .8rem; font-weight: 700; background: #FCEFD9; color: #7A4B05; padding: 3px 9px; border-radius: 999px; }
+  .remove { background: none; border: 0; color: var(--err); font: 700 .88rem var(--body); cursor: pointer; padding: 6px 2px; }
+  .add {
+    width: 100%; background: transparent; border: 2px dashed var(--line); border-radius: var(--radius-l);
+    padding: 16px; font: 700 1rem var(--body); color: var(--ink); cursor: pointer;
+  }
+  .add:hover { border-color: var(--ink); }
+  .add:disabled { opacity: .5; cursor: not-allowed; }
+
+
+  /* ---------- Escaneo de documento */
+  .scan { display: flex; align-items: center; gap: 12px 14px; flex-wrap: wrap; margin: -4px 0 18px;
+          padding: 12px 14px; background: var(--paper); border-radius: var(--radius-s); }
+  .scan-btn { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); background: #fff; color: var(--ink);
+              font: 700 .92rem var(--body); padding: 9px 14px; border-radius: 999px; cursor: pointer; }
+  .scan-btn:hover { background: var(--ink); color: #fff; }
+  .scan-btn[disabled] { opacity: .6; cursor: progress; }
+  .scan-status { margin: 0; font-size: .85rem; color: var(--ink-soft); flex: 1; min-width: 200px; }
+  .scan-status.ok { color: var(--ok); font-weight: 700; }
+  .scan-status.err { color: var(--err); font-weight: 700; }
+  .f.scanned input, .f.scanned select { border-color: var(--sun); background-color: #FFF8EC; }
+  @media (prefers-reduced-motion: no-preference) {
+    .f input, .f select { transition: background-color .6s, border-color .6s; }
+  }
+
+  /* ---------- Acceso a la reserva */
+  .gate { margin-top: 8px; }
+  .gate .panel { display: grid; gap: 16px; }
+  .gate .submit { margin-top: 4px; }
+  .who { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 14px 2px 0; font-size: .9rem; color: var(--ink-soft); }
+  .linkbtn { white-space: nowrap; background: none; border: 0; padding: 0; color: var(--ink); font: 700 .9rem var(--body); text-decoration: underline; cursor: pointer; }
+
+  /* ---------- Firma */
+  .sig-box { position: relative; border: 1.5px dashed var(--line); border-radius: var(--radius-s); background: #FBFCFE; }
+  .sig-pad { display: block; width: 100%; height: 170px; touch-action: none; cursor: crosshair; border-radius: var(--radius-s); }
+  .sig-hint { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-soft); font-size: .9rem; pointer-events: none; }
+  .sig.signed .sig-hint { display: none; }
+  .sig.signed .sig-box { border-style: solid; border-color: var(--ink-soft); }
+  .sig.bad .sig-box { border-color: var(--err); }
+  .sig-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; }
+  .sig-bar small { margin: 0; }
+  .sig-clear { background: none; border: 0; color: var(--ink); font: 700 .85rem var(--body); text-decoration: underline; cursor: pointer; padding: 4px 0; }
+
+  /* ---------- Envío */
+  .check { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; margin: 4px 0 0; font-size: .95rem; }
+  .check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--ink); }
+  .check.bad span { color: var(--err); }
+  .submit {
+    margin-top: 24px; width: 100%; border: 0; border-radius: 999px; cursor: pointer;
+    background: var(--ink); color: #fff; font: 700 1.1rem var(--body); padding: 17px 24px;
+  }
+  .submit:hover { background: #26375F; }
+  .submit[aria-busy="true"] { opacity: .7; cursor: progress; }
+  .alert { margin-top: 18px; border-radius: var(--radius-s); padding: 14px 16px; font-weight: 700; }
+  .alert.err { background: #FDECEA; color: var(--err); }
+  .alert ul { margin: 6px 0 0 18px; padding: 0; font-weight: 400; }
+  .hp { position: absolute; left: -9999px; }
+
+  /* ---------- Pantalla final */
+  .done { text-align: left; padding: 56px 0 0; }
+  .done .seal {
+    width: 64px; height: 64px; border-radius: 50%; background: var(--ok); color: #fff;
+    display: grid; place-items: center; margin-bottom: 20px;
+  }
+  .done h1 { font: 700 2.2rem/1.1 var(--display); margin: 0 0 12px; }
+  .done p { color: var(--ink-soft); max-width: 52ch; }
+
+  .foot { margin-top: 40px; font-size: .82rem; color: var(--ink-soft); max-width: 62ch; }
+
+  @media (max-width: 560px) {
+    .grid { grid-template-columns: 1fr; }
+    .traveler { grid-template-columns: 1fr; }
+    .traveler-tab { border-right: 0; border-bottom: 1px dashed var(--line); justify-content: flex-start; padding: 12px 20px; font-size: 1.1rem; }
+    .stay-route { gap: 10px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .traveler.new { animation: drop .28s ease-out; }
+    @keyframes drop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<main class="page" id="app">
+
+  <header class="intro">
+    <h1>Registro de viajeros</h1>
+    <p>La ley nos obliga a comunicar a las autoridades los datos de todas las personas que se alojan. Ten a mano los documentos: puedes escanearlos con la cámara para no tener que escribir.</p>
+  </header>
+
+  <!-- Paso 1: acceso a la reserva -->
+  <section class="gate" id="gate" aria-labelledby="gateTitle">
+    <h2 id="gateTitle">Tu reserva</h2>
+    <p class="hint">Escribe el número de tu reserva (Airbnb, Booking o el que te enviamos) y el primer apellido de quien reservó.</p>
+    <form class="panel" id="gateForm" novalidate>
+      <div class="f">
+        <label for="gReserva">Número de reserva</label>
+        <input id="gReserva" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ej. HMABCD1234" required>
+        <span class="msg"></span>
+      </div>
+      <div class="f">
+        <label for="gApellido">Primer apellido del titular <span class="opt">(o el email de la reserva)</span></label>
+        <input id="gApellido" autocomplete="family-name" required>
+        <span class="msg"></span>
+      </div>
+      <button type="submit" class="submit" id="gateBtn">Continuar</button>
+      <div id="gateAlert" class="alert err" role="alert" hidden></div>
+    </form>
+  </section>
+
+  <!-- Franja de la estancia -->
+  <div class="stay" id="stay" aria-live="polite" hidden>
+    <p class="stay-place" id="sPlace">Elige el alojamiento</p>
+    <div class="stay-route">
+      <div class="stay-date"><small>Entrada</small><strong id="sIn">––</strong><span id="sInT"></span></div>
+      <div class="stay-nights"><b id="sNights">– noches</b></div>
+      <div class="stay-date out"><small>Salida</small><strong id="sOut">––</strong><span id="sOutT"></span></div>
+    </div>
+    <p class="stay-ref" id="sRef"></p>
+  </div>
+  <p class="who" id="who" hidden><span id="whoText"></span><button type="button" class="linkbtn" id="logout">No es mi reserva</button></p>
+
+  <form id="form" novalidate hidden>
+    <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <!-- Reserva -->
+    <section id="secReserva" hidden>
+      <h2>Tu reserva</h2>
+      <p class="hint">Los datos aparecen en la confirmación de Airbnb, Booking o en nuestro correo.</p>
+      <div class="panel grid">
+        <div class="f full">
+          <label for="alojamiento">Alojamiento</label>
+          <select id="alojamiento" required></select>
+          <span class="msg"></span>
+        </div>
+        <div class="f full">
+          <label for="referencia">Código de la reserva</label>
+          <input id="referencia" required autocomplete="off" placeholder="Ej. HMABCD1234">
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="fechaEntrada">Fecha de entrada</label>
+          <input id="fechaEntrada" type="date" required>
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="horaEntrada">Hora de llegada <span class="opt">(aprox.)</span></label>
+          <input id="horaEntrada" type="time">
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="fechaSalida">Fecha de salida</label>
+          <input id="fechaSalida" type="date" required>
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="horaSalida">Hora de salida</label>
+          <input id="horaSalida" type="time">
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="fechaContrato">Fecha en que reservaste</label>
+          <input id="fechaContrato" type="date" required>
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="numHabitaciones">Habitaciones</label>
+          <input id="numHabitaciones" type="number" min="1" max="20" value="1" inputmode="numeric" required>
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="tipoPago">Forma de pago</label>
+          <select id="tipoPago" required>
+            <option value="PLATF">A través de la plataforma (Airbnb, Booking…)</option>
+            <option value="TARJT">Tarjeta</option>
+            <option value="TRANS">Transferencia</option>
+            <option value="MOVIL">Pago por móvil (Bizum…)</option>
+            <option value="EFECT">Efectivo</option>
+            <option value="DESTI">Pago a la llegada</option>
+            <option value="TREG">Tarjeta regalo</option>
+            <option value="OTRO">Otra</option>
+          </select>
+          <span class="msg"></span>
+        </div>
+        <div class="f">
+          <label for="fechaPago">Fecha de pago <span class="opt">(opcional)</span></label>
+          <input id="fechaPago" type="date">
+          <span class="msg"></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Viajeros -->
+    <section>
+      <h2>Viajeros</h2>
+      <p class="hint">Una ficha por persona, menores incluidos. Escribe los datos tal y como aparecen en el documento.</p>
+      <div id="travelers"></div>
+      <button type="button" class="add" id="addTraveler">Añadir viajero</button>
+    </section>
+
+    <!-- Envío -->
+    <section>
+      <div class="panel">
+        <div class="f" style="margin-bottom:18px">
+          <label for="motivo">Motivo del viaje <span class="opt">(opcional)</span></label>
+          <select id="motivo">
+            <option value="">Sin especificar</option><option value="VACACIONES">Vacaciones</option><option value="TURISMO">Turismo</option>
+            <option value="NEGOCIOS">Negocios</option><option value="ESTUDIOS">Estudios</option><option value="MEDICO">Motivos médicos</option><option value="OTRO">Otro</option>
+          </select>
+        </div>
+        <label class="check" id="consentBox">
+          <input type="checkbox" id="consent">
+          <span>Confirmo que los datos son correctos y acepto que se comuniquen al Ministerio del Interior, como exige el Real Decreto 933/2021. Se conservan 3 años y no se usan para nada más.</span>
+        </label>
+      </div>
+      <button type="submit" class="submit" id="submit">Enviar registro</button>
+      <div id="formAlert" class="alert err" role="alert" hidden></div>
+    </section>
+  </form>
+
+  <p class="foot">Responsable del tratamiento: el titular del alojamiento. Base legal: obligación legal (art. 6.1.c RGPD; RD 933/2021). Puedes ejercer tus derechos escribiéndonos al correo de la reserva.</p>
+</main>
+
+<datalist id="countries"></datalist>
+
+<script>
+/* =========================================================================
+   CONFIGURACIÓN — edita solo esto
+   ========================================================================= */
+const CONFIG = {
+  // Workflow «Hoomio · Check-in seguro»: <api>/acceso, <api>/escanear, <api>/registro
+  // Para probar en el editor de n8n: https://n8n.peppelin.com/webhook-test/checkin
+  api: 'https://n8n.peppelin.com/webhook/checkin',
+  horaEntrada: '15:00',
+  horaSalida: '11:00',
+  maxViajeros: 10,
+  timeoutMs: 25000,
+};
+/* ========================================================================= */
+// JSON enviado como text/plain: es una "petición simple" y el navegador no hace preflight CORS (OPTIONS).
+// n8n lo recibe como texto y el workflow lo convierte a JSON.
+const SIMPLE_HEADERS = { 'Content-Type': 'text/plain;charset=UTF-8' };
+
+const COUNTRIES = [
+  ['ESP','España'],['FRA','Francia'],['PRT','Portugal'],['ITA','Italia'],['DEU','Alemania'],['GBR','Reino Unido'],
+  ['IRL','Irlanda'],['NLD','Países Bajos'],['BEL','Bélgica'],['LUX','Luxemburgo'],['CHE','Suiza'],['AUT','Austria'],
+  ['DNK','Dinamarca'],['SWE','Suecia'],['NOR','Noruega'],['FIN','Finlandia'],['ISL','Islandia'],['POL','Polonia'],
+  ['CZE','Chequia'],['SVK','Eslovaquia'],['HUN','Hungría'],['ROU','Rumanía'],['BGR','Bulgaria'],['GRC','Grecia'],
+  ['HRV','Croacia'],['SVN','Eslovenia'],['SRB','Serbia'],['UKR','Ucrania'],['RUS','Rusia'],['LTU','Lituania'],
+  ['LVA','Letonia'],['EST','Estonia'],['MLT','Malta'],['CYP','Chipre'],['AND','Andorra'],['MCO','Mónaco'],
+  ['TUR','Turquía'],['ISR','Israel'],['MAR','Marruecos'],['DZA','Argelia'],['TUN','Túnez'],['EGY','Egipto'],
+  ['ZAF','Sudáfrica'],['NGA','Nigeria'],['SEN','Senegal'],['USA','Estados Unidos'],['CAN','Canadá'],['MEX','México'],
+  ['ARG','Argentina'],['BRA','Brasil'],['CHL','Chile'],['COL','Colombia'],['PER','Perú'],['VEN','Venezuela'],
+  ['URY','Uruguay'],['PRY','Paraguay'],['BOL','Bolivia'],['ECU','Ecuador'],['CUB','Cuba'],['DOM','República Dominicana'],
+  ['CRI','Costa Rica'],['PAN','Panamá'],['CHN','China'],['JPN','Japón'],['KOR','Corea del Sur'],['IND','India'],
+  ['PAK','Pakistán'],['PHL','Filipinas'],['THA','Tailandia'],['VNM','Vietnam'],['IDN','Indonesia'],['SGP','Singapur'],
+  ['ARE','Emiratos Árabes Unidos'],['SAU','Arabia Saudí'],['QAT','Catar'],['AUS','Australia'],['NZL','Nueva Zelanda'],
+];
+const PROVINCIAS = [
+  ['01','Araba/Álava'],['02','Albacete'],['03','Alicante/Alacant'],['04','Almería'],['05','Ávila'],['06','Badajoz'],
+  ['07','Illes Balears'],['08','Barcelona'],['09','Burgos'],['10','Cáceres'],['11','Cádiz'],['12','Castellón/Castelló'],
+  ['13','Ciudad Real'],['14','Córdoba'],['15','A Coruña'],['16','Cuenca'],['17','Girona'],['18','Granada'],
+  ['19','Guadalajara'],['20','Gipuzkoa'],['21','Huelva'],['22','Huesca'],['23','Jaén'],['24','León'],['25','Lleida'],
+  ['26','La Rioja'],['27','Lugo'],['28','Madrid'],['29','Málaga'],['30','Murcia'],['31','Navarra'],['32','Ourense'],
+  ['33','Asturias'],['34','Palencia'],['35','Las Palmas'],['36','Pontevedra'],['37','Salamanca'],['38','Santa Cruz de Tenerife'],
+  ['39','Cantabria'],['40','Segovia'],['41','Sevilla'],['42','Soria'],['43','Tarragona'],['44','Teruel'],['45','Toledo'],
+  ['46','Valencia/València'],['47','Valladolid'],['48','Bizkaia'],['49','Zamora'],['50','Zaragoza'],['51','Ceuta'],['52','Melilla'],
+];
+const PARENTESCO = [
+  ['', 'Elige…'], ['PM','Padre o madre'], ['HJ','Hijo o hija'], ['AB','Abuelo o abuela'], ['NI','Nieto o nieta'],
+  ['HR','Hermano o hermana'], ['TI','Tío o tía'], ['SB','Sobrino o sobrina'], ['CY','Cónyuge'], ['TU','Tutor o tutora'], ['OT','Otro'],
+];
+
+let submitted = false;                     // tras el primer intento, los errores se recalculan en directo
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+
+/* ---------- Datos fijos de la página */
+$('#countries').innerHTML = COUNTRIES.map(([c, n]) => `<option value="${n} (${c})"></option>`).join('');
+$('#horaEntrada').value = CONFIG.horaEntrada;
+$('#horaSalida').value = CONFIG.horaSalida;
+
+/* País escrito o elegido -> ISO-3 */
+function countryCode(v) {
+  const s = (v || '').trim();
+  const m = s.match(/\(([A-Za-z]{3})\)\s*$/);
+  if (m) return m[1].toUpperCase();
+  if (/^[A-Za-z]{3}$/.test(s)) return s.toUpperCase();
+  const hit = COUNTRIES.find(([, n]) => n.toLowerCase() === s.toLowerCase());
+  return hit ? hit[0] : '';
+}
+const countryLabel = (code) => { const c = COUNTRIES.find(([k]) => k === code); return c ? `${c[1]} (${c[0]})` : code; };
+
+/* ---------- Sesión de la reserva (token emitido por n8n tras verificar reserva + apellido) */
+const qs = new URLSearchParams(location.search);
+const SESSION_KEY = 'hoomio.checkin';
+let session = null;                                   // { token, caduca, reserva }
+const store = {
+  get() { try { return JSON.parse(sessionStorage.getItem(SESSION_KEY)); } catch (_) { return null; } },
+  set(v) { try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(v)); } catch (_) {} },
+  clear() { try { sessionStorage.removeItem(SESSION_KEY); } catch (_) {} },
+};
+async function api(path, body, ms = CONFIG.timeoutMs) {
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), ms);
+  try {
+    const r = await fetch(`${CONFIG.api}/${path}`, { method: 'POST', headers: SIMPLE_HEADERS, body: JSON.stringify(body), signal: ctrl.signal });
+    let data = {}; try { data = await r.json(); } catch (_) {}
+    if (r.status === 401) { expire(); }
+    return { status: r.status, data };
+  } finally { clearTimeout(timer); }
+}
+function expire() {
+  store.clear(); session = null;
+  alert_gate('Tu sesión ha caducado. Vuelve a introducir tu reserva.');
+  showGate();
+}
+function alert_gate(msg) { const a = $('#gateAlert'); a.textContent = msg; a.hidden = !msg; }
+function showGate() {
+  $('#gate').hidden = false; $('#form').hidden = true; $('#stay').hidden = true; $('#who').hidden = true;
+  $('#gReserva').value = $('#gReserva').value || qs.get('reserva') || qs.get('r') || '';
+  ($('#gReserva').value ? $('#gApellido') : $('#gReserva')).focus();
+}
+function enterForm(s) {
+  session = s;
+  const r = s.reserva;
+  // Los datos de la reserva vienen de Smoobu; el formulario de reserva queda oculto
+  $('#alojamiento').innerHTML = `<option>${esc(r.alojamiento)}</option>`;
+  $('#referencia').value = r.referencia; $('#fechaEntrada').value = r.entrada; $('#fechaSalida').value = r.salida;
+  $('#horaEntrada').value = r.horaEntrada; $('#horaSalida').value = r.horaSalida;
+  $('#fechaContrato').value = r.fechaReserva || r.entrada; $('#numHabitaciones').value = 1;
+  renderStay();
+  $('#whoText').textContent = r.titular?.apellido ? `A nombre de ${r.titular.nombre} ${r.titular.apellido}` : '';
+  $('#gate').hidden = true; $('#form').hidden = false; $('#stay').hidden = false; $('#who').hidden = false;
+  if (!$$('.traveler').length) {
+    const n = Math.min(Math.max(r.viajeros || 1, 1), CONFIG.maxViajeros);
+    for (let i = 0; i < n; i++) addTraveler(false);
+    $$('.traveler').forEach(c => c.classList.remove('new'));
+    const t1 = $('.traveler'), set = (k, v) => { const el = $(`[data-k="${k}"]`, t1); if (v && el && !el.value) el.value = v; };
+    set('nombre', r.titular?.nombre); set('apellido1', r.titular?.apellido?.split(' ')[0]);
+    set('apellido2', r.titular?.apellido?.split(' ').slice(1).join(' ')); set('correo', r.titular?.email); set('telefono', r.titular?.telefono);
+    refreshTravelers();
+  }
+}
+$('#gateForm').addEventListener('submit', async (e) => {
+  e.preventDefault(); alert_gate('');
+  const reserva = $('#gReserva').value.trim(), apellido = $('#gApellido').value.trim();
+  let bad = false;
+  [[$('#gReserva'), reserva.length >= 4, 'Escribe el número de reserva.'], [$('#gApellido'), apellido.length >= 3, 'Escribe el primer apellido o el email.']]
+    .forEach(([el, ok, msg]) => { const f = el.closest('.f'); f.classList.toggle('bad', !ok); $('.msg', f).textContent = ok ? '' : msg; if (!ok && !bad) { el.focus(); bad = true; } });
+  if (bad) return;
+  const btn = $('#gateBtn'); btn.disabled = true; btn.setAttribute('aria-busy', 'true'); btn.textContent = 'Buscando tu reserva…';
+  try {
+    const { status, data } = await api('acceso', { reserva, apellido });
+    if (status === 200 && data.ok && data.token) {
+      const s = { token: data.token, caduca: data.caduca, reserva: data.reserva };
+      store.set(s); enterForm(s);
+      history.replaceState(null, '', `${location.pathname}?reserva=${encodeURIComponent(data.reserva.referencia)}`);
+      scrollTo(0, 0);
+    } else {
+      alert_gate(data.error || 'No hemos podido comprobar tu reserva. Inténtalo de nuevo.');
+    }
+  } catch (err) {
+    console.error('[acceso]', err);
+    alert_gate(err.name === 'AbortError' ? 'La comprobación ha tardado demasiado. Inténtalo de nuevo.' : 'No hemos podido conectar. Comprueba tu conexión e inténtalo de nuevo.');
+  } finally {
+    btn.disabled = false; btn.removeAttribute('aria-busy'); btn.textContent = 'Continuar';
+  }
+});
+$('#logout').addEventListener('click', () => {
+  store.clear(); session = null; $('#travelers').innerHTML = ''; $('#gReserva').value = ''; $('#gApellido').value = '';
+  history.replaceState(null, '', location.pathname); showGate();
+});
+
+/* ---------- Franja de la estancia */
+const fmtDate = (iso) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso || '')) return null;
+  const d = new Date(iso + 'T12:00:00');
+  return { day: d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).replace('.', ''),
+           week: d.toLocaleDateString('es-ES', { weekday: 'long' }) };
+};
+function renderStay() {
+  const a = $('#alojamiento').value, i = fmtDate($('#fechaEntrada').value), o = fmtDate($('#fechaSalida').value);
+  $('#sPlace').textContent = a || 'Elige el alojamiento';
+  $('#sIn').textContent = i ? i.day : '––';
+  $('#sOut').textContent = o ? o.day : '––';
+  $('#sInT').textContent = i ? `${i.week}, desde las ${$('#horaEntrada').value || CONFIG.horaEntrada}` : '';
+  $('#sOutT').textContent = o ? `${o.week}, hasta las ${$('#horaSalida').value || CONFIG.horaSalida}` : '';
+  let n = null;
+  if (i && o) n = Math.round((new Date($('#fechaSalida').value) - new Date($('#fechaEntrada').value)) / 864e5);
+  $('#sNights').textContent = n > 0 ? `${n} ${n === 1 ? 'noche' : 'noches'}` : '– noches';
+  const ref = $('#referencia').value.trim();
+  $('#sRef').textContent = ref ? `Reserva ${ref}` : '';
+}
+$('#secReserva').addEventListener('input', () => { renderStay(); refreshTravelers(); });
+renderStay();
+
+/* ---------- Fichas de viajero */
+let seq = 0;
+function travelerHTML(id) {
+  const opts = PARENTESCO.map(([v, t]) => `<option value="${v}">${t}</option>`).join('');
+  const F = (key, label, input, extra = '') =>
+    `<div class="f ${extra}" data-wrap="${key}"><label for="${key}-${id}">${label}</label>${input}<span class="msg"></span></div>`;
+  const I = (key, attrs = '') => `<input id="${key}-${id}" data-k="${key}" ${attrs}>`;
+  return `
+  <div class="traveler-tab" aria-hidden="true"></div>
+  <div class="traveler-body">
+    <div class="traveler-head">
+      <h3 class="t-title"></h3>
+      <span class="badge" data-minor hidden>Menor</span>
+      <button type="button" class="remove">Quitar</button>
+    </div>
+    <div class="scan">
+      <button type="button" class="scan-btn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        Escanear documento
+      </button>
+      <input type="file" class="scan-input" accept="image/*" capture="environment" hidden>
+      <p class="scan-status" aria-live="polite">Haz una foto del documento y rellenamos los datos por ti. En el DNI, escanea las dos caras.</p>
+    </div>
+    <div class="grid">
+      ${F('nombre', 'Nombre', I('nombre', 'autocomplete="given-name" required'))}
+      ${F('apellido1', 'Primer apellido', I('apellido1', 'autocomplete="family-name" required'))}
+      ${F('apellido2', 'Segundo apellido <span class="opt" data-opt>(si lo tiene)</span>', I('apellido2'))}
+      ${F('fechaNacimiento', 'Fecha de nacimiento', I('fechaNacimiento', 'type="date" required'))}
+      ${F('nacionalidad', 'Nacionalidad', I('nacionalidad', 'list="countries" autocomplete="off" placeholder="Escribe y elige" required'))}
+      ${F('sexo', 'Sexo', `<select id="sexo-${id}" data-k="sexo" required><option value="">Elige…</option><option value="M">Mujer</option><option value="H">Hombre</option><option value="O">Otro</option></select>`)}
+      ${F('tipoDocumento', 'Documento', `<select id="tipoDocumento-${id}" data-k="tipoDocumento"><option value="">Elige…</option><option value="NIF">DNI español</option><option value="NIE">NIE (extranjero residente)</option><option value="PAS">Pasaporte</option><option value="OTRO">Otro documento</option></select>`)}
+      ${F('numeroDocumento', 'Número de documento', I('numeroDocumento', 'autocomplete="off" autocapitalize="characters"'))}
+      ${F('soporteDocumento', 'Número de soporte', I('soporteDocumento', 'autocomplete="off" autocapitalize="characters"') + '<small>En el DNI, el código de 9 caracteres junto a «IDESP» o en el anverso; en el NIE, el que empieza por E.</small>', 'full')}
+      ${F('telefono', 'Teléfono móvil', I('telefono', 'type="tel" autocomplete="tel"'))}
+      ${F('correo', 'Email', I('correo', 'type="email" autocomplete="email"'))}
+      ${F('pais', 'País de residencia', I('pais', 'list="countries" autocomplete="off" placeholder="Escribe y elige" required'))}
+      ${F('codigoPostal', 'Código postal', I('codigoPostal', 'autocomplete="postal-code" required'))}
+      ${F('provincia', 'Provincia', `<select id="provincia-${id}" data-k="provincia"><option value="">Elige…</option>${PROVINCIAS.map(([c, n]) => `<option value="${c}">${n}</option>`).join('')}</select>`)}
+      ${F('nombreMunicipio', 'Municipio', I('nombreMunicipio', 'autocomplete="address-level2"'))}
+      ${F('codigoMunicipio', 'Código de municipio (INE)', I('codigoMunicipio', 'inputmode="numeric" maxlength="5" placeholder="5 dígitos"') + '<small>Los 2 primeros son los de la provincia. Búscalo en ine.es («Relación de municipios»).</small>')}
+      ${F('direccion', 'Dirección', I('direccion', 'autocomplete="street-address" required placeholder="Calle, número, piso"'), 'full')}
+      ${F('parentesco', 'Parentesco con el titular', `<select id="parentesco-${id}" data-k="parentesco">${opts}</select><small>Obligatorio cuando viaja algún menor.</small>`, 'full')}
+      <div class="f full sig" data-wrap="firma">
+        <label id="firma-l-${id}">Firma</label>
+        <div class="sig-box"><canvas class="sig-pad" role="img" aria-labelledby="firma-l-${id}"></canvas><span class="sig-hint">Firma aquí con el dedo o el ratón</span></div>
+        <div class="sig-bar"><small data-sig-note></small><button type="button" class="sig-clear">Borrar firma</button></div>
+        <span class="msg"></span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function addTraveler(focus = true) {
+  const cards = $$('.traveler');
+  if (cards.length >= CONFIG.maxViajeros) return;
+  const el = document.createElement('article');
+  el.className = 'traveler new';
+  el.dataset.id = ++seq;
+  el.innerHTML = travelerHTML(seq);
+  $('#travelers').appendChild(el);
+  window.__sigInit?.($('.sig-pad', el));
+  // El segundo viajero y siguientes suelen compartir domicilio con el titular
+  const first = $('.traveler');
+  if (first && first !== el) for (const k of ADDRESS) {
+    const v = val(first, k), t = $(`[data-k="${k}"]`, el);
+    t.value = v; t.dataset.copied = '1';
+  }
+  refreshTravelers();
+  if (focus) $('[data-k="nombre"]', el).focus();
+}
+
+const val = (card, k) => ($(`[data-k="${k}"]`, card)?.value ?? '').trim();
+const wrap = (card, k) => $(`[data-wrap="${k}"]`, card);
+
+function ageAt(birth, ref) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(birth)) return null;
+  const b = new Date(birth), r = /^\d{4}-\d{2}-\d{2}$/.test(ref) ? new Date(ref) : new Date();
+  let a = r.getFullYear() - b.getFullYear();
+  const m = r.getMonth() - b.getMonth();
+  if (m < 0 || (m === 0 && r.getDate() < b.getDate())) a--;
+  return a;
+}
+const isMinor = (card) => { const a = ageAt(val(card, 'fechaNacimiento'), $('#fechaEntrada').value); return a !== null && a < 18; };
+
+function refreshTravelers() {
+  const cards = $$('.traveler');
+  const anyMinor = cards.some(isMinor);
+  cards.forEach((card, i) => {
+    $('.traveler-tab', card).textContent = i + 1;
+    const name = [val(card, 'nombre'), val(card, 'apellido1')].filter(Boolean).join(' ');
+    $('.t-title', card).textContent = name || (i === 0 ? 'Titular de la reserva' : `Viajero ${i + 1}`);
+    $('.remove', card).hidden = cards.length === 1;
+    const minor = isMinor(card);
+    $('[data-minor]', card).hidden = !minor;
+    const doc = val(card, 'tipoDocumento');
+    wrap(card, 'soporteDocumento').hidden = !['NIF', 'NIE'].includes(doc);
+    $('[data-opt]', card).textContent = doc === 'NIF' ? '' : '(si lo tiene)';
+    const docLabel = $('label', wrap(card, 'numeroDocumento'));
+    docLabel.innerHTML = 'Número de documento' + (minor ? ' <span class="opt">(opcional para menores)</span>' : '');
+    const res = countryCode(val(card, 'pais'));
+    wrap(card, 'codigoMunicipio').hidden = res !== 'ESP';
+    wrap(card, 'provincia').hidden = res !== 'ESP';
+    wrap(card, 'nombreMunicipio').hidden = !res;
+    const age = ageAt(val(card, 'fechaNacimiento'), $('#fechaEntrada').value);
+    $('[data-sig-note]', card).textContent = age !== null && age < 14 ? 'Opcional para menores de 14 años.' : 'Obligatoria a partir de 14 años.';
+    wrap(card, 'parentesco').hidden = !(anyMinor && i > 0);
+  });
+  if (submitted) liveCheck();
+  $('#addTraveler').disabled = cards.length >= CONFIG.maxViajeros;
+  $('#addTraveler').textContent = cards.length >= CONFIG.maxViajeros ? `Máximo ${CONFIG.maxViajeros} viajeros` : 'Añadir viajero';
+}
+
+const ADDRESS = ['direccion', 'pais', 'codigoPostal', 'provincia', 'codigoMunicipio', 'nombreMunicipio'];
+function syncAddress(src) {                 // el domicilio del titular se copia a los demás mientras no lo cambien
+  const k = src.dataset.k, first = $('.traveler');
+  if (!ADDRESS.includes(k) || src.closest('.traveler') !== first) return;
+  $$('.traveler').slice(1).forEach(card => {
+    const el = $(`[data-k="${k}"]`, card);
+    if (!el.value || el.dataset.copied === '1') { el.value = src.value; el.dataset.copied = '1'; clearErr(el); }
+  });
+}
+$('#travelers').addEventListener('input', (e) => {
+  if (e.target.dataset.copied) delete e.target.dataset.copied;   // el usuario lo ha editado a mano
+  syncAddress(e.target);
+  clearErr(e.target); refreshTravelers();
+});
+$('#travelers').addEventListener('change', (e) => {
+  const k = e.target.dataset.k;
+  if (k === 'provincia') {                               // el código INE empieza por el de la provincia
+    const ine = $('[data-k="codigoMunicipio"]', e.target.closest('.traveler'));
+    if (e.target.value && !ine.value.startsWith(e.target.value)) ine.value = e.target.value;
+    syncAddress(e.target);
+  }
+  if (k === 'nacionalidad' || k === 'pais') {             // normaliza a "País (ISO)"
+    const c = countryCode(e.target.value); if (c) e.target.value = countryLabel(c);
+    syncAddress(e.target);
+  }
+  refreshTravelers();
+});
+$('#travelers').addEventListener('click', (e) => {
+  if (!e.target.classList.contains('remove')) return;
+  const card = e.target.closest('.traveler');
+  const next = card.nextElementSibling || card.previousElementSibling;
+  card.remove(); refreshTravelers();
+  $('[data-k="nombre"]', next)?.focus();
+});
+$('#addTraveler').addEventListener('click', () => addTraveler());
+
+// Arranque: si hay una sesión válida en esta pestaña, directo al formulario; si no, al paso de acceso
+(() => {
+  const s = store.get();
+  const qRes = (qs.get('reserva') || qs.get('r') || '').toUpperCase();
+  if (s?.token && new Date(s.caduca) > new Date() && (!qRes || qRes === String(s.reserva.referencia).toUpperCase())) enterForm(s);
+  else { store.clear(); showGate(); }
+})();
+
+/* ===== Escaneo: foto -> n8n (Groq) -> campos ===== */
+// Reduce la foto a JPEG ~1600 px para que el envío sea rápido
+async function compress(file, maxSide = 1280, quality = 0.8) {
+  let img;
+  try { img = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch (_) { img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }); }
+  const k = Math.min(1, maxSide / Math.max(img.width, img.height));
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+  cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  if (img.close) img.close();
+  return cv.toDataURL('image/jpeg', quality);
+}
+
+const plain = (s) => (s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toUpperCase().trim();
+function fillFromScan(card, res) {
+  const filled = [];
+  const set = (k, v) => {
+    const el = $(`[data-k="${k}"]`, card); if (!el || !v) return;
+    if (el.value && plain(el.value) === plain(v)) return;        // no cambia "García" por "Garcia"
+    el.value = v; delete el.dataset.copied; clearErr(el); filled.push(el.closest('.f'));
+  };
+  const d = res.datos || {};
+  ['nombre', 'apellido1', 'apellido2', 'fechaNacimiento', 'sexo', 'tipoDocumento', 'numeroDocumento', 'soporteDocumento'].forEach(k => set(k, d[k]));
+  if (d.nacionalidad) set('nacionalidad', countryLabel(d.nacionalidad));
+  const dom = res.domicilio;
+  if (dom) {
+    set('direccion', dom.direccion);
+    if (dom.pais) set('pais', countryLabel(dom.pais));
+    if (dom.municipio) set('nombreMunicipio', dom.municipio);
+    if (dom.provincia) {
+      const pv = PROVINCIAS.find(([, n]) => n.split('/').some(x => plain(x) === plain(dom.provincia)));
+      if (pv) { set('provincia', pv[0]); const ine = $('[data-k="codigoMunicipio"]', card); if (!ine.value.startsWith(pv[0])) ine.value = pv[0]; }
+    }
+    ['direccion', 'pais', 'provincia', 'nombreMunicipio', 'codigoMunicipio'].forEach(k => syncAddress($(`[data-k="${k}"]`, card)));
+  }
+  filled.forEach(f => { f.classList.add('scanned'); setTimeout(() => f.classList.remove('scanned'), 2600); });
+  refreshTravelers();
+  if (submitted) liveCheck();
+  return filled.length;
+}
+
+async function scanFile(card, file) {
+  const btn = $('.scan-btn', card), st = $('.scan-status', card);
+  const say = (t, cls = '') => { st.textContent = t; st.className = 'scan-status ' + cls; };
+  btn.disabled = true;
+  const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 60000);
+  try {
+    say('Preparando la foto…');
+    const image = await compress(file);
+    say('Leyendo el documento…');
+    console.info('[escaneo] imagen', Math.round(image.length / 1024), 'KB');
+    const r = await fetch(`${CONFIG.api}/escanear`, { method: 'POST', headers: SIMPLE_HEADERS, body: JSON.stringify({ token: session?.token, image }), signal: ctrl.signal });
+    let res = {}; try { res = await r.json(); } catch (_) {}
+    if (r.status === 401) { expire(); return; }
+    if (!r.ok || res.ok === false) throw new Error(res.error || `El lector respondió ${r.status}.`);
+    const n = fillFromScan(card, res);
+    const dom = res.domicilio;
+    let msg = n ? `Hemos rellenado ${n} ${n === 1 ? 'dato' : 'datos'}. Revísalos.` : 'Los datos ya estaban rellenados.';
+    if (dom?.municipio && countryCode(val(card, 'pais')) === 'ESP') msg += ` Falta el código INE de ${dom.municipio}.`;
+    else if (!dom && ['NIF', 'NIE'].includes(val(card, 'tipoDocumento'))) msg += ' Escanea también la otra cara para la dirección.';
+    if (res.avisos?.length) msg += ' Comprueba el número de documento: no lo hemos podido verificar.';
+    say(msg, 'ok');
+  } catch (e) {
+    console.error('[escaneo]', e);
+    if (e instanceof TypeError) {            // sin respuesta legible: URL no activa, CORS o proxy
+      say('No hemos podido conectar con el lector de documentos. Rellena los datos a mano.', 'err');
+      return;
+    }
+    say(e.name === 'AbortError'
+      ? 'La lectura ha tardado demasiado. Inténtalo de nuevo o rellena los datos a mano.'
+      : `${e.message} Puedes probar otra foto (de cerca, recta y sin reflejos) o rellenar los datos a mano.`, 'err');
+  } finally {
+    clearTimeout(timer); btn.disabled = false;
+  }
+}
+
+$('#travelers').addEventListener('click', (e) => {
+  const b = e.target.closest('.scan-btn'); if (!b) return;
+  $('.scan-input', b.closest('.traveler')).click();
+});
+$('#travelers').addEventListener('change', (e) => {
+  if (!e.target.classList.contains('scan-input')) return;
+  const f = e.target.files[0]; e.target.value = '';
+  if (f) scanFile(e.target.closest('.traveler'), f);
+});
+
+/* ---------- Firma (canvas con Pointer Events) */
+const Sig = (() => {
+  const strokes = new WeakMap();                    // trazos normalizados 0..1 por canvas
+  function fit(cv) {
+    const r = cv.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+    if (!r.width) return;
+    cv.width = Math.round(r.width * dpr); cv.height = Math.round(r.height * dpr);
+    draw(cv);
+  }
+  function draw(cv) {
+    const ctx = cv.getContext('2d');
+    ctx.clearRect(0, 0, cv.width, cv.height);
+    ctx.lineWidth = 2.4 * (window.devicePixelRatio || 1); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1C2A4A';
+    for (const s of strokes.get(cv) || []) {
+      ctx.beginPath();
+      s.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * cv.width, y * cv.height));
+      if (s.length === 1) ctx.lineTo(s[0][0] * cv.width + .5, s[0][1] * cv.height + .5);
+      ctx.stroke();
+    }
+  }
+  function init(cv) {
+    strokes.set(cv, []);
+    let cur = null;
+    const pt = (e) => { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height]; };
+    cv.addEventListener('pointerdown', (e) => { e.preventDefault(); cv.setPointerCapture(e.pointerId); cur = [pt(e)]; strokes.get(cv).push(cur); draw(cv); });
+    cv.addEventListener('pointermove', (e) => { if (!cur) return; cur.push(pt(e)); draw(cv); });
+    const end = () => {
+      if (!cur) return; cur = null;
+      const wrapEl = cv.closest('.sig'); wrapEl.classList.add('signed'); clearErr(cv);
+      if (submitted) liveCheck();
+    };
+    cv.addEventListener('pointerup', end); cv.addEventListener('pointercancel', end);
+    requestAnimationFrame(() => fit(cv));
+  }
+  function clear(card) {
+    const cv = $('.sig-pad', card); strokes.set(cv, []); draw(cv);
+    cv.closest('.sig').classList.remove('signed');
+  }
+  const signed = (card) => (strokes.get($('.sig-pad', card)) || []).some(s => s.length > 1);
+  function exportPng(card) {                         // PNG 600×170, fondo blanco
+    if (!signed(card)) return '';
+    const cv = document.createElement('canvas'); cv.width = 600; cv.height = 170;
+    const ctx = cv.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 600, 170);
+    ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#000';
+    for (const s of strokes.get($('.sig-pad', card))) {
+      ctx.beginPath(); s.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * 600, y * 170)); ctx.stroke();
+    }
+    return cv.toDataURL('image/png');
+  }
+  window.addEventListener('resize', () => $$('.sig-pad').forEach(fit));
+  return { init, clear, signed, export: exportPng };
+})();
+window.__sigInit = Sig.init;
+$$('.sig-pad').forEach(cv => Sig.init(cv));            // fichas creadas antes de cargar este bloque
+$('#travelers').addEventListener('click', (e) => {
+  if (e.target.classList.contains('sig-clear')) Sig.clear(e.target.closest('.traveler'));
+});
+
+/* ---------- Validación */
+function setErr(el, msg) {
+  const f = el.closest('.f') || el.closest('.check');
+  f.classList.add('bad');
+  const m = $('.msg', f); if (m) m.textContent = msg;
+  el.setAttribute('aria-invalid', 'true');
+}
+function clearErr(el) {
+  const f = el.closest('.f') || el.closest('.check');
+  if (!f) return;
+  f.classList.remove('bad'); el.removeAttribute('aria-invalid');
+}
+$('#secReserva').addEventListener('input', (e) => clearErr(e.target));
+$('#consent').addEventListener('change', (e) => { clearErr(e.target); if (submitted) liveCheck(); });
+
+const reDate = /^\d{4}-\d{2}-\d{2}$/;
+function liveCheck() {
+  const n = validate().length;
+  const a = $('#formAlert');
+  if (!n) a.hidden = true;
+  else if (!a.hidden) a.textContent = `Revisa ${n === 1 ? 'el campo marcado' : `los ${n} campos marcados`} en rojo.`;
+}
+function validate() {
+  $$('.bad').forEach(f => f.classList.remove('bad'));
+  const bad = [];
+  const need = (el, ok, msg) => { if (!ok) { setErr(el, msg); bad.push(el); } };
+
+  const R = (id) => $('#' + id);
+  need(R('alojamiento'), !!R('alojamiento').value, 'Elige el alojamiento.');
+  need(R('referencia'), !!R('referencia').value.trim(), 'Escribe el código de la reserva.');
+  need(R('fechaEntrada'), reDate.test(R('fechaEntrada').value), 'Indica la fecha de entrada.');
+  need(R('fechaSalida'), reDate.test(R('fechaSalida').value), 'Indica la fecha de salida.');
+  if (reDate.test(R('fechaEntrada').value) && reDate.test(R('fechaSalida').value))
+    need(R('fechaSalida'), R('fechaSalida').value > R('fechaEntrada').value, 'La salida debe ser posterior a la entrada.');
+  need(R('fechaContrato'), reDate.test(R('fechaContrato').value), 'Indica cuándo hiciste la reserva.');
+  need(R('numHabitaciones'), Number(R('numHabitaciones').value) >= 1, 'Mínimo 1 habitación.');
+
+  const cards = $$('.traveler');
+  const anyMinor = cards.some(isMinor);
+  cards.forEach((card, i) => {
+    const E = (k) => $(`[data-k="${k}"]`, card);
+    const minor = isMinor(card);
+    const doc = val(card, 'tipoDocumento');
+    need(E('nombre'), !!val(card, 'nombre'), 'Falta el nombre.');
+    need(E('apellido1'), !!val(card, 'apellido1'), 'Falta el primer apellido.');
+    if (doc === 'NIF') need(E('apellido2'), !!val(card, 'apellido2'), 'Con DNI español es obligatorio.');
+    need(E('fechaNacimiento'), reDate.test(val(card, 'fechaNacimiento')), 'Indica la fecha de nacimiento.');
+    need(E('nacionalidad'), !!countryCode(val(card, 'nacionalidad')), 'Elige un país de la lista.');
+    need(E('sexo'), !!val(card, 'sexo'), 'Elige una opción.');
+    if (!minor) {
+      need(E('tipoDocumento'), !!doc, 'Obligatorio para mayores de edad.');
+      need(E('numeroDocumento'), !!val(card, 'numeroDocumento'), 'Obligatorio para mayores de edad.');
+    }
+    if (doc === 'NIF' && val(card, 'numeroDocumento'))
+      need(E('numeroDocumento'), /^\d{8}[A-Z]$/i.test(val(card, 'numeroDocumento')), 'Formato de DNI: 8 números y una letra.');
+    if (['NIF', 'NIE'].includes(doc)) need(E('soporteDocumento'), !!val(card, 'soporteDocumento'), 'Obligatorio con DNI o NIE.');
+    need(E('direccion'), !!val(card, 'direccion'), 'Falta la dirección.');
+    const res = countryCode(val(card, 'pais'));
+    need(E('pais'), !!res, 'Elige un país de la lista.');
+    need(E('codigoPostal'), !!val(card, 'codigoPostal'), 'Falta el código postal.');
+    if (res === 'ESP') {
+      need(E('provincia'), !!val(card, 'provincia'), 'Elige la provincia.');
+      need(E('codigoMunicipio'), /^\d{5}$/.test(val(card, 'codigoMunicipio')), 'Son 5 dígitos.');
+      if (val(card, 'provincia') && /^\d{5}$/.test(val(card, 'codigoMunicipio')))
+        need(E('codigoMunicipio'), val(card, 'codigoMunicipio').startsWith(val(card, 'provincia')), 'No corresponde a la provincia elegida.');
+    }
+    need(E('nombreMunicipio'), !res || !!val(card, 'nombreMunicipio'), 'Indica el municipio.');
+    const age = ageAt(val(card, 'fechaNacimiento'), $('#fechaEntrada').value);
+    if (!(age !== null && age < 14)) need($('.sig-pad', card), Sig.signed(card), 'Falta la firma.');
+    if (!val(card, 'telefono') && !val(card, 'correo')) need(E('telefono'), false, 'Indica teléfono o email.');
+    if (val(card, 'correo')) need(E('correo'), /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val(card, 'correo')), 'Revisa el email.');
+    if (anyMinor && i > 0) need(E('parentesco'), !!val(card, 'parentesco'), 'Obligatorio cuando viaja algún menor.');
+  });
+  need($('#consent'), $('#consent').checked, '');
+  return bad;
+}
+
+/* ---------- Datos -> formato canónico del workflow */
+function payload() {
+  const cards = $$('.traveler');
+  const anyMinor = cards.some(isMinor);
+  return {
+    alojamiento: $('#alojamiento').value,
+    contrato: {
+      referencia: $('#referencia').value.trim(),
+      fechaContrato: $('#fechaContrato').value,
+      fechaEntrada: $('#fechaEntrada').value,
+      horaEntrada: $('#horaEntrada').value || CONFIG.horaEntrada,
+      fechaSalida: $('#fechaSalida').value,
+      horaSalida: $('#horaSalida').value || CONFIG.horaSalida,
+      numHabitaciones: Number($('#numHabitaciones').value) || 1,
+      internet: true,
+      pago: { tipoPago: $('#tipoPago').value, fechaPago: $('#fechaPago').value, medioPago: '', titular: '' },
+      motivoViaje: $('#motivo').value,
+    },
+    personas: cards.map((c, i) => {
+      const res = countryCode(val(c, 'pais'));
+      const doc = val(c, 'tipoDocumento');
+      return {
+        nombre: val(c, 'nombre'),
+        apellido1: val(c, 'apellido1'),
+        apellido2: val(c, 'apellido2'),
+        tipoDocumento: doc,
+        numeroDocumento: val(c, 'numeroDocumento').toUpperCase(),
+        soporteDocumento: ['NIF', 'NIE'].includes(doc) ? val(c, 'soporteDocumento').toUpperCase() : '',
+        fechaNacimiento: val(c, 'fechaNacimiento'),
+        nacionalidad: countryCode(val(c, 'nacionalidad')),
+        sexo: val(c, 'sexo'),
+        direccion: {
+          direccion: val(c, 'direccion'),
+          codigoPostal: val(c, 'codigoPostal'),
+          pais: res,
+          codigoMunicipio: res === 'ESP' ? val(c, 'codigoMunicipio') : '',
+          nombreMunicipio: val(c, 'nombreMunicipio'),
+          provincia: res === 'ESP' ? (PROVINCIAS.find(([k]) => k === val(c, 'provincia'))?.[1] ?? '') : '',
+        },
+        firma: Sig.export(c),          // PNG en data URL ('' si no ha firmado)
+        telefono: val(c, 'telefono'),
+        correo: val(c, 'correo'),
+        parentesco: anyMinor && i > 0 ? val(c, 'parentesco') : '',
+      };
+    }),
+  };
+}
+
+/* ---------- Envío */
+function showAlert(html) { const a = $('#formAlert'); a.innerHTML = html; a.hidden = false; a.focus?.(); }
+
+$('#form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  $('#formAlert').hidden = true;
+  if ($('[name="website"]').value) return;                // honeypot
+  submitted = true;
+  const bad = validate();
+  if (bad.length) {
+    const first = bad[0];
+    first.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    first.focus({ preventScroll: true });
+    showAlert(`Revisa ${bad.length === 1 ? 'el campo marcado' : `los ${bad.length} campos marcados`} en rojo.`);
+    return;
+  }
+
+  const btn = $('#submit');
+  btn.setAttribute('aria-busy', 'true'); btn.disabled = true; btn.textContent = 'Enviando…';
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), CONFIG.timeoutMs);
+  try {
+    const p = payload();
+    const res = await fetch(`${CONFIG.api}/registro`, { method: 'POST', headers: SIMPLE_HEADERS, signal: ctrl.signal,
+      body: JSON.stringify({ token: session?.token, motivoViaje: p.contrato.motivoViaje, personas: p.personas }) });
+    let data = {}; try { data = await res.json(); } catch (_) {}
+    if (res.status === 401) { expire(); return; }
+    if (!res.ok || data.ok === false) {
+      const list = Array.isArray(data.errores) ? `<ul>${data.errores.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '';
+      showAlert(`${esc(data.error || `No se ha podido registrar (error ${res.status}).`)}${list}`);
+      return;
+    }
+    store.clear();
+    done(data);
+  } catch (err) {
+    console.error('[registro]', err);
+    showAlert(err.name === 'AbortError'
+      ? 'El envío ha tardado demasiado. Comprueba tu conexión y vuelve a pulsar «Enviar registro».'
+      : `No se ha podido enviar. ${esc(err.message)} Si persiste, escríbenos al correo de la reserva.`);
+  } finally {
+    clearTimeout(timer);
+    btn.removeAttribute('aria-busy'); btn.disabled = false; btn.textContent = 'Enviar registro';
+  }
+});
+
+function done(data) {
+  const n = $$('.traveler').length;
+  $('#app').innerHTML = `
+    <div class="done" tabindex="-1">
+      <div class="seal" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+      </div>
+      <h1>Registro enviado</h1>
+      <p>Hemos recibido los datos de ${n} ${n === 1 ? 'viajero' : 'viajeros'}${data.lote ? ` (justificante ${esc(data.lote)})` : ''}. No tienes que hacer nada más: nos encargamos de comunicarlo a las autoridades.</p>
+      <p>Te esperamos. Si algo cambia en la reserva, escríbenos.</p>
+    </div>`;
+  $('.done').focus();
+  scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
