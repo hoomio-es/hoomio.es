@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
 <title>Check-in · Hoomio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -668,8 +669,15 @@ $('#addTraveler').addEventListener('click', () => addTraveler());
 (() => {
   const s = store.get();
   const qRes = (qs.get('reserva') || qs.get('r') || '').toUpperCase();
-  if (s?.token && new Date(s.caduca) > new Date() && (!qRes || qRes === String(s.reserva.referencia).toUpperCase())) enterForm(s);
-  else { store.clear(); showGate(); }
+  const qApe = (qs.get('apellido') || qs.get('a') || '').trim();
+  // El apellido no se queda en la barra de direcciones ni en el historial
+  if (qApe) history.replaceState(null, '', qRes ? `${location.pathname}?reserva=${encodeURIComponent(qRes)}` : location.pathname);
+  if (s?.token && new Date(s.caduca) > new Date() && (!qRes || qRes === String(s.reserva.referencia).toUpperCase())) { enterForm(s); return; }
+  store.clear(); showGate();
+  if (qRes && qApe) {                                  // enlace completo: entra sin que el huésped escriba nada
+    $('#gApellido').value = qApe;
+    $('#gateForm').requestSubmit();
+  }
 })();
 
 /* ===== Escaneo: foto -> n8n (Groq) -> campos ===== */
