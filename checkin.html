@@ -153,6 +153,15 @@
   .who { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 14px 2px 0; font-size: .9rem; color: var(--ink-soft); }
   .linkbtn { white-space: nowrap; background: none; border: 0; padding: 0; color: var(--ink); font: 700 .9rem var(--body); text-decoration: underline; cursor: pointer; }
 
+  .sin-escaneo .scan { display: none; }
+
+  /* ---------- Copia protegida */
+  .copy { display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: start; margin: -6px 0 18px;
+          padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-s); }
+  .copy-img { width: 96px; height: auto; border-radius: 4px; border: 1px solid var(--line); background: #fff; }
+  .copy-text { display: grid; gap: 4px; justify-items: start; font-size: .9rem; }
+  .copy-text small { color: var(--ink-soft); }
+
   /* ---------- Firma */
   .sig-box { position: relative; border: 1.5px dashed var(--line); border-radius: var(--radius-s); background: #FBFCFE; }
   .sig-pad { display: block; width: 100%; height: 170px; touch-action: none; cursor: crosshair; border-radius: var(--radius-s); }
@@ -353,6 +362,16 @@ const CONFIG = {
   // Workflow «Hoomio · Check-in seguro»: <api>/acceso, <api>/escanear, <api>/registro
   // Para probar en el editor de n8n: https://n8n.peppelin.com/webhook-test/checkin
   api: 'https://n8n.peppelin.com/webhook/checkin',
+  // Marca de agua de la copia protegida del documento ({fecha} = hoy)
+  marcaCopia: 'COPIA · SOLO REGISTRO DE VIAJEROS · HOOMIO · {fecha}',
+  // Lado mayor de la foto que se envía al lector. Menos píxeles = menos tokens de Groq.
+  scanMaxSide: 1024,
+  // "mrz": solo se envía la franja inferior de la foto (donde están las líneas <<<), pequeña → muy pocos tokens.
+  //        Si el lector no encuentra la MRZ, se reintenta una vez con la foto completa.
+  // "completo": se envía la foto entera (si en n8n usas modoEscaneo = "completo").
+  scanModo: 'mrz',
+  mrzRecorte: 0.55,      // fracción inferior de la foto que se envía
+  mrzAncho: 768,         // ancho del recorte en píxeles
   horaEntrada: '15:00',
   horaSalida: '11:00',
   maxViajeros: 10,
@@ -445,6 +464,7 @@ function showGate() {
 }
 function enterForm(s) {
   session = s;
+  document.body.classList.toggle('sin-escaneo', s.escaneo === false);   // escaneo apagado en n8n
   const r = s.reserva;
   // Los datos de la reserva vienen de Smoobu; el formulario de reserva queda oculto
   $('#alojamiento').innerHTML = `<option>${esc(r.alojamiento)}</option>`;
@@ -475,7 +495,7 @@ $('#gateForm').addEventListener('submit', async (e) => {
   try {
     const { status, data } = await api('acceso', { reserva, apellido });
     if (status === 200 && data.ok && data.token) {
-      const s = { token: data.token, caduca: data.caduca, reserva: data.reserva };
+      const s = { token: data.token, caduca: data.caduca, reserva: data.reserva, escaneo: data.escaneo !== false };
       store.set(s); enterForm(s);
       history.replaceState(null, '', `${location.pathname}?reserva=${encodeURIComponent(data.reserva.referencia)}`);
       scrollTo(0, 0);
@@ -538,7 +558,15 @@ function travelerHTML(id) {
         Escanear documento
       </button>
       <input type="file" class="scan-input" accept="image/*" capture="environment" hidden>
-      <p class="scan-status" aria-live="polite">Haz una foto del documento y rellenamos los datos por ti. En el DNI, escanea las dos caras.</p>
+      <p class="scan-status" aria-live="polite">Haz una foto, en horizontal, de la cara con las líneas &lt;&lt;&lt; (en el DNI, la de atrás) y rellenamos tus datos.</p>
+    </div>
+    <div class="copy" hidden>
+      <img class="copy-img" alt="Copia protegida del documento">
+      <div class="copy-text">
+        <strong>Copia protegida del documento</strong>
+        <small>En blanco y negro y con marca de agua. Se hace en tu móvil y solo se usa para el registro de viajeros.</small>
+        <button type="button" class="linkbtn copy-remove">Quitar la copia</button>
+      </div>
     </div>
     <div class="grid">
       ${F('nombre', 'Nombre', I('nombre', 'autocomplete="given-name" required'))}
@@ -682,7 +710,7 @@ $('#addTraveler').addEventListener('click', () => addTraveler());
 
 /* ===== Escaneo: foto -> n8n (Groq) -> campos ===== */
 // Reduce la foto a JPEG ~1600 px para que el envío sea rápido
-async function compress(file, maxSide = 1280, quality = 0.8) {
+async function compress(file, maxSide = CONFIG.scanMaxSide, quality = 0.8) {
   let img;
   try { img = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
   catch (_) { img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = URL.createObjectURL(file); }); }
@@ -722,6 +750,65 @@ function fillFromScan(card, res) {
   return filled.length;
 }
 
+/* ---------- Copia protegida del documento (blanco y negro + marca de agua, en el navegador)
+   Basado en la idea de github.com/Mecsocse/dni-seguro-pdf (MIT): luminancia 0.299R + 0.587G + 0.114B
+   y texto repetido en diagonal. */
+const DocCopy = (() => {
+  const data = new WeakMap();                         // card -> { caras: {anverso, reverso}, copia }
+  const load = (src) => new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+  async function build(caras, texto) {
+    const imgs = await Promise.all(['anverso', 'reverso'].filter(k => caras[k]).map(k => load(caras[k])));
+    const W = 1000, GAP = 24;
+    const hs = imgs.map(i => Math.round(i.height * W / i.width));
+    const cv = document.createElement('canvas');
+    cv.width = W; cv.height = hs.reduce((a, h) => a + h, 0) + GAP * (imgs.length - 1);
+    const ctx = cv.getContext('2d', { willReadFrequently: true });
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, cv.width, cv.height);
+    let y = 0; imgs.forEach((im, k) => { ctx.drawImage(im, 0, y, W, hs[k]); y += hs[k] + GAP; });
+    const d = ctx.getImageData(0, 0, cv.width, cv.height), px = d.data;     // blanco y negro
+    for (let i = 0; i < px.length; i += 4) { const g = px[i] * .299 + px[i + 1] * .587 + px[i + 2] * .114; px[i] = px[i + 1] = px[i + 2] = g; }
+    ctx.putImageData(d, 0, 0);
+    ctx.save();                                                             // marca de agua en diagonal
+    ctx.translate(cv.width / 2, cv.height / 2); ctx.rotate(-Math.PI / 7);
+    ctx.font = '700 26px system-ui, sans-serif'; ctx.textBaseline = 'middle';
+    const tw = ctx.measureText(texto).width + 70, diag = Math.hypot(cv.width, cv.height);
+    for (let row = -diag / 2, n = 0; row < diag / 2; row += 74, n++)
+      for (let x = -diag / 2 - (n % 2) * tw / 2; x < diag / 2; x += tw) {
+        ctx.lineWidth = 3; ctx.strokeStyle = 'rgba(255,255,255,.35)'; ctx.strokeText(texto, x, row);
+        ctx.fillStyle = 'rgba(0,0,0,.32)'; ctx.fillText(texto, x, row);
+      }
+    ctx.restore();
+    return cv.toDataURL('image/jpeg', 0.72);
+  }
+  async function add(card, image, cara) {
+    const st = data.get(card) || { caras: {}, copia: '' };
+    const slot = cara === 'reverso' ? 'reverso' : (cara === 'anverso' || cara === 'pagina_datos') ? 'anverso'
+      : (!st.caras.anverso ? 'anverso' : 'reverso');
+    st.caras[slot] = image;
+    const fecha = new Date().toLocaleDateString('es-ES');
+    st.copia = await build(st.caras, CONFIG.marcaCopia.replace('{fecha}', fecha));
+    data.set(card, st);
+    const box = $('.copy', card); box.hidden = false; $('.copy-img', box).src = st.copia;
+  }
+  function clear(card) { data.delete(card); const box = $('.copy', card); box.hidden = true; $('.copy-img', box).removeAttribute('src'); }
+  const get = (card) => data.get(card)?.copia || '';
+  return { add, clear, get };
+})();
+$('#travelers').addEventListener('click', (e) => {
+  if (e.target.classList.contains('copy-remove')) DocCopy.clear(e.target.closest('.traveler'));
+});
+
+// Franja inferior de la foto (donde va la MRZ), reducida → muchos menos píxeles = muchos menos tokens
+async function mrzCrop(src, frac = CONFIG.mrzRecorte, width = CONFIG.mrzAncho) {
+  const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+  const sy = Math.round(im.height * (1 - frac)), sh = im.height - sy;
+  const k = Math.min(1, width / im.width);
+  const cv = document.createElement('canvas');
+  cv.width = Math.round(im.width * k); cv.height = Math.round(sh * k);
+  cv.getContext('2d').drawImage(im, 0, sy, im.width, sh, 0, 0, cv.width, cv.height);
+  return cv.toDataURL('image/jpeg', 0.85);
+}
+
 async function scanFile(card, file) {
   const btn = $('.scan-btn', card), st = $('.scan-status', card);
   const say = (t, cls = '') => { st.textContent = t; st.className = 'scan-status ' + cls; };
@@ -729,17 +816,35 @@ async function scanFile(card, file) {
   const ctrl = new AbortController(), timer = setTimeout(() => ctrl.abort(), 60000);
   try {
     say('Preparando la foto…');
-    const image = await compress(file);
+    const image = await compress(file);                       // foto completa: para la copia protegida y el reintento
+    const leer = async (img) => {
+      console.info('[escaneo] enviando', Math.round(img.length / 1024), 'KB');
+      const r = await fetch(`${CONFIG.api}/escanear`, { method: 'POST', headers: SIMPLE_HEADERS, body: JSON.stringify({ token: session?.token, image: img }), signal: ctrl.signal });
+      let res = {}; try { res = await r.json(); } catch (_) {}
+      return { r, res };
+    };
     say('Leyendo el documento…');
-    console.info('[escaneo] imagen', Math.round(image.length / 1024), 'KB');
-    const r = await fetch(`${CONFIG.api}/escanear`, { method: 'POST', headers: SIMPLE_HEADERS, body: JSON.stringify({ token: session?.token, image }), signal: ctrl.signal });
-    let res = {}; try { res = await r.json(); } catch (_) {}
+    let { r, res } = await leer(CONFIG.scanModo === 'mrz' ? await mrzCrop(image) : image);
+    if (CONFIG.scanModo === 'mrz' && res.codigo === 'sin_mrz') {   // la franja no tenía la MRZ: probamos con la foto entera
+      say('Buscando las líneas <<< en la foto completa…');
+      ({ r, res } = await leer(image));
+    }
     if (r.status === 401) { expire(); return; }
+    if (['lector_no_disponible', 'escaneo_desactivado'].includes(res.codigo)) {
+      say(res.error, 'err');
+      if (res.codigo === 'escaneo_desactivado') {      // apagado mientras el huésped estaba en la página
+        session.escaneo = false;
+        $$('.traveler').forEach(t => { $('.scan-btn', t).hidden = true; const st = $('.scan-status', t); st.textContent = res.error; st.className = 'scan-status'; });
+      }
+      return;
+    }
     if (!r.ok || res.ok === false) throw new Error(res.error || `El lector respondió ${r.status}.`);
     const n = fillFromScan(card, res);
+    try { await DocCopy.add(card, image, res.cara); } catch (err) { console.warn('[copia]', err); }
     const dom = res.domicilio;
     let msg = n ? `Hemos rellenado ${n} ${n === 1 ? 'dato' : 'datos'}. Revísalos.` : 'Los datos ya estaban rellenados.';
     if (dom?.municipio && countryCode(val(card, 'pais')) === 'ESP') msg += ` Falta el código INE de ${dom.municipio}.`;
+    else if (!dom && CONFIG.scanModo === 'mrz') msg += ' Revisa las tildes y escribe tu dirección.';
     else if (!dom && ['NIF', 'NIE'].includes(val(card, 'tipoDocumento'))) msg += ' Escanea también la otra cara para la dirección.';
     if (res.avisos?.length) msg += ' Comprueba el número de documento: no lo hemos podido verificar.';
     say(msg, 'ok');
@@ -942,6 +1047,7 @@ function payload() {
           provincia: res === 'ESP' ? (PROVINCIAS.find(([k]) => k === val(c, 'provincia'))?.[1] ?? '') : '',
         },
         firma: Sig.export(c),          // PNG en data URL ('' si no ha firmado)
+        copiaDocumento: DocCopy.get(c), // JPEG con marca de agua ('' si no ha escaneado)
         telefono: val(c, 'telefono'),
         correo: val(c, 'correo'),
         parentesco: anyMinor && i > 0 ? val(c, 'parentesco') : '',
