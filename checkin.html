@@ -831,6 +831,7 @@ async function scanFile(card, file) {
     }
     if (r.status === 401) { expire(); return; }
     if (['lector_no_disponible', 'escaneo_desactivado'].includes(res.codigo)) {
+      if (res.detalle) console.warn('[escaneo] motivo:', res.detalle);
       say(res.error, 'err');
       if (res.codigo === 'escaneo_desactivado') {      // apagado mientras el huésped estaba en la página
         session.escaneo = false;
