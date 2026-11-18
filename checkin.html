@@ -801,6 +801,8 @@ $('#travelers').addEventListener('click', (e) => {
 // Franja inferior de la foto (donde va la MRZ), reducida → muchos menos píxeles = muchos menos tokens
 async function mrzCrop(src, frac = CONFIG.mrzRecorte, width = CONFIG.mrzAncho) {
   const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; });
+  // Foto en vertical (documento tumbado): la MRZ queda en un lateral, no abajo → se envía entera
+  if (im.height > im.width * 1.05) frac = 1;
   const sy = Math.round(im.height * (1 - frac)), sh = im.height - sy;
   const k = Math.min(1, width / im.width);
   const cv = document.createElement('canvas');
@@ -840,6 +842,10 @@ async function scanFile(card, file) {
       return;
     }
     if (!r.ok || res.ok === false) throw new Error(res.error || `El lector respondió ${r.status}.`);
+    // Diagnóstico sin datos personales: quién lo ha leído y qué campos han llegado
+    console.info('[escaneo] respuesta', { status: r.status, fuente: res.fuente, campos: Object.keys(res.datos || {}), avisos: res.avisos, uso: res.uso });
+    const llegados = Object.values(res.datos || {}).filter(Boolean).length + (res.domicilio ? 1 : 0);
+    if (!llegados) throw new Error('No hemos podido leer datos en la foto.');
     const n = fillFromScan(card, res);
     try { await DocCopy.add(card, image, res.cara); } catch (err) { console.warn('[copia]', err); }
     const dom = res.domicilio;
