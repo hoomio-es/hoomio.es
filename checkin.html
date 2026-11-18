@@ -8,21 +8,37 @@
 <title>Check-in · Hoomio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Paleta de hoomio.es (static/css/hoomio.css), con su modo oscuro */
   :root {
-    --ink: #1C2A4A;
-    --ink-soft: #5B6B85;
-    --paper: #EDF1F6;
-    --card: #FFFFFF;
-    --line: #C9D3E0;
-    --sun: #E9A23B;
-    --ok: #2E7A57;
+    color-scheme: light;
+    --bg: #F4F5F3; --surface: #FFFFFF; --ink: #1D2B2A; --muted: #5E6B69; --line: #D9DDDA;
+    --accent: #2F5D50; --accent-ink: #FFFFFF; --brass: #A88553; --soft: #E8ECE9;
+    --font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
     --err: #B42318;
-    --radius-l: 18px;
-    --radius-s: 8px;
-    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-    --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
+      --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
+      --err: #F0907F;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
+    --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
+    --err: #F0907F;
+  }
+  :root {
+    /* nombres que usa esta página → variables de la web */
+    --paper: var(--bg); --card: var(--surface); --ink-soft: var(--muted); --sun: var(--brass);
+    --sun-soft: color-mix(in srgb, var(--brass) 14%, var(--surface));
+    --ok: var(--accent);
+    --radius-l: 20px; --radius-s: 10px;
+    --display: var(--font); --body: var(--font);
   }
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; }
@@ -30,22 +46,37 @@
     margin: 0;
     background: var(--paper);
     color: var(--ink);
-    font: 400 1rem/1.5 var(--body);
+    font: 400 1rem/1.6 var(--body);
+    -webkit-font-smoothing: antialiased;
   }
-  .page { max-width: 680px; margin: 0 auto; padding: 32px 20px 80px; }
+  .page { max-width: 680px; margin: 0 auto; padding: 40px 20px 32px; }
+
+  /* ---------- Barra superior y pie, como hoomio.es */
+  .topbar { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 92%, transparent); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line); }
+  .topbar-in { max-width: 680px; margin: 0 auto; padding: 0 1.5rem; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .brand { font: 600 1.25rem/1 var(--display); letter-spacing: -0.02em; color: inherit; text-decoration: none; }
+  .brand span { color: var(--sun); }
+  .topbar-help { font-size: .88rem; color: var(--ink-soft); text-decoration: none; }
+  .topbar-help:hover { color: var(--ink); }
+  .site-foot { border-top: 1px solid var(--line); margin-top: 48px; }
+  .site-foot-in { max-width: 680px; margin: 0 auto; padding: 3rem 1.5rem 2.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px;
+                  font-size: .88rem; color: var(--ink-soft); }
+  .site-foot a { color: var(--ink-soft); text-decoration: none; }
+  .site-foot a:hover { color: var(--ink); }
 
   /* ---------- Cabecera */
   .intro h1 {
-    font: 700 clamp(2rem, 6vw, 2.75rem)/1.05 var(--display);
-    letter-spacing: -0.02em;
+    font: 300 clamp(2rem, 6vw, 2.9rem)/1.1 var(--display);
+    letter-spacing: -0.035em;
     margin: 0 0 12px;
   }
-  .intro p { margin: 0 0 28px; color: var(--ink-soft); max-width: 56ch; }
+  .intro p { margin: 0 0 32px; color: var(--ink-soft); max-width: 56ch; font-size: 1.02rem; }
 
   /* ---------- Franja de la estancia (elemento protagonista) */
   .stay {
-    background: var(--ink);
-    color: #fff;
+    background: var(--accent);
+    color: var(--accent-ink);
     border-radius: var(--radius-l);
     padding: 22px 24px 20px;
     position: relative;
@@ -60,40 +91,41 @@
   .stay-place { font: 500 1rem/1.3 var(--display); opacity: .8; margin: 0 0 14px; }
   .stay-route { display: grid; grid-template-columns: auto 1fr auto; align-items: end; gap: 16px; }
   .stay-date small { display: block; font-size: .8rem; opacity: .7; margin-bottom: 2px; }
-  .stay-date strong { font: 700 clamp(1.5rem, 5.5vw, 2.1rem)/1 var(--display); letter-spacing: -0.01em; }
+  .stay-date strong { font: 500 clamp(1.5rem, 5.5vw, 2.1rem)/1 var(--display); letter-spacing: -0.01em; }
   .stay-date span { display: block; font-size: .85rem; opacity: .75; margin-top: 4px; }
   .stay-date.out { text-align: right; }
   .stay-nights { position: relative; text-align: center; padding-bottom: 10px; }
   .stay-nights::before {
     content: ""; position: absolute; left: 0; right: 0; bottom: 18px;
-    border-top: 2px dashed rgba(255,255,255,.35);
+    border-top: 2px dashed color-mix(in srgb, var(--accent-ink) 35%, transparent);
   }
   .stay-nights b {
-    position: relative; display: inline-block; background: var(--sun); color: var(--ink);
-    font: 700 .9rem/1 var(--body); padding: 6px 10px; border-radius: 999px; white-space: nowrap;
+    position: relative; display: inline-block; background: var(--sun); color: var(--accent-ink);
+    font: 600 .9rem/1 var(--body); padding: 6px 10px; border-radius: 999px; white-space: nowrap;
   }
   .stay-ref { margin: 16px 0 0; font-size: .85rem; opacity: .75; }
   .stay-edit {
-    position: absolute; top: 18px; right: 20px; background: none; border: 0; color: #fff;
-    font: 700 .85rem var(--body); text-decoration: underline; cursor: pointer; opacity: .85;
+    position: absolute; top: 18px; right: 20px; background: none; border: 0; color: var(--accent-ink);
+    font: 600 .85rem var(--body); text-decoration: underline; cursor: pointer; opacity: .85;
   }
 
   /* ---------- Secciones */
   section { margin-top: 40px; }
-  h2 { font: 700 1.5rem/1.2 var(--display); margin: 0 0 6px; letter-spacing: -0.01em; }
+  h2 { font: 300 1.75rem/1.2 var(--display); margin: 0 0 8px; letter-spacing: -0.03em; }
   .hint { color: var(--ink-soft); margin: 0 0 18px; font-size: .95rem; max-width: 60ch; }
-  .panel { background: var(--card); border-radius: var(--radius-l); padding: 22px; border: 1px solid var(--line); }
+  .panel { background: var(--card); border-radius: var(--radius-l); padding: 26px; border: 1px solid var(--line); }
+  .gate .panel { border: 0; box-shadow: 0 30px 70px rgba(12,20,19,.14); }
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 14px; }
   .full { grid-column: 1 / -1; }
   [hidden] { display: none !important; }
 
   /* ---------- Campos */
-  .f label { display: block; font-weight: 700; font-size: .92rem; margin-bottom: 6px; }
+  .f label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: 6px; }
   .f label .opt { font-weight: 400; color: var(--ink-soft); }
   .f input, .f select {
-    width: 100%; font: inherit; color: var(--ink); background: #fff;
-    border: 1.5px solid var(--line); border-radius: var(--radius-s);
-    padding: 11px 12px; min-height: 46px; appearance: none;
+    width: 100%; font: inherit; color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius-s);
+    padding: 12px 14px; min-height: 48px; appearance: none;
   }
   .f select {
     background-image: linear-gradient(45deg, transparent 50%, var(--ink) 50%), linear-gradient(135deg, var(--ink) 50%, transparent 50%);
@@ -101,10 +133,10 @@
     background-size: 5px 5px; background-repeat: no-repeat; padding-right: 34px;
   }
   .f input:focus, .f select:focus, button:focus-visible, .check input:focus-visible {
-    outline: 3px solid var(--sun); outline-offset: 1px; border-color: var(--ink);
+    outline: 2px solid var(--accent); outline-offset: 3px; border-color: var(--accent);
   }
   .f small { display: block; color: var(--ink-soft); font-size: .82rem; margin-top: 5px; }
-  .f .msg { display: none; color: var(--err); font-size: .85rem; font-weight: 700; margin-top: 5px; }
+  .f .msg { display: none; color: var(--err); font-size: .85rem; font-weight: 600; margin-top: 5px; }
   .f.bad input, .f.bad select { border-color: var(--err); }
   .f.bad .msg { display: block; }
 
@@ -116,32 +148,32 @@
   .traveler-tab {
     background: var(--paper); border-right: 1px dashed var(--line);
     display: flex; justify-content: center; padding-top: 20px;
-    font: 700 1.6rem/1 var(--display); color: var(--ink-soft);
+    font: 300 1.6rem/1 var(--display); color: var(--sun);
   }
   .traveler-body { padding: 20px 22px 22px; min-width: 0; }
   .traveler-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
-  .traveler-head h3 { font: 700 1.15rem/1.2 var(--display); margin: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
-  .badge { font-size: .8rem; font-weight: 700; background: #FCEFD9; color: #7A4B05; padding: 3px 9px; border-radius: 999px; }
-  .remove { background: none; border: 0; color: var(--err); font: 700 .88rem var(--body); cursor: pointer; padding: 6px 2px; }
+  .traveler-head h3 { font: 600 1.05rem/1.3 var(--display); margin: 0; flex: 1; min-width: 0; overflow-wrap: anywhere; }
+  .badge { font-size: .78rem; font-weight: 500; background: var(--sun-soft); color: var(--ink); padding: 3px 9px; border-radius: 999px; }
+  .remove { background: none; border: 0; color: var(--err); font: 600 .88rem var(--body); cursor: pointer; padding: 6px 2px; }
   .add {
     width: 100%; background: transparent; border: 2px dashed var(--line); border-radius: var(--radius-l);
-    padding: 16px; font: 700 1rem var(--body); color: var(--ink); cursor: pointer;
+    padding: 16px; font: 600 1rem var(--body); color: var(--ink); cursor: pointer;
   }
-  .add:hover { border-color: var(--ink); }
+  .add:hover { border-color: var(--accent); color: var(--accent); }
   .add:disabled { opacity: .5; cursor: not-allowed; }
 
 
   /* ---------- Escaneo de documento */
   .scan { display: flex; align-items: center; gap: 12px 14px; flex-wrap: wrap; margin: -4px 0 18px;
-          padding: 12px 14px; background: var(--paper); border-radius: var(--radius-s); }
-  .scan-btn { display: inline-flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); background: #fff; color: var(--ink);
-              font: 700 .92rem var(--body); padding: 9px 14px; border-radius: 999px; cursor: pointer; }
-  .scan-btn:hover { background: var(--ink); color: #fff; }
+          padding: 12px 14px; background: var(--soft); border-radius: var(--radius-s); }
+  .scan-btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent);
+              font: 600 .92rem var(--body); padding: 9px 14px; border-radius: 999px; cursor: pointer; }
+  .scan-btn:hover { background: var(--accent); color: var(--accent-ink); }
   .scan-btn[disabled] { opacity: .6; cursor: progress; }
   .scan-status { margin: 0; font-size: .85rem; color: var(--ink-soft); flex: 1; min-width: 200px; }
-  .scan-status.ok { color: var(--ok); font-weight: 700; }
-  .scan-status.err { color: var(--err); font-weight: 700; }
-  .f.scanned input, .f.scanned select { border-color: var(--sun); background-color: #FFF8EC; }
+  .scan-status.ok { color: var(--ok); font-weight: 600; }
+  .scan-status.err { color: var(--err); font-weight: 600; }
+  .f.scanned input, .f.scanned select { border-color: var(--sun); background-color: var(--sun-soft); }
   @media (prefers-reduced-motion: no-preference) {
     .f input, .f select { transition: background-color .6s, border-color .6s; }
   }
@@ -151,7 +183,7 @@
   .gate .panel { display: grid; gap: 16px; }
   .gate .submit { margin-top: 4px; }
   .who { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 14px 2px 0; font-size: .9rem; color: var(--ink-soft); }
-  .linkbtn { white-space: nowrap; background: none; border: 0; padding: 0; color: var(--ink); font: 700 .9rem var(--body); text-decoration: underline; cursor: pointer; }
+  .linkbtn { white-space: nowrap; background: none; border: 0; padding: 0; color: var(--ink); font: 600 .9rem var(--body); text-decoration: underline; cursor: pointer; }
 
   .sin-escaneo .scan { display: none; }
 
@@ -163,7 +195,7 @@
   .copy-text small { color: var(--ink-soft); }
 
   /* ---------- Firma */
-  .sig-box { position: relative; border: 1.5px dashed var(--line); border-radius: var(--radius-s); background: #FBFCFE; }
+  .sig-box { position: relative; border: 1px dashed var(--ink-soft); border-radius: var(--radius-s); background: #FFFFFF; }   /* la firma se dibuja en tinta oscura: «papel» blanco también en modo oscuro */
   .sig-pad { display: block; width: 100%; height: 170px; touch-action: none; cursor: crosshair; border-radius: var(--radius-s); }
   .sig-hint { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ink-soft); font-size: .9rem; pointer-events: none; }
   .sig.signed .sig-hint { display: none; }
@@ -171,33 +203,33 @@
   .sig.bad .sig-box { border-color: var(--err); }
   .sig-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; }
   .sig-bar small { margin: 0; }
-  .sig-clear { background: none; border: 0; color: var(--ink); font: 700 .85rem var(--body); text-decoration: underline; cursor: pointer; padding: 4px 0; }
+  .sig-clear { background: none; border: 0; color: var(--ink); font: 600 .85rem var(--body); text-decoration: underline; cursor: pointer; padding: 4px 0; }
 
   /* ---------- Envío */
   .check { display: grid; grid-template-columns: 22px 1fr; gap: 12px; align-items: start; margin: 4px 0 0; font-size: .95rem; }
-  .check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--ink); }
+  .check input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--accent); }
   .check.bad span { color: var(--err); }
   .submit {
     margin-top: 24px; width: 100%; border: 0; border-radius: 999px; cursor: pointer;
-    background: var(--ink); color: #fff; font: 700 1.1rem var(--body); padding: 17px 24px;
+    background: var(--accent); color: var(--accent-ink); font: 500 1.02rem var(--body); padding: 16px 24px; border: 1px solid var(--accent);
   }
-  .submit:hover { background: #26375F; }
+  .submit:hover { opacity: .88; }
   .submit[aria-busy="true"] { opacity: .7; cursor: progress; }
-  .alert { margin-top: 18px; border-radius: var(--radius-s); padding: 14px 16px; font-weight: 700; }
-  .alert.err { background: #FDECEA; color: var(--err); }
+  .alert { margin-top: 18px; border-radius: var(--radius-s); padding: 14px 16px; font-weight: 600; }
+  .alert.err { background: color-mix(in srgb, var(--err) 12%, var(--surface)); color: var(--err); }
   .alert ul { margin: 6px 0 0 18px; padding: 0; font-weight: 400; }
   .hp { position: absolute; left: -9999px; }
 
   /* ---------- Pantalla final */
   .done { text-align: left; padding: 56px 0 0; }
   .done .seal {
-    width: 64px; height: 64px; border-radius: 50%; background: var(--ok); color: #fff;
+    width: 64px; height: 64px; border-radius: 50%; background: var(--ok); color: var(--accent-ink);
     display: grid; place-items: center; margin-bottom: 20px;
   }
-  .done h1 { font: 700 2.2rem/1.1 var(--display); margin: 0 0 12px; }
+  .done h1 { font: 300 2.4rem/1.1 var(--display); letter-spacing: -0.035em; margin: 0 0 12px; }
   .done p { color: var(--ink-soft); max-width: 52ch; }
 
-  .foot { margin-top: 40px; font-size: .82rem; color: var(--ink-soft); max-width: 62ch; }
+  .foot { margin-top: 40px; font-size: .8rem; line-height: 1.6; color: var(--ink-soft); max-width: 62ch; }
 
   @media (max-width: 560px) {
     .grid { grid-template-columns: 1fr; }
@@ -212,6 +244,12 @@
 </style>
 </head>
 <body>
+<header class="topbar">
+  <div class="topbar-in">
+    <a class="brand" href="https://hoomio.es/">hoomio<span>.</span></a>
+    <a class="topbar-help" href="mailto:info@hoomio.es">¿Necesitas ayuda?</a>
+  </div>
+</header>
 <main class="page" id="app">
 
   <header class="intro">
@@ -351,6 +389,13 @@
 
   <p class="foot">Responsable del tratamiento: el titular del alojamiento. Base legal: obligación legal (art. 6.1.c RGPD; RD 933/2021). Puedes ejercer tus derechos escribiéndonos al correo de la reserva.</p>
 </main>
+<footer class="site-foot">
+  <div class="site-foot-in">
+    <span><a class="brand" href="https://hoomio.es/">hoomio<span>.</span></a></span>
+    <span>info@hoomio.es · +34 623 940 910</span>
+    <span>© 2026 Hoomio</span>
+  </div>
+</footer>
 
 <datalist id="countries"></datalist>
 
@@ -891,7 +936,7 @@ const Sig = (() => {
   function draw(cv) {
     const ctx = cv.getContext('2d');
     ctx.clearRect(0, 0, cv.width, cv.height);
-    ctx.lineWidth = 2.4 * (window.devicePixelRatio || 1); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1C2A4A';
+    ctx.lineWidth = 2.4 * (window.devicePixelRatio || 1); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#1D2B2A';
     for (const s of strokes.get(cv) || []) {
       ctx.beginPath();
       s.forEach(([x, y], i) => (i ? ctx.lineTo : ctx.moveTo).call(ctx, x * cv.width, y * cv.height));
