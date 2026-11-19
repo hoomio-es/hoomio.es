@@ -3,29 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Hoomio · Gestión de alquiler turístico</title>
-<meta name="description" content="Gestionamos tu piso turístico de principio a fin con tecnología propia: accesos sin llaves, comunicación 24/7 y precios dinámicos.">
+<title>Gestión de pisos turísticos desde el 12,5% · Hoomio</title>
+<meta name="description" content="Gestión integral de tu piso turístico con check-in sin llaves, atención 24/7 y precios dinámicos. Comisión desde el 12,5%. Calcula cuánto te quedaría.">
+<link rel="canonical" href="https://hoomio.es/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#2F5D50">
+<link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
 <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Hoomio">
+<meta property="og:url" content="https://hoomio.es/">
+<meta property="og:title" content="Deja de gestionar tu piso. Empieza a disfrutarlo.">
+<meta property="og:description" content="Gestión integral de pisos turísticos con tecnología propia. Comisión desde el 12,5%.">
+<meta property="og:image" content="https://hoomio.es/static/images/og-hoomio.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" as="image" href="static/images/hero.webp" type="image/webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/styles/hoomio.css">
+<link rel="stylesheet" href="static/styles/hoomio.css?v=2">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://hoomio.es/#org",
+      "name": "Hoomio",
+      "url": "https://hoomio.es/",
+      "logo": "https://hoomio.es/static/images/hoomio.png",
+      "email": "info@hoomio.es",
+      "telephone": "+34623940910"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://hoomio.es/#web",
+      "url": "https://hoomio.es/",
+      "name": "Hoomio",
+      "inLanguage": "es-ES",
+      "publisher": { "@id": "https://hoomio.es/#org" }
+    },
+    {
+      "@type": "Service",
+      "name": "Gestión integral de pisos turísticos",
+      "serviceType": "Gestión de alquiler vacacional",
+      "provider": { "@id": "https://hoomio.es/#org" },
+      "areaServed": { "@type": "Country", "name": "España" },
+      "description": "Publicación en Airbnb, Booking y VRBO, check-in sin llaves, atención a huéspedes 24/7, registro de viajeros, limpiezas, incidencias y precios dinámicos. Planes con comisión del 12,5%, 15% y 18,5% de la facturación."
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
 <header class="top" id="top">
   <div class="wrap nav">
-    <a href="#" class="brand">hoomio<span>.</span></a>
-    <nav aria-label="Principal">
+    <a href="#" class="brand" aria-label="Hoomio, inicio">hoomio<span>.</span></a>
+    <nav aria-label="Principal" id="menu">
       <ul>
         <li><a href="#servicio">Servicio</a></li>
         <li><a href="#planes">Planes</a></li>
         <li><a href="#calculadora">Calculadora</a></li>
-        <li><a href="#tecnologia">Tecnología</a></li>
+        <li><a href="por-que-hoomio.html">Por qué Hoomio</a></li>
         <li><a href="faq.html">FAQ</a></li>
       </ul>
     </nav>
-    <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Reunámonos</a>
+    <div class="nav-end">
+      <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="cabecera">Reunámonos</a>
+      <button class="menu-btn" type="button" aria-controls="menu" aria-expanded="false"><span class="sr">Abrir menú</span><i></i></button>
+    </div>
   </div>
 </header>
 
@@ -33,13 +86,14 @@
   <div class="hero-photo">
     <div class="wrap">
       <div class="hero-box">
+        <p class="eyebrow">Gestión de pisos turísticos</p>
         <h1>Deja de gestionar tu piso. Empieza a disfrutarlo.</h1>
         <p class="lead">Reservas, huéspedes, limpiezas e incidencias: nos encargamos de todo. Gracias a la automatización, pagas menos comisión que con una gestora tradicional y sabes en qué se va cada euro.</p>
         <div class="actions">
           <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Quiero que gestionéis mi piso</a>
           <a class="btn ghost btn-lg" href="#calculadora">Calcula tu ahorro</a>
         </div>
-        <p class="reassure">Primera llamada de 30 minutos, gratuita y sin compromiso.</p>
+        <p class="reassure">Primera llamada de 30 minutos, gratuita y sin compromiso. <a href="por-que-hoomio.html">¿Por qué Hoomio?</a></p>
       </div>
     </div>
   </div>
@@ -151,19 +205,92 @@
 
   <section id="calculadora">
     <div class="wrap">
-      <h2>Lo que ganas con Hoomio: dinero, tiempo y tranquilidad.</h2>
-      <p class="intro">Indica cuánto factura tu piso al mes. Verás cuánto te queda después de nuestra comisión, cuánto ahorras frente a una gestora al 20% y cuántas horas dejas de dedicarle.</p>
-      <div class="calc">
-        <div>
-          <label for="income">Facturación mensual de tu piso</label>
-          <div class="amount" id="amount" aria-live="polite">4.250 €</div>
-          <input type="range" id="income" min="1000" max="9000" step="50" value="4250">
-          <p class="hint">Lo que pagan los huéspedes por las reservas de un mes.</p>
-          <div class="ref" id="ref"></div>
-          <p class="hint">Cálculo orientativo. Las cantidades son antes de gastos de limpieza, suministros e impuestos. Las horas son una estimación para un piso con unas 8 reservas al mes gestionado por su propietario.</p>
+      <h2>Calcula cuánto te quedaría con Hoomio.</h2>
+      <p class="intro">Tres datos y en 20 segundos ves cuánto cobrarías cada mes, cuánto ahorras frente a tu gestora actual o cuántas horas recuperas si hoy lo llevas tú.</p>
+
+      <form class="calc" id="calc" novalidate>
+        <div class="calc-in">
+          <fieldset class="field">
+            <legend>1. ¿Cuánto factura tu piso?</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="modo" value="mes" checked><span>Sé lo que factura al mes</span></label>
+              <label><input type="radio" name="modo" value="noches"><span>Calcular por noches</span></label>
+            </div>
+
+            <div class="mode-panel" data-modo="mes">
+              <label class="sr" for="f">Facturación mensual en euros</label>
+              <div class="money">
+                <input id="f" name="f" type="text" inputmode="numeric" autocomplete="off" value="4.250" aria-describedby="f-hint">
+                <span aria-hidden="true">€/mes</span>
+              </div>
+              <input id="f-range" type="range" min="500" max="12000" step="50" value="4250" aria-label="Ajustar facturación mensual" tabindex="-1">
+              <p class="hint" id="f-hint">Lo que pagan los huéspedes por las reservas de un mes.</p>
+            </div>
+
+            <div class="mode-panel" data-modo="noches" hidden>
+              <div class="pair">
+                <div>
+                  <label for="precio">Precio medio por noche</label>
+                  <div class="unit"><input id="precio" type="text" inputmode="numeric" autocomplete="off" value="175"><span>€</span></div>
+                </div>
+                <div>
+                  <label for="noches">Noches ocupadas al mes: <output id="noches-out" for="noches">24</output></label>
+                  <input id="noches" type="range" min="5" max="30" step="1" value="24">
+                </div>
+              </div>
+              <p class="hint">Facturación estimada: <b id="f-est">4.200 €</b> al mes.</p>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>2. ¿Quién lo gestiona hoy?</legend>
+            <div class="seg" role="radiogroup">
+              <label><input type="radio" name="actual" value="gestora" checked><span>Una gestora</span></label>
+              <label><input type="radio" name="actual" value="yo"><span>Lo llevo yo</span></label>
+            </div>
+            <div class="com" id="com-wrap">
+              <label for="com">Comisión de tu gestora</label>
+              <div class="unit"><input id="com" type="text" inputmode="decimal" autocomplete="off" value="20"><span>%</span></div>
+            </div>
+          </fieldset>
+
+          <fieldset class="field">
+            <legend>3. Elige un plan Hoomio</legend>
+            <div class="seg seg-3" role="radiogroup">
+              <label><input type="radio" name="plan" value="basico"><span>Básico <small>12,5%</small></span></label>
+              <label><input type="radio" name="plan" value="estandar" checked><span>Estándar <small>15%</small></span></label>
+              <label><input type="radio" name="plan" value="premium"><span>Premium <small>18,5%</small></span></label>
+            </div>
+          </fieldset>
         </div>
-        <div class="results" id="rows" aria-live="polite"></div>
-      </div>
+
+        <a class="calc-peek" id="calc-peek" href="#out-label" aria-hidden="true" tabindex="-1">
+          <span>Te quedan <b id="peek-net">3.613 €</b> al mes</span><span id="peek-delta"></span><span class="peek-go">Ver ↓</span>
+        </a>
+
+        <div class="calc-out" id="calc-out" aria-live="polite" aria-atomic="true">
+          <p class="out-label" id="out-label">Con el plan Estándar te quedan cada mes</p>
+          <div class="out-big" id="out-net">3.613 €</div>
+          <p class="out-delta" id="out-delta"></p>
+          <div class="bars" id="out-bars"></div>
+          <p class="out-forget" id="out-forget"></p>
+          <div class="out-actions">
+            <a class="btn" id="out-cta" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="calculadora">Quiero el plan Estándar</a>
+            <button type="button" class="btn ghost" id="out-share">Copiar enlace</button>
+          </div>
+          <p class="hint">Cálculo orientativo, antes de limpieza, suministros e impuestos. Las horas son una estimación para un piso con unas 8 reservas al mes gestionado por su propietario.</p>
+        </div>
+
+        <details class="compare">
+          <summary>Comparar los tres planes con tus números</summary>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Plan</th><th scope="col">Comisión</th><th scope="col">Te quedan al mes</th><th scope="col" id="th-last">Diferencia al año</th></tr></thead>
+              <tbody id="cmp"></tbody>
+            </table>
+          </div>
+        </details>
+      </form>
     </div>
   </section>
 
@@ -201,6 +328,7 @@
       <p style="margin:.5rem 0 0"><a href="mailto:info@hoomio.es">info@hoomio.es</a> · <a href="tel:+34623940910">+34 623 940 910</a></p>
     </div>
     <ul>
+      <li><a href="por-que-hoomio.html">Por qué Hoomio</a></li>
       <li><a href="faq.html">Preguntas frecuentes</a></li>
       <li><a href="privacy.html">Privacidad</a></li>
       <li><a href="terms.html">Condiciones de uso</a></li>
@@ -209,49 +337,7 @@
   <div class="wrap" style="margin-top:2rem">© <span id="year">2026</span> Hoomio</div>
 </footer>
 
-<script>
-  (function () {
-    var plans = [
-      { name: "Básico", rate: 0.125, hours: 12,
-        worries: "mensajes a deshoras, entrega de llaves, registro de viajeros y quejas por ruido." },
-      { name: "Estándar", rate: 0.15, hours: 25, featured: true,
-        worries: "todo lo anterior, más limpiezas que fallan, averías y reseñas negativas." },
-      { name: "Premium", rate: 0.185, hours: 28, kitIncluded: true,
-        worries: "todo lo anterior, más precios mal ajustados y seguros o suministros más caros de lo necesario." }
-    ];
-    var eur = new Intl.NumberFormat("es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
-    var input = document.getElementById("income");
-    var amount = document.getElementById("amount");
-    var rows = document.getElementById("rows");
-    var ref = document.getElementById("ref");
-
-    function render() {
-      var v = Number(input.value);
-      amount.textContent = eur.format(v);
-      ref.innerHTML = "Con una gestora al 20% te quedarían <b>" + eur.format(v * 0.8) + "</b> al mes.";
-      rows.innerHTML = plans.map(function (p) {
-        var fee = v * p.rate;
-        var save = (v * 0.20 - fee) * 12;
-        return '<article class="res' + (p.featured ? ' featured' : '') + '">' +
-          '<div class="res-head"><h3>' + p.name + '</h3><span>Comisión del ' + (p.rate * 100).toLocaleString("es-ES") +
-          '%: ' + eur.format(fee) + ' al mes</span></div>' +
-          '<div class="figs">' +
-            '<div><strong>' + eur.format(v - fee) + '</strong>te quedan cada mes</div>' +
-            '<div><strong>' + eur.format(save) + '</strong>ahorras al año frente al 20%</div>' +
-            '<div><strong>~' + p.hours + ' h</strong>de tu tiempo libres cada mes</div>' +
-          '</div>' +
-          '<p class="worries"><b>Te olvidas de:</b> ' + p.worries + '</p>' +
-          (p.kitIncluded ? '<p class="worries"><b>Kit Hoomio incluido</b> con contrato mínimo de 2 años.</p>' : '') +
-        '</article>';
-      }).join("");
-    }
-    input.addEventListener("input", render);
-    render();
-
-    var header = document.getElementById("top");
-    window.addEventListener("scroll", function () { header.classList.toggle("scrolled", window.scrollY > 8); }, { passive: true });
-    document.getElementById("year").textContent = new Date().getFullYear();
-  })();
-</script>
+<script src="static/scripts/hoomio.js?v=2" defer></script>
+<script src="static/scripts/calculadora.js?v=2" defer></script>
 </body>
 </html>
