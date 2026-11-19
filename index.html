@@ -3,11 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gestión de pisos turísticos desde el 12,5% · Hoomio</title>
-<meta name="description" content="Gestión integral de tu piso turístico con check-in sin llaves, atención 24/7 y precios dinámicos. Comisión desde el 12,5%. Calcula cuánto te quedaría.">
+<title>Gestión de pisos turísticos en Barcelona desde el 12,5% · Hoomio</title>
+<meta name="description" content="Gestión integral de tu piso turístico en Barcelona: check-in sin llaves, atención 24/7, limpieza, lavandería y reposición. Comisión desde el 12,5%. Calcula tu ahorro en dinero y tiempo.">
 <link rel="canonical" href="https://hoomio.es/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#2F5D50">
+<meta name="geo.region" content="ES-CT">
+<meta name="geo.placename" content="Barcelona">
 <link rel="icon" type="image/svg+xml" href="static/images/favicon.svg">
 <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
 
@@ -15,8 +17,8 @@
 <meta property="og:locale" content="es_ES">
 <meta property="og:site_name" content="Hoomio">
 <meta property="og:url" content="https://hoomio.es/">
-<meta property="og:title" content="Deja de gestionar tu piso. Empieza a disfrutarlo.">
-<meta property="og:description" content="Gestión integral de pisos turísticos con tecnología propia. Comisión desde el 12,5%.">
+<meta property="og:title" content="Tu piso turístico en Barcelona, sin que te suene el móvil.">
+<meta property="og:description" content="Gestión integral con tecnología propia. Comisión desde el 12,5%. Calcula cuánto dinero y cuánto tiempo ahorras.">
 <meta property="og:image" content="https://hoomio.es/static/images/og-hoomio.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -26,7 +28,36 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/styles/hoomio.css?v=2">
+<link rel="stylesheet" href="static/styles/hoomio.css?v=4">
+<style>
+  /* Planes: requisito del Básico y lo que no incluye */
+  .plan-req { margin: 1rem 0 0; padding: .75rem .9rem; border-radius: 12px; font-size: .84rem; line-height: 1.45;
+    background: color-mix(in srgb, var(--brass) 12%, var(--surface)); color: var(--ink); }
+  .plan-req b { font-weight: 600; color: var(--brass); }
+  .plan li.not { color: var(--muted); }
+  .plan li.not::before { border: 0; transform: none; width: auto; height: auto; top: .5rem; left: .1rem;
+    content: "×"; color: var(--brass); font-size: 1rem; line-height: 1; }
+  .plan .soon, .kit-card .soon { display: inline-block; margin-left: .35rem; padding: .1rem .45rem; border-radius: 6px;
+    font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; vertical-align: .1em;
+    background: color-mix(in srgb, var(--brass) 15%, var(--surface)); color: var(--brass); }
+  .kit-teaser { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
+  .kit-teaser .intro { margin-bottom: 1.75rem; }
+  .kit-chips { list-style: none; margin: 0; padding: 0; display: grid; gap: .6rem; }
+  .kit-chips li { padding: .85rem 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); font-size: .95rem; }
+  .art { background: var(--surface); }
+  .art-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; align-items: start; }
+  .art h2 { max-width: 16ch; }
+  .art .intro { margin: 0 0 1rem; }
+  .art .intro a { color: var(--ink); text-underline-offset: 3px; }
+  #tecnologia .rules-title { margin-top: 5rem; }
+  .out-delta .warn { display: block; margin-top: .45rem; font-size: .85rem; color: var(--brass); }
+  @media (max-width: 860px) { .kit-teaser, .art-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+</style>
+<script>
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("can-reveal");
+  }
+</script>
 
 <script type="application/ld+json">
 {
@@ -39,7 +70,8 @@
       "url": "https://hoomio.es/",
       "logo": "https://hoomio.es/static/images/hoomio.png",
       "email": "info@hoomio.es",
-      "telephone": "+34623940910"
+      "telephone": "+34623940910",
+      "areaServed": { "@type": "City", "name": "Barcelona" }
     },
     {
       "@type": "WebSite",
@@ -51,11 +83,11 @@
     },
     {
       "@type": "Service",
-      "name": "Gestión integral de pisos turísticos",
+      "name": "Gestión integral de pisos turísticos en Barcelona",
       "serviceType": "Gestión de alquiler vacacional",
       "provider": { "@id": "https://hoomio.es/#org" },
-      "areaServed": { "@type": "Country", "name": "España" },
-      "description": "Publicación en Airbnb, Booking y VRBO, check-in sin llaves, atención a huéspedes 24/7, registro de viajeros, limpiezas, incidencias y precios dinámicos. Planes con comisión del 12,5%, 15% y 18,5% de la facturación."
+      "areaServed": { "@type": "City", "name": "Barcelona" },
+      "description": "Publicación en plataformas, check-in sin llaves, atención a huéspedes 24/7, registro de viajeros, limpieza, lavandería, reposición de consumibles, incidencias y precios dinámicos. Planes con comisión del 12,5%, 15% y 18,5% de la facturación."
     }
   ]
 }
@@ -68,10 +100,11 @@
     <a href="#" class="brand" aria-label="Hoomio, inicio">hoomio<span>.</span></a>
     <nav aria-label="Principal" id="menu">
       <ul>
+        <li><a href="#fin-de-semana">Sin Hoomio vs. con Hoomio</a></li>
         <li><a href="#servicio">Servicio</a></li>
         <li><a href="#planes">Planes</a></li>
         <li><a href="#calculadora">Calculadora</a></li>
-        <li><a href="por-que-hoomio.html">Por qué Hoomio</a></li>
+        <li><a href="kit.html">Kit Hoomio</a></li>
         <li><a href="faq.html">FAQ</a></li>
       </ul>
     </nav>
@@ -83,25 +116,70 @@
 </header>
 
 <main>
+  <!-- Hero -->
   <div class="hero-photo">
     <div class="wrap">
       <div class="hero-box">
-        <p class="eyebrow">Gestión de pisos turísticos</p>
-        <h1>Deja de gestionar tu piso. Empieza a disfrutarlo.</h1>
-        <p class="lead">Reservas, huéspedes, limpiezas e incidencias: nos encargamos de todo. Gracias a la automatización, pagas menos comisión que con una gestora tradicional y sabes en qué se va cada euro.</p>
+        <p class="eyebrow">Gestión de pisos turísticos en Barcelona</p>
+        <h1>Compraste un piso para que trabajara para ti.</h1>
+        <p class="lead">No para trabajar tú para él. Reservas, huéspedes, limpiezas, lavandería e incidencias: nos encargamos de todo, con menos comisión que una gestora tradicional.</p>
         <div class="actions">
-          <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Quiero que gestionéis mi piso</a>
+          <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="hero">Quiero que gestionéis mi piso</a>
           <a class="btn ghost btn-lg" href="#calculadora">Calcula tu ahorro</a>
         </div>
-        <p class="reassure">Primera llamada de 30 minutos, gratuita y sin compromiso. <a href="por-que-hoomio.html">¿Por qué Hoomio?</a></p>
+        <p class="reassure">Primera llamada de 30 minutos, gratuita y sin compromiso.</p>
       </div>
     </div>
   </div>
 
+  <!-- Historia: dos bloques -->
+  <section id="fin-de-semana" class="weekend">
+    <div class="wrap">
+      <p class="eyebrow" data-reveal>Un fin de semana cualquiera</p>
+      <h2 data-reveal>El mismo piso, las mismas horas. <br>Dos fines de semana muy distintos.</h2>
+
+      <div class="duo">
+        <article class="duo-card bad" data-reveal aria-labelledby="sin-t">
+          <header>
+            <span class="pill">Si lo llevas tú</span>
+            <h3 id="sin-t">Tu móvil no para de sonar.</h3>
+          </header>
+          <ol class="thread bad">
+            <li><div class="when"><time><span class="d">Vie</span><span class="h">23:41</span></time><span class="spent" aria-label="Tiempo invertido: 30 min">30 min</span></div><blockquote>«No encontramos el cajetín de las llaves. ¿Nos puedes llamar?»</blockquote><p>Dejas la cena a medias y les guías por teléfono, calle por calle.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">02:15</span></time><span class="spent" aria-label="Tiempo invertido: 40 min">40 min</span></div><blockquote>«Otra vez música muy alta en el 3.º B.»</blockquote><p>Un vecino. Escribes al huésped y te quedas despierto esperando.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">09:30</span></time><span class="spent" aria-label="Tiempo invertido: 2 h">2 h</span></div><blockquote>«Hoy no puedo ir, estoy con fiebre.»</blockquote><p>La limpieza. El siguiente huésped entra a las 16:00: limpias tú.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">11:00</span></time><span class="spent" aria-label="Tiempo invertido: 1 h 30 min">1 h 30 min</span></div><blockquote>Lavandería, súper y al piso.</blockquote><p>Sábanas y toallas limpias, papel, café, gel, champú. Tu sábado por la mañana, en el coche.</p></li>
+            <li><div class="when"><time><span class="d">Dom</span><span class="h">18:05</span></time><span class="spent" aria-label="Tiempo invertido: 20 min">20 min</span></div><blockquote>«El piso bien, pero la llegada fue un caos.» <span class="stars" aria-label="2 de 5 estrellas">★★☆☆☆</span></blockquote><p>La reseña que leerán los próximos cien huéspedes. Toca responderla.</p></li>
+          </ol>
+          <div class="duo-total"><span>Tu fin de semana, invertido en el piso</span><strong>5 h</strong></div>
+        </article>
+
+        <article class="duo-card good" data-reveal aria-labelledby="con-t">
+          <header>
+            <span class="pill">Con Hoomio</span>
+            <h3 id="con-t">Tu móvil no suena y todo sigue su curso.</h3>
+          </header>
+          <ol class="thread good">
+            <li><div class="when"><time><span class="d">Vie</span><span class="h">16:47</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Check-in completado, sin llaves.</blockquote><p>Portal y piso abiertos con un código que caduca al salir. A las 23:41 ya están cenando.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">01:58</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Ruido alto detectado. Huésped avisado.</blockquote><p>Antes de que el vecino tenga motivo para escribir. Sin cámaras ni micrófonos.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">09:30</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Baja en limpieza: reasignada.</blockquote><p>El piso queda revisado con checklist y fotos antes de las 16:00.</p></li>
+            <li><div class="when"><time><span class="d">Sáb</span><span class="h">11:00</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Ropa de cama y amenities repuestos.</blockquote><p>Lavandería y consumibles van con la limpieza. Nadie hace viajes extra.</p></li>
+            <li><div class="when"><time><span class="d">Dom</span><span class="h">18:05</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Llegada sin incidencias. Reseña respondida.</blockquote><p>Cuidamos cada llegada para que haya menos que explicar después.</p></li>
+          </ol>
+          <div class="duo-total"><span>Tu fin de semana, invertido en el piso</span><strong>0 min</strong></div>
+        </article>
+      </div>
+
+      <p class="s-punch one-line" data-reveal>Cinco horas de tu fin de semana. <br><b>O ninguna.</b></p>
+    </div>
+  </section>
+
+  <!-- Qué es Hoomio -->
   <section id="servicio">
     <div class="wrap">
+      <p class="eyebrow">Qué es Hoomio</p>
       <h2>Tecnología para lo repetitivo, personas para lo importante.</h2>
-      <p class="intro">Automatizamos todo lo que se repite en cada reserva. Así podemos dedicar el tiempo a cuidar tu piso y a que rinda más, y trasladarte el ahorro en la comisión.</p>
+      <p class="intro">Somos una gestora de pisos turísticos en Barcelona que automatiza todo lo que se repite en cada reserva. Así dedicamos el tiempo a cuidar tu piso y a que rinda más, y te trasladamos el ahorro en la comisión.</p>
       <div class="pillars">
         <div>
           <h3>Tu piso, sin llaves</h3>
@@ -109,53 +187,68 @@
         </div>
         <div>
           <h3>El día a día, resuelto</h3>
-          <p>Anuncios en Airbnb, Booking y VRBO, atención a huéspedes 24/7, registro de viajeros, limpiezas e incidencias coordinadas.</p>
+          <p>Anuncios en plataformas, atención 24/7, registro de viajeros, limpieza, lavandería, reposición de consumibles e incidencias.</p>
         </div>
         <div>
           <h3>Rentabilidad que puedes ver</h3>
           <p>Precios dinámicos según la demanda y liquidaciones claras cada mes. En el plan Premium, además, revisamos tus costes fijos.</p>
         </div>
       </div>
-
-      <div class="flow">
-        <div>
-          <h3>Así es una llegada con Hoomio</h3>
-          <p>Cada paso ocurre solo y queda registrado. Nosotros solo intervenimos cuando hace falta una persona, y tú no tienes que coger el teléfono.</p>
-        </div>
-        <aside class="day" aria-label="Ejemplo de una llegada gestionada por Hoomio">
-          <div class="day-head"><strong>Una llegada cualquiera</strong><span>Sin nadie en la puerta</span></div>
-          <ol>
-            <li><time>10:02</time><div>Huésped registrado<small>Datos enviados a la policía automáticamente</small></div></li>
-            <li><time>12:30</time><div>Limpieza terminada<small>Revisada con checklist y fotos</small></div></li>
-            <li><time>14:00</time><div>Código de acceso enviado<small>Válido solo durante su estancia</small></div></li>
-            <li><time>16:47</time><div>Check-in completado<small>Portal y piso abiertos sin llaves</small></div></li>
-            <li><time>16:52</time><div>Bienvenida y wifi<small>Respondemos dudas a cualquier hora</small></div></li>
-          </ol>
-          <div class="day-foot">Y si a las 3:00 hay ruido, nos avisan los sensores antes que los vecinos.</div>
-        </aside>
-      </div>
     </div>
   </section>
 
+  <section class="s-dark" aria-labelledby="pregunta-t">
+    <div class="wrap">
+      <div class="s-text s-center" data-reveal>
+        <p class="eyebrow">La pregunta que nos hicimos</p>
+        <h2 id="pregunta-t">¿Qué parte de gestionar un piso necesita de verdad a una persona?</h2>
+      </div>
+      <div class="split" data-reveal>
+        <div>
+          <h3>Lo hace la tecnología</h3>
+          <ul>
+            <li>Dar acceso al piso y al portal</li>
+            <li>Registrar a los viajeros</li>
+            <li>Responder lo de siempre: wifi, horarios, parking</li>
+            <li>Vigilar el ruido y la ocupación</li>
+            <li>Apagar la climatización cuando no hay nadie</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Lo hacemos nosotros</h3>
+          <ul>
+            <li>Cuidar tu piso como si fuera nuestro</li>
+            <li>Limpieza, lavandería y reposición</li>
+            <li>Resolver lo imprevisto, a cualquier hora</li>
+            <li>Ajustar precios y anuncios para que rinda más</li>
+            <li>Rendirte cuentas claras cada mes</li>
+          </ul>
+        </div>
+      </div>
+      <p class="s-note" data-reveal>Al separar unas tareas de otras, cada piso nos lleva menos horas. Por eso cobramos desde el 12,5%, frente al 20% habitual.</p>
+    </div>
+  </section>
+
+  <!-- Planes -->
   <section id="planes">
     <div class="wrap">
       <h2>Tres planes para pisos automatizados.</h2>
-      <p class="intro">Elige cuánto quieres delegar. Todos incluyen la tecnología Hoomio y puedes cambiar de plan cuando lo necesites.</p>
+      <p class="intro">Elige cuánto quieres delegar. <br>Todos parten de un piso con acceso autónomo y puedes cambiar de plan cuando lo necesites.</p>
 
       <div class="plans">
         <article class="plan">
           <h3>Básico</h3>
-          <p class="for">Para quien vive cerca y prefiere encargarse de la limpieza.</p>
+          <p class="for">Para quien vive cerca y se encarga de la limpieza.</p>
           <div class="price">12,5%<small> de la facturación</small></div>
           <ul>
-            <li>Publicación en Airbnb, Booking y VRBO</li>
-            <li>Precios dinámicos</li>
+            <li>Publicación en plataformas</li>
             <li>Atención a huéspedes 24/7</li>
             <li>Check-in autónomo y registro de viajeros</li>
             <li>Control de ruido y ocupación</li>
             <li>Liquidación mensual</li>
+            <li class="not">Coordinar limpieza, lavandería y reposiciones corre de tu cuenta</li>
           </ul>
-          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Básico</a>
+          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_basico">Hablemos del Básico</a>
         </article>
 
         <article class="plan featured">
@@ -166,13 +259,11 @@
           <ul>
             <li class="inherit">Todo lo del plan Básico</li>
             <li>Coordinación de limpieza y lavandería</li>
+            <li>Reposición de consumibles y amenities</li>
             <li>Gestión de incidencias y reparaciones</li>
             <li>Revisiones periódicas del piso</li>
-            <li>Reposición de consumibles</li>
-            <li>Gestión de reseñas</li>
-            <li>Informe mensual</li>
           </ul>
-          <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Estándar</a>
+          <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_estandar">Hablemos del Estándar</a>
         </article>
 
         <article class="plan">
@@ -181,32 +272,34 @@
           <div class="price">18,5%<small> de la facturación</small></div>
           <ul>
             <li class="inherit">Todo lo del plan Estándar</li>
-            <li class="gift">Kit Hoomio incluido, sin coste de instalación<small>Con contrato mínimo de 2 años</small></li>
+            <li class="gift">Domótica del piso a medida<small>Accesos, servicios básicos y sensores automatizados. Se presupuesta aparte; si la financiamos nosotros, facturamos al 20% hasta cubrir la inversión.</small></li>
             <li>Estrategia de precios revisada personalmente</li>
             <li>Informe de rentabilidad neta y comparativa de mercado</li>
             <li>Mantenimiento preventivo planificado</li>
             <li>Fotos profesionales y mejora del anuncio cada año</li>
             <li>Atención prioritaria</li>
             <li>Revisión anual de seguros, suministros e internet</li>
+            <li>Arte original expuesto en el piso, a la venta para tus huéspedes <span class="soon">Próximamente</span></li>
           </ul>
-          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Hablemos del Premium</a>
+          <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_premium">Hablemos del Premium</a>
         </article>
       </div>
 
       <div class="note">
         <strong>20%</strong>
         <div>
-          <p>¿Tu piso aún no está automatizado? Lo gestionamos con el servicio Estándar al 20%, la comisión habitual del mercado, hasta que instalemos el kit Hoomio. Desde ese momento pasas al plan que elijas.</p>
-          <p class="payback">El kit se presupuesta para cada piso tras una visita técnica, según el material y la obra necesarios. En el plan Premium <b>el kit está incluido</b> con un contrato mínimo de 2 años.</p>
+          <p>La domótica y su instalación se presupuestan aparte, tras una visita técnica, según lo que necesite cada piso. Puedes pagarla tú o dejar que la financiemos nosotros.</p>
+          <p class="payback">Si la financia Hoomio, <b>facturamos al 20% hasta cubrir la inversión</b>. Desde ese momento pasas a la comisión del plan que elijas.</p>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Calculadora -->
   <section id="calculadora">
     <div class="wrap">
-      <h2>Calcula cuánto te quedaría con Hoomio.</h2>
-      <p class="intro">Tres datos y en 20 segundos ves cuánto cobrarías cada mes, cuánto ahorras frente a tu gestora actual o cuántas horas recuperas si hoy lo llevas tú.</p>
+      <h2>Calcula cuánto ganas: en dinero y en tiempo.</h2>
+      <p class="intro">Un piso turístico no solo cuesta comisión. Cuesta mensajes, viajes al piso, a la lavandería y al súper. Pon precio a tu hora y compara.</p>
 
       <form class="calc" id="calc" novalidate>
         <div class="calc-in">
@@ -240,22 +333,42 @@
               </div>
               <p class="hint">Facturación estimada: <b id="f-est">4.200 €</b> al mes.</p>
             </div>
+
+            <div class="sub">
+              <label for="reservas">Reservas al mes: <output id="reservas-out" for="reservas">8</output></label>
+              <input id="reservas" type="range" min="1" max="20" step="1" value="8">
+            </div>
           </fieldset>
 
           <fieldset class="field">
             <legend>2. ¿Quién lo gestiona hoy?</legend>
             <div class="seg" role="radiogroup">
-              <label><input type="radio" name="actual" value="gestora" checked><span>Una gestora</span></label>
-              <label><input type="radio" name="actual" value="yo"><span>Lo llevo yo</span></label>
+              <label><input type="radio" name="actual" value="yo" checked><span>Lo llevo yo</span></label>
+              <label><input type="radio" name="actual" value="gestora"><span>Una gestora</span></label>
             </div>
-            <div class="com" id="com-wrap">
+            <div class="com" id="com-wrap" hidden>
               <label for="com">Comisión de tu gestora</label>
               <div class="unit"><input id="com" type="text" inputmode="decimal" autocomplete="off" value="20"><span>%</span></div>
             </div>
           </fieldset>
 
+          <fieldset class="field" id="fs-tiempo">
+            <legend id="lg-tiempo">3. Tu tiempo</legend>
+            <div class="pair even">
+              <div>
+                <label for="vh">¿Cuánto vale una hora tuya?</label>
+                <div class="unit"><input id="vh" type="text" inputmode="numeric" autocomplete="off" value="25"><span>€/h</span></div>
+              </div>
+              <div>
+                <label for="viaje">Ir y volver del piso</label>
+                <div class="unit"><input id="viaje" type="text" inputmode="numeric" autocomplete="off" value="40"><span>min</span></div>
+              </div>
+            </div>
+            <p class="hint">Piensa en lo que ganas en tu trabajo o en lo que pagarías a alguien por hacerlo.</p>
+          </fieldset>
+
           <fieldset class="field">
-            <legend>3. Elige un plan Hoomio</legend>
+            <legend id="lg-plan">4. Elige un plan Hoomio</legend>
             <div class="seg seg-3" role="radiogroup">
               <label><input type="radio" name="plan" value="basico"><span>Básico <small>12,5%</small></span></label>
               <label><input type="radio" name="plan" value="estandar" checked><span>Estándar <small>15%</small></span></label>
@@ -265,27 +378,47 @@
         </div>
 
         <a class="calc-peek" id="calc-peek" href="#out-label" aria-hidden="true" tabindex="-1">
-          <span>Te quedan <b id="peek-net">3.613 €</b> al mes</span><span id="peek-delta"></span><span class="peek-go">Ver ↓</span>
+          <span>Te quedan <b id="peek-net">3.613 €</b>/mes</span><span id="peek-delta"></span><span class="peek-go">Ver ↓</span>
         </a>
 
         <div class="calc-out" id="calc-out" aria-live="polite" aria-atomic="true">
           <p class="out-label" id="out-label">Con el plan Estándar te quedan cada mes</p>
           <div class="out-big" id="out-net">3.613 €</div>
           <p class="out-delta" id="out-delta"></p>
+
+          <div class="time-card" id="time-card">
+            <div class="time-head">
+              <div><span id="t-hours-label">Tiempo que recuperas</span><strong id="t-hours">~29 h/mes</strong></div>
+              <div><span id="t-value-label">Valorado a 25 €/h</span><strong id="t-value">725 €/mes</strong></div>
+            </div>
+            <p id="t-note"></p>
+          </div>
+
           <div class="bars" id="out-bars"></div>
           <p class="out-forget" id="out-forget"></p>
           <div class="out-actions">
             <a class="btn" id="out-cta" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="calculadora">Quiero el plan Estándar</a>
             <button type="button" class="btn ghost" id="out-share">Copiar enlace</button>
           </div>
-          <p class="hint">Cálculo orientativo, antes de limpieza, suministros e impuestos. Las horas son una estimación para un piso con unas 8 reservas al mes gestionado por su propietario.</p>
+          <p class="hint">Cálculo orientativo, antes de limpieza, suministros e impuestos, y sin incluir la domótica. Los tiempos son estimaciones medias por reserva; ajústalos con tus datos en la llamada.</p>
         </div>
+
+        <details class="compare">
+          <summary>Tu mes, tarea a tarea</summary>
+          <div class="table-wrap">
+            <table class="tasks">
+              <thead><tr><th scope="col">Tarea</th><th scope="col">Horas al mes</th><th scope="col" id="tasks-plan">Con el plan Estándar</th></tr></thead>
+              <tbody id="tasks"></tbody>
+              <tfoot id="tasks-foot"></tfoot>
+            </table>
+          </div>
+        </details>
 
         <details class="compare">
           <summary>Comparar los tres planes con tus números</summary>
           <div class="table-wrap">
             <table>
-              <thead><tr><th scope="col">Plan</th><th scope="col">Comisión</th><th scope="col">Te quedan al mes</th><th scope="col" id="th-last">Diferencia al año</th></tr></thead>
+              <thead><tr><th scope="col">Plan</th><th scope="col">Comisión</th><th scope="col">Te quedan al mes</th><th scope="col">Horas que recuperas</th><th scope="col" id="th-last">Balance al mes</th></tr></thead>
               <tbody id="cmp"></tbody>
             </table>
           </div>
@@ -294,29 +427,56 @@
     </div>
   </section>
 
+  <!-- Tecnología y principios -->
   <section id="tecnologia">
     <div class="wrap">
-      <h2>El kit Hoomio.</h2>
-      <p class="intro">Lo instalamos una vez y es lo que nos permite gestionar mejor por menos. Sin cuotas por dispositivo y con control local: si falla internet, la puerta sigue abriendo.</p>
-      <div class="kit">
-        <div><h3>Cerradura del piso</h3><p>Códigos únicos por reserva que caducan solos. Se acabaron las copias de llaves y las esperas.</p></div>
-        <div><h3>Apertura del portal</h3><p>El huésped entra al edificio con el mismo código, sin cajetines de llaves en la calle.</p></div>
-        <div><h3>Sensor de ruido y ocupación</h3><p>Detecta fiestas y exceso de personas sin cámaras ni micrófonos que graben.</p></div>
-        <div><h3>Wifi profesional</h3><p>Red propia para huéspedes, estable y separada de los dispositivos del piso.</p></div>
-        <div><h3>Climatización y consumo</h3><p>La calefacción y el aire se apagan cuando no hay nadie. Lo notarás en las facturas.</p></div>
-        <div><h3>Instalación y puesta en marcha</h3><p>Lo instalamos, lo conectamos con nuestro sistema y lo probamos antes de la primera reserva.</p></div>
+      <div class="kit-teaser">
+        <div>
+          <p class="eyebrow">Kit Hoomio</p>
+          <h2>Un piso que se gestiona casi solo.</h2>
+          <p class="intro">Domotizamos los accesos y los servicios básicos del piso, automatizamos la comunicación con los huéspedes y vigilamos lo que importa: aforo, ruido y seguridad. Menos imprevistos, menos viajes y menos horas por reserva.</p>
+          <a class="btn ghost" href="kit.html">Descubre qué resuelve el kit</a>
+        </div>
+        <ul class="kit-chips">
+          <li>Check-in y check-out con códigos automáticos</li>
+          <li>Luz, agua, persianas y climatización a distancia</li>
+          <li>Mensajes antes, durante y después de la estancia</li>
+          <li>Respuestas al instante a las dudas del huésped</li>
+          <li>Control de aforo, ruido y gases</li>
+        </ul>
       </div>
-      <p class="fine">Cada piso es distinto, así que el kit se presupuesta de forma individual tras una visita técnica, según el material y la obra necesarios. En el plan Premium está incluido con un contrato mínimo de 2 años.</p>
+
+      <h3 class="rules-title">Lo que no negociamos</h3>
+      <div class="s-rules">
+        <div><h3>Sin cámaras ni micrófonos</h3><p>Medimos ruido y ocupación sin grabar a nadie. La privacidad de tus huéspedes también es tu reputación.</p></div>
+        <div><h3>Si cae internet, la puerta abre</h3><p>Control local y sin cuotas por dispositivo. Tu piso no depende de la nube de un fabricante.</p></div>
+        <div><h3>Cuentas claras cada mes</h3><p>Liquidación detallada: qué se facturó, qué se gastó y qué te queda.</p></div>
+        <div><h3>Solo pisos con licencia</h3><p>Trabajamos únicamente con inmuebles con licencia de uso turístico vigente.</p></div>
+      </div>
     </div>
   </section>
 
-  <section id="contacto">
-    <div class="wrap cta">
+  <section id="arte" class="art">
+    <div class="wrap art-grid">
       <div>
-        <h2>Hablemos de tu piso.</h2>
-        <p>Una llamada de 30 minutos para ver cuánto puede rendir y qué plan te encaja.</p>
+        <p class="eyebrow">Pisos Premium · Próximamente</p>
+        <h2>Un piso con arte se recuerda. Y se puede llevar a casa.</h2>
       </div>
-      <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Reserva una llamada</a>
+      <div>
+        <p class="intro">Estamos preparando exposiciones de obra original en nuestros pisos Premium y sus zonas comunes, de la mano de <a href="https://www.atelierbarcelona.es/" target="_blank" rel="noopener">Atelier Barcelona</a>, el estudio de la artista Lourdes Vázquez: piezas de gran formato pintadas a mano para espacios que piden presencia.</p>
+        <p class="intro">Para tus huéspedes, una estancia que no se parece a ninguna otra. Para tu anuncio, fotos que destacan. Y si una obra les enamora, pueden comprarla.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="s-close">
+    <div class="wrap">
+      <h2>Tu tranquilidad es nuestro objetivo.</h2>
+      <p>Una llamada de 30 minutos, gratuita y sin compromiso, para ver cuánto puede rendir tu piso en Barcelona y qué plan te encaja.</p>
+      <div class="actions">
+        <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="cierre">Deja tu piso en manos de Hoomio</a>
+        <a class="btn ghost btn-lg" href="faq.html">Preguntas frecuentes</a>
+      </div>
     </div>
   </section>
 </main>
@@ -325,10 +485,11 @@
   <div class="wrap foot">
     <div>
       <a href="#" class="brand">hoomio<span>.</span></a>
-      <p style="margin:.5rem 0 0"><a href="mailto:info@hoomio.es">info@hoomio.es</a> · <a href="tel:+34623940910">+34 623 940 910</a></p>
+      <p style="margin:.5rem 0 0">Gestión de pisos turísticos en Barcelona</p>
+      <p style="margin:.25rem 0 0"><a href="mailto:info@hoomio.es">info@hoomio.es</a> · <a href="tel:+34623940910">+34 623 940 910</a></p>
     </div>
     <ul>
-      <li><a href="por-que-hoomio.html">Por qué Hoomio</a></li>
+      <li><a href="kit.html">Kit Hoomio</a></li>
       <li><a href="faq.html">Preguntas frecuentes</a></li>
       <li><a href="privacy.html">Privacidad</a></li>
       <li><a href="terms.html">Condiciones de uso</a></li>
@@ -337,7 +498,7 @@
   <div class="wrap" style="margin-top:2rem">© <span id="year">2026</span> Hoomio</div>
 </footer>
 
-<script src="static/scripts/hoomio.js?v=2" defer></script>
-<script src="static/scripts/calculadora.js?v=2" defer></script>
+<script src="static/scripts/hoomio.js?v=3" defer></script>
+<script src="static/scripts/calculadora.js?v=4" defer></script>
 </body>
 </html>
