@@ -41,8 +41,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .2s; }
 header.top.scrolled { border-bottom-color: var(--line); }
 .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-.brand { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
+.brand { display: inline-flex; align-items: center; font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; color: var(--ink); }
+.brand img { height: 22px; width: auto; display: block; }
 .brand span { color: var(--brass); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand img { filter: invert(1) brightness(0.92); } }
+:root[data-theme="dark"] .brand img { filter: invert(1) brightness(0.92); }
 .nav ul { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; font-size: .9rem; }
 .nav ul a { text-decoration: none; color: var(--muted); }
 .nav ul a:hover { color: var(--ink); }

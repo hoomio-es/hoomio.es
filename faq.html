@@ -9,209 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    color-scheme: light;
-    --bg: #F4F5F3;
-    --surface: #FFFFFF;
-    --ink: #1D2B2A;
-    --muted: #5E6B69;
-    --line: #D9DDDA;
-    --accent: #2F5D50;
-    --accent-ink: #FFFFFF;
-    --brass: #A88553;
-    --soft: #E8ECE9;
-    --font: "Montserrat", "Helvetica Neue", Arial, sans-serif;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      color-scheme: dark;
-      --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
-      --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
-    }
-  }
-  :root[data-theme="dark"] {
-    color-scheme: dark;
-    --bg: #141B1A; --surface: #1B2423; --ink: #E7ECEA; --muted: #9AA7A4;
-    --line: #2C3836; --accent: #7FB3A2; --accent-ink: #10201B; --brass: #C9A774; --soft: #212B2A;
-  }
-  *, *::before, *::after { box-sizing: inherit; }
-  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 80px); }
-  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-weight: 400; font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; }
-  a { color: inherit; }
-  a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
-  img { max-width: 100%; }
-  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
-
-  /* Navegación */
-  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
-  header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .2s; }
-  header.top.scrolled { border-bottom-color: var(--line); }
-  .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .brand { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
-  .brand span { color: var(--brass); }
-  .nav ul { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; font-size: .9rem; }
-  .nav ul a { text-decoration: none; color: var(--muted); }
-  .nav ul a:hover { color: var(--ink); }
-  .btn { display: inline-block; padding: .8rem 1.5rem; border-radius: 999px; background: var(--accent); color: var(--accent-ink); text-decoration: none; font-weight: 500; font-size: .95rem; border: 1px solid var(--accent); transition: opacity .2s; }
-  .btn:hover { opacity: .88; }
-  .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-  .btn.ghost:hover { border-color: var(--ink); opacity: 1; }
-  @media (max-width: 860px) { .nav ul { display: none; } }
-
-  /* Hero */
-  :root {
-    --hero-img: url("static/images/hero.jpg"); /* cambia aquí el nombre de tu foto del piso */
-    --hero-flip: -1; /* -1 voltea la foto en horizontal para que el espejo quede a la izquierda; 1 la deja como está */
-  }
-  .hero-photo { position: relative; overflow: visible; isolation: isolate; min-height: min(84vh, 760px); display: flex; align-items: flex-end; background: #34433F; }
-  .hero-photo::after { content: ""; position: absolute; inset: 0; background: var(--hero-img) center / cover no-repeat; transform: scaleX(var(--hero-flip)); }
-  .hero-photo::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(to top, rgba(12, 20, 19, .35), rgba(12, 20, 19, 0) 45%); }
-  .hero-photo .wrap { position: relative; z-index: 2; width: 100%; display: flex; justify-content: flex-end; padding-top: 10rem; padding-bottom: 0; }
-  .hero-box { background: var(--surface); color: var(--ink); border-radius: 20px; padding: 2.5rem 2.5rem 2.25rem; max-width: 580px; margin-bottom: -5rem; box-shadow: 0 30px 70px rgba(12, 20, 19, .22); }
-  .hero-photo + section { border-top: 0; padding-top: 10rem; }
-  .hero-box h1 { font-weight: 300; font-size: clamp(2rem, 3.6vw, 2.9rem); line-height: 1.1; letter-spacing: -0.035em; margin: 0 0 1rem; max-width: 15ch; }
-  .hero-box p.lead { font-size: 1.05rem; color: var(--muted); max-width: 44ch; margin: 0 0 1.75rem; }
-  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
-  .btn-lg { padding: .95rem 1.5rem; font-size: .98rem; }
-  .reassure { margin: 1.1rem 0 0; font-size: .85rem; color: var(--muted); }
-
-  .day { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 1.75rem 1.75rem 1.25rem; }
-  .day-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.25rem; }
-  .day-head strong { font-weight: 600; font-size: .95rem; }
-  .day-head span { font-size: .8rem; color: var(--muted); }
-  .day ol { list-style: none; margin: 0; padding: 0; position: relative; }
-  .day ol::before { content: ""; position: absolute; left: 3.6rem; top: .6rem; bottom: .6rem; width: 1px; background: var(--line); }
-  .day li { display: grid; grid-template-columns: 3rem 1fr; gap: 1.4rem; padding: .55rem 0; font-size: .92rem; }
-  .day li time { color: var(--muted); font-variant-numeric: tabular-nums; text-align: right; font-size: .85rem; padding-top: .05rem; }
-  .day li div { position: relative; }
-  .day li div::before { content: ""; position: absolute; left: -1.05rem; top: .55rem; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
-  .day li small { display: block; color: var(--muted); font-size: .8rem; }
-  .day li:nth-child(1) { animation-delay: .2s } .day li:nth-child(2) { animation-delay: .55s } .day li:nth-child(3) { animation-delay: .9s }
-  .day li:nth-child(4) { animation-delay: 1.25s } .day li:nth-child(5) { animation-delay: 1.6s }
-  .day-foot { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
-  @keyframes show { to { opacity: 1; transform: none; } }
-  @media (prefers-reduced-motion: reduce) { .day li { animation: none; opacity: 1; transform: none; } html { scroll-behavior: auto; } }
-  @media (max-width: 860px) { .hero-photo { min-height: 0; } .hero-photo .wrap { padding-top: 16rem; } .hero-box { padding: 1.75rem; margin-bottom: -3rem; } .hero-photo + section { padding-top: 7rem; } }
-  .flow { margin-top: 4.5rem; display: grid; grid-template-columns: .9fr 1.1fr; gap: 4rem; align-items: center; }
-  .flow h3 { font-weight: 600; font-size: 1.2rem; margin: 0 0 .6rem; }
-  .flow p { color: var(--muted); margin: 0; max-width: 40ch; }
-  @media (max-width: 860px) { .flow { grid-template-columns: 1fr; gap: 2rem; } }
-
-  /* Secciones */
-  section { padding: 5.5rem 0; border-top: 1px solid var(--line); }
-  h2 { font-weight: 300; font-size: clamp(1.9rem, 3.4vw, 2.6rem); letter-spacing: -0.03em; line-height: 1.15; margin: 0 0 1rem; max-width: 22ch; }
-  .intro { color: var(--muted); max-width: 58ch; margin: 0 0 3.5rem; font-size: 1.05rem; }
-
-  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3rem; }
-  .pillars h3 { font-weight: 600; font-size: 1.05rem; margin: 0 0 .6rem; }
-  .pillars p { color: var(--muted); margin: 0; font-size: .95rem; }
-  .pillars > div { border-top: 2px solid var(--ink); padding-top: 1.25rem; }
-  @media (max-width: 860px) { .pillars { grid-template-columns: 1fr; gap: 2rem; } }
-
-  /* Planes */
-  .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: stretch; }
-  .plan { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 2rem 1.75rem; display: flex; flex-direction: column; }
-  .plan.featured { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
-  .plan .tag { align-self: flex-start; font-size: .75rem; font-weight: 500; color: var(--accent); background: var(--soft); padding: .25rem .7rem; border-radius: 999px; margin-bottom: 1rem; }
-  .plan h3 { font-weight: 600; font-size: 1.15rem; margin: 0; }
-  .plan .for { color: var(--muted); font-size: .88rem; margin: .35rem 0 1.5rem; min-height: 2.8em; }
-  .price { font-weight: 300; font-size: 3.2rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: .3rem; }
-  .price small { font-size: 1rem; letter-spacing: 0; color: var(--muted); font-weight: 400; }
-  .plan ul { list-style: none; padding: 0; margin: 1.5rem 0 2rem; font-size: .9rem; flex: 1; }
-  .plan li { padding: .5rem 0 .5rem 1.5rem; border-top: 1px solid var(--line); position: relative; }
-  .plan li::before { content: ""; position: absolute; left: .15rem; top: 1.05rem; width: .55rem; height: .3rem; border-left: 1.5px solid var(--accent); border-bottom: 1.5px solid var(--accent); transform: rotate(-45deg); }
-  .plan li.inherit { color: var(--muted); }
-  .plan li.gift { font-weight: 600; }
-  .plan li.gift small { display: block; font-weight: 400; color: var(--muted); font-size: .8rem; }
-  .plan li.inherit::before { border-color: var(--muted); }
-  .plan .btn { text-align: center; }
-  .note { margin-top: 2rem; display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: start; padding: 1.5rem 1.75rem; border: 1px dashed var(--line); border-radius: 16px; font-size: .92rem; color: var(--muted); }
-  .note strong { color: var(--ink); font-weight: 600; font-size: 1.6rem; font-weight: 300; letter-spacing: -0.03em; line-height: 1; }
-  .note p { margin: 0; }
-  .note .payback { margin-top: .75rem; color: var(--ink); }
-  .note b { font-weight: 600; }
-  @media (max-width: 960px) { .plans { grid-template-columns: 1fr; max-width: 520px; } .plan .for { min-height: 0; } }
-
-  /* Calculadora */
-  .calc { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 2.5rem; display: grid; grid-template-columns: .9fr 1.1fr; gap: 3rem; }
-  .calc label { display: block; font-weight: 500; margin-bottom: .5rem; }
-  .calc .amount { font-weight: 300; font-size: clamp(2.6rem, 6vw, 3.8rem); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; font-variant-numeric: tabular-nums; }
-  .calc input[type=range] { width: 100%; accent-color: var(--accent); }
-  .kit-label { margin-top: 2rem; }
-  .kit-input { display: flex; align-items: center; gap: .5rem; }
-  .kit-input input { width: 8rem; font: inherit; font-size: 1.25rem; padding: .5rem .75rem; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
-  .calc .hint { font-size: .82rem; color: var(--muted); margin-top: .75rem; }
-  .ref { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--soft); border-radius: 12px; font-size: .9rem; }
-  .ref b { font-weight: 600; font-variant-numeric: tabular-nums; }
-  .results { display: grid; gap: 1rem; }
-  .res { border: 1px solid var(--line); border-radius: 16px; padding: 1.25rem 1.4rem; }
-  .res.featured { border-color: var(--accent); }
-  .res-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .9rem; }
-  .res-head h3 { margin: 0; font-size: 1rem; font-weight: 600; }
-  .res-head span { color: var(--muted); font-size: .85rem; }
-  .figs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; font-variant-numeric: tabular-nums; }
-  .figs div { font-size: .78rem; color: var(--muted); line-height: 1.35; }
-  .figs strong { display: block; font-size: 1.35rem; font-weight: 400; letter-spacing: -0.02em; color: var(--ink); margin-bottom: .2rem; }
-  .figs div:first-child strong { font-weight: 600; }
-  .worries { margin: .9rem 0 0; padding-top: .8rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
-  .worries b { color: var(--ink); font-weight: 500; }
-  @media (max-width: 1060px) { .figs { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 860px) { .calc { grid-template-columns: 1fr; padding: 1.75rem; gap: 2rem; } }
-
-  /* Kit */
-  .kit { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 4rem; }
-  .kit > div { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
-  .kit h3 { font-weight: 600; font-size: 1rem; margin: 0 0 .35rem; }
-  .kit h3 span { float: right; font-weight: 400; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .kit-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1.5rem 0 0; }
-  .kit-total span { font-weight: 600; }
-  .kit-total strong { font-weight: 300; font-size: 2rem; letter-spacing: -0.03em; }
-  .kit p { margin: 0; color: var(--muted); font-size: .93rem; }
-  .fine { font-size: .82rem; color: var(--muted); margin-top: 2rem; }
-  @media (max-width: 760px) { .kit { grid-template-columns: 1fr; } }
-
-  /* Contacto */
-  .cta { text-align: left; display: flex; justify-content: space-between; align-items: end; gap: 2rem; flex-wrap: wrap; }
-  .cta h2 { margin: 0; max-width: 18ch; }
-  .cta p { color: var(--muted); margin: .75rem 0 0; }
-
-  footer { border-top: 1px solid var(--line); padding: 3rem 0 2.5rem; font-size: .88rem; color: var(--muted); }
-  .foot { display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-  .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.5rem; flex-wrap: wrap; }
-  .foot a { text-decoration: none; }
-  .foot a:hover { color: var(--ink); }
-
-  /* FAQ */
-  .faq-hero { padding: 5rem 0 3rem; }
-  .faq-hero h1 { font-weight: 300; font-size: clamp(2.2rem, 4.6vw, 3.4rem); letter-spacing: -0.035em; line-height: 1.1; margin: 0 0 1rem; }
-  .faq-hero p { color: var(--muted); font-size: 1.1rem; max-width: 52ch; margin: 0; }
-  .faq-layout { display: grid; grid-template-columns: 220px 1fr; gap: 4rem; padding-bottom: 5rem; align-items: start; }
-  .faq-index { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 96px); list-style: none; margin: 0; padding: 0; font-size: .92rem; }
-  .faq-index a { display: block; padding: .45rem 0; color: var(--muted); text-decoration: none; }
-  .faq-index a:hover { color: var(--ink); }
-  .faq-group { margin-bottom: 3.5rem; }
-  .faq-group h2 { font-size: 1.5rem; margin-bottom: 1.25rem; }
-  details { border-top: 1px solid var(--line); }
-  .faq-group details:last-child { border-bottom: 1px solid var(--line); }
-  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; padding: 1.25rem 0; font-weight: 500; font-size: 1.02rem; }
-  summary::-webkit-details-marker { display: none; }
-  summary::after { content: ""; flex: none; width: .55rem; height: .55rem; border-right: 1.5px solid var(--muted); border-bottom: 1.5px solid var(--muted); transform: rotate(45deg) translateY(-2px); transition: transform .2s; }
-  details[open] summary::after { transform: rotate(-135deg) translateY(-2px); }
-  summary:hover { color: var(--accent); }
-  summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
-  .answer { padding: 0 2.5rem 1.5rem 0; color: var(--muted); max-width: 68ch; }
-  .answer p { margin: 0 0 .75rem; }
-  .answer p:last-child { margin-bottom: 0; }
-  .answer a { color: var(--accent); }
-  .faq-cta { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 2.25rem; display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
-  .faq-cta h2 { margin: 0 0 .35rem; font-size: 1.6rem; }
-  .faq-cta p { margin: 0; color: var(--muted); }
-  @media (max-width: 860px) { .faq-layout { grid-template-columns: 1fr; gap: 1rem; } .faq-index { position: static; display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; } .faq-hero { padding: 3rem 0 2rem; } .answer { padding-right: 0; } }
-</style>
+<link rel="stylesheet" href="static/styles/hoomio.css">
 </head>
 <body>
 
@@ -224,7 +22,7 @@
         <li><a href="index.html#planes">Planes</a></li>
         <li><a href="index.html#calculadora">Calculadora</a></li>
         <li><a href="index.html#tecnologia">Tecnología</a></li>
-        <li><a href="faq.html" aria-current="page" style="color:var(--ink)">FAQ</a></li>
+        <li><a href="faq.html" aria-current="page">FAQ</a></li>
       </ul>
     </nav>
     <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener">Reunámonos</a>
@@ -405,7 +203,7 @@
 <footer>
   <div class="wrap foot">
     <div>
-      <a href="index.html" class="brand" style="color:var(--ink)">hoomio<span>.</span></a>
+      <a href="index.html" class="brand">hoomio<span>.</span></a>
       <p style="margin:.5rem 0 0"><a href="mailto:info@hoomio.es">info@hoomio.es</a> · <a href="tel:+34623940910">+34 623 940 910</a></p>
     </div>
     <ul>
