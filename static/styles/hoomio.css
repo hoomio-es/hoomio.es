@@ -1,5 +1,4 @@
-
-  :root {
+ :root {
     color-scheme: light;
     --bg: #F4F5F3;
     --surface: #FFFFFF;
@@ -40,8 +39,11 @@
   header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 9; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid transparent; transition: border-color .2s; }
   header.top.scrolled { border-bottom-color: var(--line); }
   .nav { display: flex; align-items: center; justify-content: space-between; height: 72px; }
-  .brand { font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
+  .brand { display: inline-flex; align-items: center; font-weight: 600; font-size: 1.25rem; letter-spacing: -0.02em; text-decoration: none; }
+  .brand img { height: 22px; width: auto; display: block; }
   .brand span { color: var(--brass); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .brand img { filter: invert(1) brightness(0.92); } }
+  :root[data-theme="dark"] .brand img { filter: invert(1) brightness(0.92); }
   .nav ul { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; font-size: .9rem; }
   .nav ul a { text-decoration: none; color: var(--muted); }
   .nav ul a:hover { color: var(--ink); }
@@ -130,9 +132,6 @@
   .calc label { display: block; font-weight: 500; margin-bottom: .5rem; }
   .calc .amount { font-weight: 300; font-size: clamp(2.6rem, 6vw, 3.8rem); letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; font-variant-numeric: tabular-nums; }
   .calc input[type=range] { width: 100%; accent-color: var(--accent); }
-  .kit-label { margin-top: 2rem; }
-  .kit-input { display: flex; align-items: center; gap: .5rem; }
-  .kit-input input { width: 8rem; font: inherit; font-size: 1.25rem; padding: .5rem .75rem; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font-variant-numeric: tabular-nums; }
   .calc .hint { font-size: .82rem; color: var(--muted); margin-top: .75rem; }
   .ref { margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--soft); border-radius: 12px; font-size: .9rem; }
   .ref b { font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -142,23 +141,19 @@
   .res-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: .9rem; }
   .res-head h3 { margin: 0; font-size: 1rem; font-weight: 600; }
   .res-head span { color: var(--muted); font-size: .85rem; }
-  .figs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; font-variant-numeric: tabular-nums; }
+  .figs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; font-variant-numeric: tabular-nums; }
   .figs div { font-size: .78rem; color: var(--muted); line-height: 1.35; }
   .figs strong { display: block; font-size: 1.35rem; font-weight: 400; letter-spacing: -0.02em; color: var(--ink); margin-bottom: .2rem; }
   .figs div:first-child strong { font-weight: 600; }
   .worries { margin: .9rem 0 0; padding-top: .8rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
   .worries b { color: var(--ink); font-weight: 500; }
-  @media (max-width: 1060px) { .figs { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .figs { grid-template-columns: 1fr 1fr; } .figs div:first-child { grid-column: 1 / -1; } }
   @media (max-width: 860px) { .calc { grid-template-columns: 1fr; padding: 1.75rem; gap: 2rem; } }
 
   /* Kit */
   .kit { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0 4rem; }
   .kit > div { padding: 1.5rem 0; border-bottom: 1px solid var(--line); }
   .kit h3 { font-weight: 600; font-size: 1rem; margin: 0 0 .35rem; }
-  .kit h3 span { float: right; font-weight: 400; color: var(--muted); font-variant-numeric: tabular-nums; }
-  .kit-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1.5rem 0 0; }
-  .kit-total span { font-weight: 600; }
-  .kit-total strong { font-weight: 300; font-size: 2rem; letter-spacing: -0.03em; }
   .kit p { margin: 0; color: var(--muted); font-size: .93rem; }
   .fine { font-size: .82rem; color: var(--muted); margin-top: 2rem; }
   @media (max-width: 760px) { .kit { grid-template-columns: 1fr; } }
