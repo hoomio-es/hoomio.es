@@ -52,6 +52,73 @@
   #tecnologia .rules-title { margin-top: 5rem; }
   .out-delta .warn { display: block; margin-top: .45rem; font-size: .85rem; color: var(--brass); }
   @media (max-width: 860px) { .kit-teaser, .art-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+  /* Planes: etiqueta flotante y plan seleccionado */
+  .plan { position: relative; cursor: pointer; transition: border-color .2s, box-shadow .2s, transform .2s; }
+  .plan.featured { border-color: var(--line); box-shadow: none; }
+  .plan .tag { position: absolute; top: 0; right: 1.5rem; transform: translateY(-50%); margin: 0;
+    background: var(--surface); border: 1px solid var(--line); color: var(--accent); font-weight: 600; white-space: nowrap; }
+  .plan:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+  .plan.is-selected { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 18px 40px -22px rgba(12, 20, 19, .35); transform: translateY(-4px); }
+  .plan:not(.is-selected) .btn:not(.ghost) { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .plan.is-selected .btn.ghost { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .plan h3 { font-size: clamp(1.6rem, 2.4vw, 2rem); font-weight: 600; letter-spacing: -0.03em; line-height: 1.1; margin-bottom: .4rem; transition: color .2s; }
+  .plan.is-selected h3 { color: var(--accent); }
+  .plan:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .plan, .plan.is-selected { transition: none; transform: none; } }
+
+  /* Kit: carrusel al pasar por cada caso */
+  .kit-text { min-height: 15rem; transition: opacity .25s ease, transform .25s ease; }
+  .kit-text.swap { opacity: 0; transform: translateY(6px); }
+  #kit-count { margin-left: .5rem; color: var(--muted); letter-spacing: .08em; }
+  .kit-chips button { width: 100%; text-align: left; font: inherit; font-size: .95rem; color: var(--ink); cursor: pointer;
+    padding: .85rem 1.1rem; border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+    position: relative; overflow: hidden; transition: border-color .2s, background .2s, color .2s; }
+  .kit-chips li { padding: 0; border: 0; background: none; }
+  .kit-chips button:hover, .kit-chips button.on { border-color: var(--accent); }
+  .kit-chips button.on { background: var(--accent); color: var(--accent-ink); }
+  .kit-chips button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .kit-chips button.on::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%;
+    background: rgba(255, 255, 255, .45); transform-origin: left; animation: kit-progress var(--kit-ms, 5s) linear forwards; }
+  .kit-chips.paused button.on::after { display: none; }
+  @keyframes kit-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .kit-text { transition: none; } .kit-chips button.on::after { display: none; } }
+  @media (max-width: 860px) { .kit-text { min-height: 0; } }
+  /* Fin de semana: dos móviles */
+  .duo { align-items: stretch; }
+  .duo-card { padding: 2rem; display: flex; flex-direction: column; }
+  .duo-card header { margin: 0 0 1.5rem; }
+  .duo-card h3 { min-height: 0; }
+  .phone { flex: 1; background: var(--bg); border: 8px solid #1D2B2A; border-radius: 38px; overflow: hidden;
+    box-shadow: 0 24px 50px -30px rgba(12, 20, 19, .45); }
+  .good .phone { background: color-mix(in srgb, var(--accent) 5%, var(--bg)); }
+  .ph-bar { display: flex; justify-content: space-between; align-items: center; padding: .55rem 1.25rem .35rem;
+    font-size: .72rem; font-weight: 600; color: var(--ink); }
+  .ph-bar i { width: 84px; height: 20px; border-radius: 999px; background: #1D2B2A; }
+  .ph-sig { letter-spacing: -.1em; font-size: .6rem; }
+  .ph-app { display: flex; align-items: center; gap: .7rem; padding: .6rem 1rem .8rem; border-bottom: 1px solid var(--line); background: var(--surface); }
+  .ph-app b { display: block; font-size: .88rem; font-weight: 600; }
+  .ph-app small { display: block; font-size: .72rem; color: var(--muted); }
+  .av { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; font-size: .95rem;
+    background: var(--accent); color: var(--accent-ink); }
+  .av.warn { background: var(--brass); }
+  .chat { list-style: none; margin: 0; padding: .75rem 1rem 1.25rem; display: grid; gap: .9rem; }
+  .chat li { display: grid; gap: .4rem; }
+  .stamp { justify-self: center; font-size: .72rem; font-weight: 600; letter-spacing: .04em; color: var(--muted);
+    background: color-mix(in srgb, var(--line) 55%, transparent); padding: .2rem .65rem; border-radius: 999px; font-variant-numeric: tabular-nums; }
+  .bub { margin: 0; max-width: 86%; padding: .6rem .85rem; font-size: .88rem; line-height: 1.45; }
+  .bub.in { justify-self: start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px 16px 16px 4px; }
+  .bub.in.ok b { display: block; font-weight: 600; color: var(--accent); }
+  .bub.in.ok span { display: block; color: var(--muted); font-size: .82rem; margin-top: .15rem; }
+  .act { justify-self: end; display: grid; justify-items: end; gap: .25rem; max-width: 86%; }
+  .bub.out { max-width: none; background: color-mix(in srgb, var(--brass) 18%, var(--surface)); border-radius: 16px 16px 4px 16px; }
+  .cost { font-size: .72rem; font-weight: 600; color: var(--brass); font-variant-numeric: tabular-nums; }
+  .cost::before { content: "◷ "; }
+  .bub.out.hm { background: var(--accent); color: var(--accent-ink); }
+  .bub.out.hm small { display: block; font-size: .68rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; opacity: .75; margin-bottom: .1rem; }
+  .stars.good { color: #C9A23A; }
+  .cost.zero { color: var(--accent); }
+  .duo-total { margin: 1.5rem 0 0; }
+  @media (max-width: 520px) { .duo-card { padding: 1.25rem; } .phone { border-width: 6px; border-radius: 30px; } .chat { padding: .6rem .7rem 1rem; } }
 </style>
 <script>
   if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -100,7 +167,7 @@
     <a href="#" class="brand" aria-label="Hoomio, inicio">hoomio<span>.</span></a>
     <nav aria-label="Principal" id="menu">
       <ul>
-        <li><a href="#fin-de-semana">Sin Hoomio vs. con Hoomio</a></li>
+        <li><a href="#fin-de-semana">Hoomio</a></li>
         <li><a href="#servicio">Servicio</a></li>
         <li><a href="#planes">Planes</a></li>
         <li><a href="#calculadora">Calculadora</a></li>
@@ -142,35 +209,83 @@
         <article class="duo-card bad" data-reveal aria-labelledby="sin-t">
           <header>
             <span class="pill">Si lo llevas tú</span>
-            <h3 id="sin-t">Tu móvil no para de sonar.</h3>
+            <h3 id="sin-t">Tu móvil no para.</h3>
           </header>
-          <ol class="thread bad">
-            <li><div class="when"><time><span class="d">Vie</span><span class="h">23:41</span></time><span class="spent" aria-label="Tiempo invertido: 30 min">30 min</span></div><blockquote>«No encontramos el cajetín de las llaves. ¿Nos puedes llamar?»</blockquote><p>Dejas la cena a medias y les guías por teléfono, calle por calle.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">02:15</span></time><span class="spent" aria-label="Tiempo invertido: 40 min">40 min</span></div><blockquote>«Otra vez música muy alta en el 3.º B.»</blockquote><p>Un vecino. Escribes al huésped y te quedas despierto esperando.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">09:30</span></time><span class="spent" aria-label="Tiempo invertido: 2 h">2 h</span></div><blockquote>«Hoy no puedo ir, estoy con fiebre.»</blockquote><p>La limpieza. El siguiente huésped entra a las 16:00: limpias tú.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">11:00</span></time><span class="spent" aria-label="Tiempo invertido: 1 h 30 min">1 h 30 min</span></div><blockquote>Lavandería, súper y al piso.</blockquote><p>Sábanas y toallas limpias, papel, café, gel, champú. Tu sábado por la mañana, en el coche.</p></li>
-            <li><div class="when"><time><span class="d">Dom</span><span class="h">18:05</span></time><span class="spent" aria-label="Tiempo invertido: 20 min">20 min</span></div><blockquote>«El piso bien, pero la llegada fue un caos.» <span class="stars" aria-label="2 de 5 estrellas">★★☆☆☆</span></blockquote><p>La reseña que leerán los próximos cien huéspedes. Toca responderla.</p></li>
-          </ol>
-          <div class="duo-total"><span>Tu fin de semana, invertido en el piso</span><strong>5 h</strong></div>
+          <div class="phone">
+            <div class="ph-bar" aria-hidden="true"><span>9:41</span><i></i><span class="ph-sig">●●● ▮</span></div>
+            <div class="ph-app"><span class="av warn" aria-hidden="true">!</span><div><b>Huéspedes, vecinos y limpieza</b><small>5 avisos este fin de semana</small></div></div>
+            <ol class="chat">
+              <li>
+                <time class="stamp">Vie 23:41</time>
+                <p class="bub in">«No encontramos el cajetín de las llaves. ¿Nos puedes llamar?»</p>
+                <div class="act"><p class="bub out">Dejas la cena a medias y les guías por teléfono, calle por calle.</p><span class="cost">30 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 02:15</time>
+                <p class="bub in">«Otra vez música muy alta en el 3.º B.»</p>
+                <div class="act"><p class="bub out">Escribes al huésped y te quedas despierto esperando respuesta.</p><span class="cost">40 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 09:30</time>
+                <p class="bub in">«Hoy no puedo ir, estoy con fiebre.»</p>
+                <div class="act"><p class="bub out">El siguiente huésped entra a las 16:00: limpias tú.</p><span class="cost">2 h de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 11:00</time>
+                <p class="bub in">Recordatorio: reponer sábanas, toallas y amenities.</p>
+                <div class="act"><p class="bub out">Lavandería, súper y al piso. Tu sábado por la mañana, en el coche.</p><span class="cost">1 h 30 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Dom 18:05</time>
+                <p class="bub in">Nueva reseña: «El piso bien, pero la llegada fue un caos.» <span class="stars" aria-label="2 de 5 estrellas">★★☆☆☆</span></p>
+                <div class="act"><p class="bub out">Respondes la reseña que leerán los próximos cien huéspedes.</p><span class="cost">20 min de tu tiempo</span></div>
+              </li>
+            </ol>
+          </div>
+          <div class="duo-total"><span><h2>Tu fin de semana, en el piso</h2></span><strong>5 h</strong></div>
         </article>
 
         <article class="duo-card good" data-reveal aria-labelledby="con-t">
           <header>
             <span class="pill">Con Hoomio</span>
-            <h3 id="con-t">Tu móvil no suena y todo sigue su curso.</h3>
+            <h3 id="con-t">Tu móvil no suena.</h3>
           </header>
-          <ol class="thread good">
-            <li><div class="when"><time><span class="d">Vie</span><span class="h">16:47</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Check-in completado, sin llaves.</blockquote><p>Portal y piso abiertos con un código que caduca al salir. A las 23:41 ya están cenando.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">01:58</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Ruido alto detectado. Huésped avisado.</blockquote><p>Antes de que el vecino tenga motivo para escribir. Sin cámaras ni micrófonos.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">09:30</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Baja en limpieza: reasignada.</blockquote><p>El piso queda revisado con checklist y fotos antes de las 16:00.</p></li>
-            <li><div class="when"><time><span class="d">Sáb</span><span class="h">11:00</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Ropa de cama y amenities repuestos.</blockquote><p>Lavandería y consumibles van con la limpieza. Nadie hace viajes extra.</p></li>
-            <li><div class="when"><time><span class="d">Dom</span><span class="h">18:05</span></time><span class="spent zero" aria-label="Tiempo tuyo: 0 minutos">0 min</span></div><blockquote>Llegada sin incidencias. Reseña respondida.</blockquote><p>Cuidamos cada llegada para que haya menos que explicar después.</p></li>
-          </ol>
-          <div class="duo-total"><span>Tu fin de semana, invertido en el piso</span><strong>0 min</strong></div>
+          <div class="phone">
+            <div class="ph-bar" aria-hidden="true"><span>9:41</span><i></i><span class="ph-sig">●●● ▮</span></div>
+            <div class="ph-app"><span class="av" aria-hidden="true">h</span><div><b>Hoomio</b><small>Todo en orden · resumen del fin de semana</small></div></div>
+            <ol class="chat">
+              <li>
+                <time class="stamp">Vie 16:47</time>
+                <p class="bub in">«Hola, acabamos de llegar al portal.»</p>
+                <div class="act"><p class="bub out hm"><small>Hoomio</small>Check-in automático: portal y piso abiertos con su código. A las 23:41 ya están cenando.</p><span class="cost zero">0 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 01:58</time>
+                <p class="bub in">Sensor: ruido alto en el piso.</p>
+                <div class="act"><p class="bub out hm"><small>Hoomio</small>Avisamos al huésped antes de que el vecino tenga motivo para escribir. Sin cámaras ni micrófonos.</p><span class="cost zero">0 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 09:30</time>
+                <p class="bub in">«Hoy no puedo ir, estoy con fiebre.»</p>
+                <div class="act"><p class="bub out hm"><small>Hoomio</small>Limpieza reasignada. Piso revisado con checklist y fotos antes de las 16:00.</p><span class="cost zero">0 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Sáb 11:00</time>
+                <p class="bub in">Recordatorio: reponer sábanas, toallas y amenities.</p>
+                <div class="act"><p class="bub out hm"><small>Hoomio</small>Repuesto junto con la limpieza. Nadie hace viajes extra.</p><span class="cost zero">0 min de tu tiempo</span></div>
+              </li>
+              <li>
+                <time class="stamp">Dom 18:05</time>
+                <p class="bub in">Nueva reseña: «Llegada facilísima y el piso, impecable. ¡Volveremos!» <span class="stars good" aria-label="5 de 5 estrellas">★★★★★</span></p>
+                <div class="act"><p class="bub out hm"><small>Hoomio</small>Reseña respondida en tu nombre.</p><span class="cost zero">0 min de tu tiempo</span></div>
+              </li>
+            </ol>
+          </div>
+          <div class="duo-total"><span><h2>Tu fin de semana, para tí</h2></span><strong>0 min</strong></div>
         </article>
       </div>
 
-      <p class="s-punch one-line" data-reveal>Cinco horas de tu fin de semana. <br><b>O ninguna.</b></p>
+      <p class="s-punch one-line" data-reveal>Cinco horas de tu fin de semana. <br><b>O ninguna.</b> Tú eliges.</p>
     </div>
   </section>
 
@@ -233,58 +348,50 @@
   <section id="planes">
     <div class="wrap">
       <h2>Tres planes para pisos automatizados.</h2>
-      <p class="intro">Elige cuánto quieres delegar. <br>Todos parten de un piso con acceso autónomo y puedes cambiar de plan cuando lo necesites.</p>
+      <p class="intro">Elige cuánto quieres delegar. Toca un plan para verlo en la calculadora. <br>Todos parten de un piso con acceso autónomo y puedes cambiar de plan cuando lo necesites.</p>
 
       <div class="plans">
-        <article class="plan">
+        <article class="plan" data-plan="basico" tabindex="0" aria-label="Plan Básico, 12,5%">
           <h3>Básico</h3>
-          <p class="for">Para quien vive cerca y se encarga de la limpieza.</p>
+          <p class="for">Tú manejas la limpieza.</p>
           <div class="price">12,5%<small> de la facturación</small></div>
           <ul>
-            <li>Publicación en plataformas</li>
-            <li>Atención a huéspedes 24/7</li>
-            <li>Check-in autónomo y registro de viajeros</li>
-            <li>Control de ruido y ocupación</li>
-            <li>Liquidación mensual</li>
+            <li>Publicación y atención</li>
+            <li>Check-in autónomo</li>
+            <li>Control de ruido</li>
             <li class="not">Coordinar limpieza, lavandería y reposiciones corre de tu cuenta</li>
           </ul>
           <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_basico">Hablemos del Básico</a>
         </article>
 
-        <article class="plan featured">
+        <article class="plan featured" data-plan="estandar" tabindex="0" aria-label="Plan Estándar, 15%, el más elegido">
           <span class="tag">El más elegido</span>
           <h3>Estándar</h3>
-          <p class="for">Gestión integral: tú solo recibes la liquidación.</p>
+          <p class="for">Gestión integral: solo recibes la liquidación.</p>
           <div class="price">15%<small> de la facturación</small></div>
           <ul>
-            <li class="inherit">Todo lo del plan Básico</li>
-            <li>Coordinación de limpieza y lavandería</li>
-            <li>Reposición de consumibles y amenities</li>
-            <li>Gestión de incidencias y reparaciones</li>
-            <li>Revisiones periódicas del piso</li>
+            <li class="inherit">Todo del Básico</li>
+            <li>Coordinación de limpieza</li>
+            <li>Reposición de consumibles</li>
+            <li>Gestión de incidencias</li>
           </ul>
           <a class="btn" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_estandar">Hablemos del Estándar</a>
         </article>
 
-        <article class="plan">
+        <article class="plan" data-plan="premium" tabindex="0" aria-label="Plan Premium, 18,5%">
           <h3>Premium</h3>
-          <p class="for">Para sacar el máximo rendimiento a tu inversión.</p>
+          <p class="for">Máximo rendimiento</p>
           <div class="price">18,5%<small> de la facturación</small></div>
           <ul>
             <li class="inherit">Todo lo del plan Estándar</li>
-            <li class="gift">Domótica del piso a medida<small>Accesos, servicios básicos y sensores automatizados. Se presupuesta aparte; si la financiamos nosotros, facturamos al 20% hasta cubrir la inversión.</small></li>
-            <li>Estrategia de precios revisada personalmente</li>
+            <li>Domótica a medida</li>
+            <li>Estrategia de precios</li>
             <li>Informe de rentabilidad neta y comparativa de mercado</li>
-            <li>Mantenimiento preventivo planificado</li>
-            <li>Fotos profesionales y mejora del anuncio cada año</li>
-            <li>Atención prioritaria</li>
-            <li>Revisión anual de seguros, suministros e internet</li>
             <li>Arte original expuesto en el piso, a la venta para tus huéspedes <span class="soon">Próximamente</span></li>
           </ul>
           <a class="btn ghost" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="plan_premium">Hablemos del Premium</a>
         </article>
       </div>
-
       <div class="note">
         <strong>20%</strong>
         <div>
@@ -292,6 +399,7 @@
           <p class="payback">Si la financia Hoomio, <b>facturamos al 20% hasta cubrir la inversión</b>. Desde ese momento pasas a la comisión del plan que elijas.</p>
         </div>
       </div>
+
     </div>
   </section>
 
@@ -431,18 +539,20 @@
   <section id="tecnologia">
     <div class="wrap">
       <div class="kit-teaser">
-        <div>
-          <p class="eyebrow">Kit Hoomio</p>
-          <h2>Un piso que se gestiona casi solo.</h2>
-          <p class="intro">Domotizamos los accesos y los servicios básicos del piso, automatizamos la comunicación con los huéspedes y vigilamos lo que importa: aforo, ruido y seguridad. Menos imprevistos, menos viajes y menos horas por reserva.</p>
+        <div class="kit-stage">
+          <p class="eyebrow">Kit Hoomio <span id="kit-count" aria-hidden="true"></span></p>
+          <div class="kit-text" id="kit-text">
+            <h2 id="kit-title">Un piso que se gestiona casi solo.</h2>
+            <p class="intro" id="kit-desc">Domotizamos los accesos y los servicios básicos del piso, automatizamos la comunicación con los huéspedes y vigilamos lo que importa: aforo, ruido y seguridad. Menos imprevistos, menos viajes y menos horas por reserva.</p>
+          </div>
           <a class="btn ghost" href="kit.html">Descubre qué resuelve el kit</a>
         </div>
-        <ul class="kit-chips">
-          <li>Check-in y check-out con códigos automáticos</li>
-          <li>Luz, agua, persianas y climatización a distancia</li>
-          <li>Mensajes antes, durante y después de la estancia</li>
-          <li>Respuestas al instante a las dudas del huésped</li>
-          <li>Control de aforo, ruido y gases</li>
+        <ul class="kit-chips" id="kit-chips">
+          <li><button type="button" data-title="Llegadas sin llaves ni esperas." data-desc="Cada reserva recibe sus códigos de portal y piso: se activan a la hora de entrada y caducan al salir. Se acabaron los cajetines en la calle y las entregas a deshoras.">Check-in y check-out con códigos automáticos</button></li>
+          <li><button type="button" data-title="Encendido solo cuando hace falta." data-desc="Luz, agua, persianas, aire y calefacción se controlan a distancia: el piso se prepara antes de la llegada, se apaga al salir y el agua se puede cortar si hay una fuga.">Luz, agua, persianas y climatización a distancia</button></li>
+          <li><button type="button" data-title="Cada huésped, bien informado." data-desc="Mensajes automáticos antes, durante y después de la estancia: cómo llegar, cómo entrar, normas, salida y petición de reseña. Sin escribir lo mismo cien veces.">Mensajes antes, durante y después de la estancia</button></li>
+          <li><button type="button" data-title="Respuestas a las dos de la mañana." data-desc="Un asistente con inteligencia artificial responde al momento las dudas sobre el acceso y el funcionamiento del piso. Lo que necesita a una persona nos llega directamente.">Respuestas al instante a las dudas del huésped</button></li>
+          <li><button type="button" data-title="Problemas detectados a tiempo." data-desc="Sensores de aforo, ruido y gases que nos avisan al momento para actuar antes de la queja del vecino o de un susto mayor. Sin cámaras ni micrófonos que graben.">Control de aforo, ruido y gases</button></li>
         </ul>
       </div>
 
@@ -463,7 +573,7 @@
         <h2>Un piso con arte se recuerda. Y se puede llevar a casa.</h2>
       </div>
       <div>
-        <p class="intro">Estamos preparando exposiciones de obra original en nuestros pisos Premium y sus zonas comunes, de la mano de <a href="https://www.atelierbarcelona.es/" target="_blank" rel="noopener">Atelier Barcelona</a>, el estudio de la artista Lourdes Vázquez: piezas de gran formato pintadas a mano para espacios que piden presencia.</p>
+        <p class="intro">Estamos preparando exposiciones de obra original en nuestros pisos Premium y sus zonas comunes: piezas de gran formato pintadas a mano para espacios que piden presencia.</p>
         <p class="intro">Para tus huéspedes, una estancia que no se parece a ninguna otra. Para tu anuncio, fotos que destacan. Y si una obra les enamora, pueden comprarla.</p>
       </div>
     </div>
@@ -500,5 +610,86 @@
 
 <script src="static/scripts/hoomio.js?v=3" defer></script>
 <script src="static/scripts/calculadora.js?v=4" defer></script>
+<script>
+/* Planes ↔ calculadora y carrusel del kit. Se ejecuta tras calculadora.js. */
+document.addEventListener("DOMContentLoaded", function () {
+  "use strict";
+  var form = document.getElementById("calc");
+  var cards = document.querySelectorAll(".plan[data-plan]");
+
+  function highlight() {
+    var r = form && form.querySelector('input[name="plan"]:checked');
+    var v = r ? r.value : "estandar";
+    cards.forEach(function (c) { c.classList.toggle("is-selected", c.getAttribute("data-plan") === v); });
+  }
+  function choose(card) {
+    var r = form && form.querySelector('input[name="plan"][value="' + card.getAttribute("data-plan") + '"]');
+    if (!r) return;
+    r.checked = true;
+    r.dispatchEvent(new Event("change", { bubbles: true }));
+    if (window.hoomioTrack) window.hoomioTrack("plan_tarjeta_click", { plan: r.value });
+  }
+  cards.forEach(function (c) {
+    c.addEventListener("click", function (e) { if (!e.target.closest("a")) choose(c); });
+    c.addEventListener("keydown", function (e) {
+      if (e.target === c && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); choose(c); }
+    });
+  });
+  if (form) form.addEventListener("change", highlight);
+  highlight();
+
+  // Carrusel del kit
+  var list = document.getElementById("kit-chips");
+  if (!list) return;
+  var btns = list.querySelectorAll("button");
+  var box = document.getElementById("kit-text"), title = document.getElementById("kit-title"),
+      desc = document.getElementById("kit-desc"), count = document.getElementById("kit-count");
+  var MS = 5000, idx = -1, timer = null, visible = false, hovering = false;
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  list.style.setProperty("--kit-ms", MS + "ms");
+
+  function show(i) {
+    if (i === idx) return;
+    idx = i;
+    btns.forEach(function (b, j) { b.classList.toggle("on", j === i); b.setAttribute("aria-pressed", j === i ? "true" : "false"); });
+    var b = btns[i];
+    var apply = function () {
+      title.textContent = b.getAttribute("data-title");
+      desc.textContent = b.getAttribute("data-desc");
+      count.textContent = "· " + (i + 1) + "/" + btns.length;
+      box.classList.remove("swap");
+    };
+    if (still) { apply(); return; }
+    box.classList.add("swap");
+    setTimeout(apply, 200);
+  }
+  function stop() { clearInterval(timer); timer = null; }
+  function play() {
+    stop();
+    if (still || !visible || hovering) return;
+    list.classList.remove("paused");
+    // Reinicia la barra de progreso del caso actual
+    var on = btns[idx]; if (on) { on.classList.remove("on"); void on.offsetWidth; on.classList.add("on"); }
+    timer = setInterval(function () { show((idx + 1) % btns.length); }, MS);
+  }
+
+  btns.forEach(function (b, i) {
+    b.addEventListener("mouseenter", function () { show(i); });
+    b.addEventListener("focus", function () { show(i); });
+    b.addEventListener("click", function () { show(i); });
+  });
+  list.addEventListener("mouseenter", function () { hovering = true; stop(); list.classList.add("paused"); });
+  list.addEventListener("mouseleave", function () { hovering = false; play(); });
+  list.addEventListener("focusin", function () { hovering = true; stop(); list.classList.add("paused"); });
+  list.addEventListener("focusout", function () { hovering = false; play(); });
+
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(function (es) {
+      visible = es[0].isIntersecting;
+      if (visible) { if (idx < 0) show(0); play(); } else stop();
+    }, { threshold: 0.4 }).observe(list);
+  } else { show(0); }
+});
+</script>
 </body>
 </html>

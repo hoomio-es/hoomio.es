@@ -1780,6 +1780,13 @@ footer {
   line-height: 1.15;
   margin: .9rem 0 0;
 }
+.duo-card h2 {
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2vw, 1.2rem);
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  margin: .9rem 0 0;
+}
 
 .pill {
   display: inline-block;
