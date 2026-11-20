@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="static/styles/hoomio.css?v=4">
+<link rel="stylesheet" href="static/styles/hoomio.css?v=5">
 <style>
   /* Planes: requisito del Básico y lo que no incluye */
   .plan-req { margin: 1rem 0 0; padding: .75rem .9rem; border-radius: 12px; font-size: .84rem; line-height: 1.45;
@@ -118,6 +118,23 @@
   .stars.good { color: #C9A23A; }
   .cost.zero { color: var(--accent); }
   .duo-total { margin: 1.5rem 0 0; }
+  /* Conclusión de cada experiencia */
+  .verdict { margin-top: 1.5rem; border-radius: 22px; padding: 1.4rem 1.5rem; display: grid; grid-template-columns: auto 1fr; gap: 1.25rem; align-items: center; }
+  .verdict strong { font-weight: 300; font-size: clamp(2.6rem, 4.4vw, 3.6rem); letter-spacing: -0.045em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .verdict p { margin: 0 0 .55rem; font-size: 1.05rem; font-weight: 500; line-height: 1.3; }
+  .verdict ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .35rem; }
+  .verdict li { font-size: .75rem; font-weight: 600; padding: .2rem .6rem; border-radius: 999px; white-space: nowrap; }
+  .bad-v { background: color-mix(in srgb, var(--brass) 14%, var(--surface)); }
+  .bad-v strong { color: var(--brass); }
+  .bad-v li { background: var(--surface); color: var(--brass); }
+  .good-v { background: var(--accent); color: var(--accent-ink); }
+  .good-v li { background: rgba(255, 255, 255, .16); }
+  /* Coletilla final */
+  .choice { margin-top: 4.5rem; text-align: center; }
+  .choice-line { font-weight: 300; font-size: clamp(1.8rem, 3.6vw, 2.8rem); letter-spacing: -0.035em; line-height: 1.2; margin: 0 auto 2rem; max-width: 30ch; }
+  .choice-line b { font-weight: 500; }
+  .choice .actions { justify-content: center; }
+  @media (max-width: 520px) { .verdict { grid-template-columns: 1fr; gap: .6rem; } }
   @media (max-width: 520px) { .duo-card { padding: 1.25rem; } .phone { border-width: 6px; border-radius: 30px; } .chat { padding: .6rem .7rem 1rem; } }
 </style>
 <script>
@@ -242,7 +259,13 @@
               </li>
             </ol>
           </div>
-          <div class="duo-total"><span><h2>Tu fin de semana, en el piso</h2></span><strong>5 h</strong></div>
+          <div class="verdict bad-v">
+            <strong>5 h</strong>
+            <div>
+              <p>de tu fin de semana, pendiente del móvil.</p>
+              <ul><li>5 avisos</li><li>1 noche en vela</li><li>1 reseña de ★★</li></ul>
+            </div>
+          </div>
         </article>
 
         <article class="duo-card good" data-reveal aria-labelledby="con-t">
@@ -281,11 +304,23 @@
               </li>
             </ol>
           </div>
-          <div class="duo-total"><span><h2>Tu fin de semana, para tí</h2></span><strong>0 min</strong></div>
+          <div class="verdict good-v">
+            <strong>0 min</strong>
+            <div>
+              <p>pendiente del móvil. El fin de semana, entero para ti.</p>
+              <ul><li>5 avisos resueltos</li><li>0 llamadas</li><li>1 reseña de ★★★★★</li></ul>
+            </div>
+          </div>
         </article>
       </div>
 
-      <p class="s-punch one-line" data-reveal>Cinco horas de tu fin de semana. <br><b>O ninguna.</b> Tú eliges.</p>
+      <div class="choice" data-reveal>
+        <p class="choice-line">Mismo piso. Mismas reservas.<br><b>Tú eliges cómo pasas el fin de semana.</b></p>
+        <div class="actions">
+          <a class="btn btn-lg" href="https://calendar.app.google/tgGizZVrYX6aGE7W9" target="_blank" rel="noopener" data-cta="fin_de_semana">Quiero mis fines de semana</a>
+          <a class="btn ghost btn-lg" href="#calculadora">Calcula tus horas</a>
+        </div>
+      </div>
     </div>
   </section>
 

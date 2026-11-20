@@ -1995,3 +1995,23 @@ section.s-dark { border-top: 0; }
 @media (min-width: 861px) {
   .duo-card h3 { min-height: 2.3em; }
 }
+
+/* ============================================
+   NOTA: Estilos específicos de index.html
+   ============================================
+   Los siguientes estilos están definidos en inline <style> 
+   en index.html (líneas 32-138) y NO se duplican aquí:
+
+   - Planes: requisito del Básico (.plan-req), items no incluidos (.plan li.not),
+     etiqueta "coming soon" (.plan .soon, .kit-card .soon)
+   - Planes: etiqueta flotante y plan seleccionado (.plan.tag, .plan.is-selected)
+   - Kit: carrusel interactivo (.kit-text, .kit-chips button, #kit-count)
+   - Fin de semana: demo de dos móviles (.duo, .phone, .chat, .bub)
+   - Conclusión: verdicts (.verdict, .bad-v, .good-v) y coletilla (.choice)
+
+   RAZÓN: Estos estilos son específicos de la página index.html
+   y se usan solo para el demo interactivo de planes, el carrusel
+   del kit y la comparación de fines de semana. Al mantenerlos
+   inline en index.html, mantenemos hoomio.css más ligero y
+   evitamos duplicación innecesaria.
+   ============================================ */
