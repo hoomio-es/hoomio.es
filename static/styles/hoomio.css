@@ -2015,3 +2015,4 @@ section.s-dark { border-top: 0; }
    inline en index.html, mantenemos hoomio.css más ligero y
    evitamos duplicación innecesaria.
    ============================================ */
+.stack-title { text-align: center; }

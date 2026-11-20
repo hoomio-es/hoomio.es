@@ -129,6 +129,58 @@
   .bad-v li { background: var(--surface); color: var(--brass); }
   .good-v { background: var(--accent); color: var(--accent-ink); }
   .good-v li { background: rgba(255, 255, 255, .16); }
+  /* Barras apiladas del fin de semana */
+  .stack { margin: 1.25rem 0 0; background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: 2rem 2rem 1.75rem; --H: 340px; }
+  .stack-title { font-weight: 500; font-size: clamp(1.15rem, 1.8vw, 1.4rem); letter-spacing: -0.02em; padding-bottom: 1rem; margin-bottom: 1.75rem; border-bottom: 1px solid var(--line); }
+  .stack-title .st-eb { display: block; font-size: .75rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--brass); margin-bottom: .5rem; }
+  .stack-title .st-h { display: block; font-weight: 300; font-size: clamp(1.8rem, 3.2vw, 2.5rem); letter-spacing: -0.035em; line-height: 1.1; }
+  .stack-title .st-h b { font-weight: 600; }
+  .stack-chart { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: end; max-width: 820px; margin: 0 auto; }
+  .col { display: grid; grid-template-rows: auto var(--H) auto; justify-items: start; }
+  .col .tot { font-weight: 300; font-size: clamp(2.4rem, 4vw, 3.2rem); letter-spacing: -0.045em; line-height: 1; margin-bottom: .75rem; white-space: nowrap; }
+  .col.b .tot { color: var(--brass); }
+  .col.g .tot { color: var(--accent); font-weight: 500; }
+  .col-name { margin-top: .9rem; font-size: .75rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+  .col.b .col-name { color: var(--brass); }
+  .col.g .col-name { color: var(--accent); }
+  .segs { list-style: none; margin: 0; padding: 0; width: 110px; height: var(--H); display: flex; flex-direction: column-reverse;
+    border-bottom: 2px solid var(--ink); }
+  .segs li { position: relative; height: calc(var(--m) / 300 * var(--H)); border-top: 2px solid var(--surface); }
+  .segs li:nth-child(1) { background: color-mix(in srgb, var(--brass) 40%, var(--surface)); }
+  .segs li:nth-child(2) { background: color-mix(in srgb, var(--brass) 100%, var(--surface)); }
+  .segs li:nth-child(3) { background: color-mix(in srgb, var(--brass) 60%, var(--surface)); }
+  .segs li:nth-child(4) { background: color-mix(in srgb, var(--brass) 80%, var(--surface)); }
+  .segs li:nth-child(5) { background: color-mix(in srgb, var(--brass) 35%, var(--surface)); border-radius: 10px 10px 0 0; }
+  .seg-l { position: absolute; left: calc(100% + .9rem); top: 50%; transform: translateY(-50%); white-space: nowrap; font-size: .85rem; color: var(--ink); }
+  .seg-l::before { content: ""; position: absolute; left: -.9rem; top: 50%; width: .6rem; height: 1px; background: var(--line); }
+  .seg-l b { color: var(--brass); font-weight: 600; margin-right: .3rem; font-variant-numeric: tabular-nums; }
+  .seg-l small { color: var(--muted); font-size: .72rem; margin-left: .3rem; }
+  .zero { height: var(--H); width: 110px; border-bottom: 2px solid var(--ink); display: flex; flex-direction: column; justify-content: flex-end; gap: .5rem; padding-bottom: .6rem; }
+  .zero .tot { margin: 0; }
+  .zero .ok { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); font-size: .95rem; }
+  .zero p { margin: 0; width: 15rem; font-size: .88rem; color: var(--muted); }
+  .tot-spacer { height: calc(clamp(2.4rem, 4vw, 3.2rem) + .75rem); }
+  .can-reveal .stack .segs li { transform: scaleY(0); transform-origin: bottom; transition: transform .6s cubic-bezier(.2,.8,.2,1); }
+  .can-reveal .stack.in .segs li { transform: none; }
+  .can-reveal .stack.in .segs li:nth-child(2) { transition-delay: .12s; }
+  .can-reveal .stack.in .segs li:nth-child(3) { transition-delay: .24s; }
+  .can-reveal .stack.in .segs li:nth-child(4) { transition-delay: .36s; }
+  .can-reveal .stack.in .segs li:nth-child(5) { transition-delay: .48s; }
+  @media (max-width: 760px) {
+    .stack { padding: 1.25rem; --H: 300px; }
+    .stack-chart { grid-template-columns: 1fr 4.6rem; gap: .75rem; }
+    .tot-spacer { height: calc(2rem + .75rem); }
+    .zero .tot { font-size: 1.25rem; white-space: nowrap; }
+    .col-name { font-size: .66rem; }
+    .segs { width: 64px; }
+    .zero { width: 64px; }
+    .zero p { display: none; }
+    .seg-l { font-size: .74rem; white-space: normal; width: 8.4rem; line-height: 1.2; }
+    .seg-l small { display: none; }
+    .col .tot { font-size: 2rem; }
+  }
+  .choice { margin-top: 3.5rem; }
+  @media (max-width: 860px) { .duo { gap: 1rem; } }
   /* Coletilla final */
   .choice { margin-top: 4.5rem; text-align: center; }
   .choice-line { font-weight: 300; font-size: clamp(1.8rem, 3.6vw, 2.8rem); letter-spacing: -0.035em; line-height: 1.2; margin: 0 auto 2rem; max-width: 30ch; }
@@ -259,13 +311,6 @@
               </li>
             </ol>
           </div>
-          <div class="verdict bad-v">
-            <strong>5 h</strong>
-            <div>
-              <p>de tu fin de semana, pendiente del móvil.</p>
-              <ul><li>5 avisos</li><li>1 noche en vela</li><li>1 reseña de ★★</li></ul>
-            </div>
-          </div>
         </article>
 
         <article class="duo-card good" data-reveal aria-labelledby="con-t">
@@ -304,15 +349,30 @@
               </li>
             </ol>
           </div>
-          <div class="verdict good-v">
-            <strong>0 min</strong>
-            <div>
-              <p>pendiente del móvil. El fin de semana, entero para ti.</p>
-              <ul><li>5 avisos resueltos</li><li>0 llamadas</li><li>1 reseña de ★★★★★</li></ul>
-            </div>
-          </div>
         </article>
       </div>
+
+      <figure class="stack" data-reveal>
+        <figcaption class="stack-title"><span class="st-h"><b>Recupera</b> los findes.</span></figcaption>
+        <div class="stack-chart">
+          <div class="col b">
+            <strong class="tot">5 h</strong>
+            <ol class="segs" aria-label="Desglose: si lo llevas tú">
+              <li style="--m:20"><span class="seg-l"><b>20 min</b> Reseña de ★★</span></li>
+              <li style="--m:120"><span class="seg-l"><b>2 h</b> Limpieza </span></li>
+              <li style="--m:40"><span class="seg-l"><b>40 min</b> Reclamaciones </span></li>
+              <li style="--m:90"><span class="seg-l"><b>1 h 30 min</b> Compras </span></li>
+              <li style="--m:30"><span class="seg-l"><b>30 min</b> Acceso</span></li>
+            </ol>
+            <span class="col-name">Si lo llevas tú</span>
+          </div>
+          <div class="col g">
+            <span class="tot-spacer" aria-hidden="true"></span>
+            <div class="zero" aria-label="Con Hoomio: 0 minutos"><strong class="tot">0 min</strong><p>Los 5 avisos se resuelven sin ti.</p><span class="ok" aria-hidden="true">✓</span></div>
+            <span class="col-name">Con Hoomio</span>
+          </div>
+        </div>
+      </figure>
 
       <div class="choice" data-reveal>
         <p class="choice-line">Mismo piso. Mismas reservas.<br><b>Tú eliges cómo pasas el fin de semana.</b></p>
