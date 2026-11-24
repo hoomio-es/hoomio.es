@@ -2174,3 +2174,5 @@ section.s-dark { border-top: 0; }
   .choice .actions { justify-content: center; }
   @media (max-width: 520px) { .verdict { grid-template-columns: 1fr; gap: .6rem; } }
   @media (max-width: 520px) { .duo-card { padding: 1.25rem; } .phone { border-width: 6px; border-radius: 30px; } .chat { padding: .6rem .7rem 1rem; } }
+
+  h1, h2, .s-punch { text-wrap: balance; }
